@@ -1,0 +1,7 @@
+{
+  "name": "PartiRecept",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
