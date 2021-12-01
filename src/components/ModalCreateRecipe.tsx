@@ -38,7 +38,16 @@ const ModalCreateRecipe: React.FC = () => {
   };
 
   const onSubmit = (data: any) => {
+    data = {
+      ...data,
+      difficulty: parseInt(data.difficulty),
+      numberOfServings: parseInt(data.numberOfServings),
+      preparationTimeTicks: parseInt(data.preparationTimeTicks),
+      ingredients: [],
+      imagePath: "path",
+    };
     console.log("creating new recipe with data:", data);
+
     axios
       .post("https://i403375core.venus.fhict.nl/Recipe", {
         data,
@@ -122,11 +131,15 @@ const ModalCreateRecipe: React.FC = () => {
               <h3 className="ion-padding">More Details</h3>
               <IonItem>
                 <IonLabel position="stacked">Difficulty</IonLabel>
-                <IonInput
-                  autocomplete="off"
-                  type="number"
+                <IonSelect
                   {...register("difficulty")}
-                />
+                  cancelText="Cancel"
+                  okText="Add"
+                >
+                  <IonSelectOption value={0}>Beginner</IonSelectOption>
+                  <IonSelectOption value={1}>Intermediate</IonSelectOption>
+                  <IonSelectOption value={2}>Advanced</IonSelectOption>
+                </IonSelect>
               </IonItem>
               <IonItem>
                 <IonLabel position="stacked">Country of origin</IonLabel>
@@ -136,8 +149,8 @@ const ModalCreateRecipe: React.FC = () => {
                 <IonLabel position="stacked">Number of servings</IonLabel>
                 <IonInput
                   autocomplete="off"
-                  {...register("numberOfServings")}
                   type="number"
+                  {...register("numberOfServings")}
                 />
               </IonItem>
               <IonItem>
@@ -149,10 +162,10 @@ const ModalCreateRecipe: React.FC = () => {
                 />
               </IonItem>
               <IonItem>
-                <IonLabel position="stacked">Type of cuisine</IonLabel>
+                <IonLabel position="stacked">Ingredients</IonLabel>
                 <IonSelect
                   multiple={true}
-                  {...register("ingredients")}
+                  {...register("unlistedIngredients")}
                   cancelText="Cancel"
                   okText="Add"
                 >
