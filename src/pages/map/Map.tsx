@@ -8,7 +8,7 @@ import './Map.css';
 const AnyReactComponent = ({ lat,lng,text }:{lat:any;lng:any;text:any}) => (
   <div style={{
     color: 'white', 
-    background: 'blue',
+    background: 'orange',
     padding: '15px 10px',
     display: 'inline-flex',
     textAlign: 'center',
