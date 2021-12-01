@@ -3,7 +3,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
 import Page from './pages/Page';
-import Recipe from './pages/recipes/Recipe';
+import RecipeInfo from './pages/recipes/RecipeInfo';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -38,7 +38,7 @@ const App: React.FC = () => {
               <Page />
             </Route>
             <Route path="/:name" exact={true}>
-              <Recipe />
+              <RecipeInfo />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>

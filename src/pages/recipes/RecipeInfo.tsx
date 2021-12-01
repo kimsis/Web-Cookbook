@@ -1,7 +1,7 @@
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonItem, IonIcon, IonLabel, IonButton, IonImg, IonGrid, IonRow, IonCol, IonChip } from '@ionic/react';
 import { useParams } from 'react-router';
 import ExploreContainer from '../../components/ExploreContainer';
-import './Recipe.css';
+import './RecipeInfo.css';
 import { star, starHalf, starOutline, time, megaphone, cellular, fastFood, earth, egg, timer } from 'ionicons/icons';
 
 const Recipe: React.FC<{
