@@ -8,26 +8,27 @@ import './Map.css';
 const AnyReactComponent = ({ lat,lng,text }:{lat:any;lng:any;text:any}) => (
   <div style={{
     color: 'white', 
-    background: 'grey',
+    background: 'blue',
     padding: '15px 10px',
     display: 'inline-flex',
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '100%',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
   }}>
-    {text}
+        {text}
+
   </div>
 );
 
 class SimpleMap extends React.Component {
   static defaultProps = {
     center: {
-      lat: 51.441643,
-      lng: 5.469722
+      lat: 51.449747,
+      lng: 5.473891
     },
-    zoom: 11
+    zoom: 17
   };
 
   render() {
@@ -39,19 +40,34 @@ class SimpleMap extends React.Component {
           defaultZoom={SimpleMap.defaultProps.zoom}
         >
           <AnyReactComponent
-                lat ={ 51.451827}
-                lng ={5.471908}
-            text="IT"
+                lat ={ 51.450790}
+                lng ={5.471861}
+            text="Lidl"
           />
                     <AnyReactComponent
-                lat ={ 51.451429}
-                lng ={5.472132}
-            text="FUCKING"
+                lat ={ 51.451563}
+                lng ={5.472298}
+            text="Albert Heijn"
           />
                     <AnyReactComponent
-                lat ={ 51.449824}
-                lng ={5.473420}
-            text="WORKS"
+                lat ={ 51.449972}
+                lng ={5.472884}
+            text="The Food Corner"
+          />
+                    <AnyReactComponent
+                lat ={ 51.448399}
+                lng ={5.474719}
+            text="Athene"
+          />
+                    <AnyReactComponent
+                lat ={ 51.449359}
+                lng ={5.473838}
+            text="Kam Po"
+          />
+                    <AnyReactComponent
+                lat ={ 51.447382}
+                lng ={5.475611}
+            text="Sri Ganesh Indiaas"
           />
         </GoogleMapReact>
       </div>
