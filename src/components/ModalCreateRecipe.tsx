@@ -14,15 +14,14 @@ import {
   IonItemDivider,
   IonTextarea,
 } from "@ionic/react";
-import React, { useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import axios from "axios";
 import { cloudUploadOutline } from "ionicons/icons";
 import { useForm } from "react-hook-form";
 import "./ModalCreateRecipe.css";
 
-const ModalCreateRecipe: React.FC = () => {
+const ModalCreateRecipe: React.FC<{showRecipeCreateModal: boolean, setShowRecipeCreateModal: Dispatch<SetStateAction<boolean>>}> = (props) => {
   const [image, setImage] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const {
     register,
     handleSubmit,
@@ -52,19 +51,6 @@ const ModalCreateRecipe: React.FC = () => {
   };
 
   return (
-    <IonContent>
-      <IonGrid>
-        <IonRow className="ion-padding ion-align-items-center ion-justify-content-between">
-          <h2 className="ion-float-left">Recipes Overview</h2>
-
-          <IonButton onClick={() => setShowModal(true)}>Add Recipe</IonButton>
-        </IonRow>
-      </IonGrid>
-      <IonModal
-        isOpen={showModal}
-        cssClass="my-custom-class"
-        backdropDismiss={false}
-      >
         <IonContent className="ion-padding">
           <h3 className="ion-padding">Add Recipe</h3>
           {/* form */}
@@ -73,7 +59,7 @@ const ModalCreateRecipe: React.FC = () => {
             <IonGrid>
               <IonRow>
                 <IonCol size="4" style={{ margin: "auto" }}>
-                  <IonButton onClick={handleRef}>
+                  <IonButton onClick={handleRef} style={{width:"100%"}}>
                     <IonIcon slot="start" icon={cloudUploadOutline} />
                     Choose Image
                     <input
@@ -149,7 +135,7 @@ const ModalCreateRecipe: React.FC = () => {
                 />
               </IonItem>
               <IonItem>
-                <IonLabel position="stacked">Type of cuisine</IonLabel>
+                <IonLabel position="stacked">Ingredients</IonLabel>
                 <IonSelect
                   multiple={true}
                   {...register("ingredients")}
@@ -174,7 +160,7 @@ const ModalCreateRecipe: React.FC = () => {
               <IonRow class="ion-justify-content-around">
                 <IonButton type="submit">Add Recipe</IonButton>
                 <IonButton
-                  onClick={() => setShowModal(false)}
+                  onClick={() => props.setShowRecipeCreateModal(false)}
                   fill="outline"
                   color="medium"
                 >
@@ -185,9 +171,6 @@ const ModalCreateRecipe: React.FC = () => {
           </form>
           {/* End form */}
         </IonContent>
-      </IonModal>
-      {/* End modal */}
-    </IonContent>
   );
 };
 
