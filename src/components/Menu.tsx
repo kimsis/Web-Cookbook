@@ -6,17 +6,10 @@ import {
 	IonList,
 	IonListHeader,
 	IonMenu,
-	IonMenuToggle,
-	IonNote,
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
 import {
-	bookmarkOutline,
-	trashOutline,
-	trashSharp,
-	warningOutline,
-	warningSharp,
 	fastFoodOutline,
 	fastFoodSharp,
 	locationOutline,
@@ -81,7 +74,7 @@ const Menu: React.FC = () => {
 					{appPages.map((appPage, index) => {
 						return (
 							<MenuItem
-                key={index}
+                				key={index}
 								index={index}
 								appPage={appPage}
 								pathname={location.pathname}
