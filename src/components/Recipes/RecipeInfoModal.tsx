@@ -1,17 +1,45 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonItem, IonIcon, IonLabel, IonButton, IonImg, IonGrid, IonRow, IonCol, IonChip } from '@ionic/react';
+import { IonContent, IonItem, IonIcon, IonLabel, IonButton, IonImg, IonGrid, IonRow, IonCol, IonChip } from '@ionic/react';
 import { useParams } from 'react-router';
 import './RecipeInfoModal.css';
 import { star, starHalf, starOutline, time, megaphone, cellular, fastFood, earth, egg, timer } from 'ionicons/icons';
-import { Dispatch, SetStateAction, useContext } from 'react';
-import RecipesContext from '../store/RecipesContext';
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import RecipesContext, { Recipe } from '../../store/RecipesContext';
+import axios, { AxiosResponse } from 'axios';
 
 const RecipeInfoModal: React.FC<{
   id: number,
   setShowRecipeInfoModal: Dispatch<SetStateAction<number>>
 }> = (props) => {
-    const recipesContext = useContext(RecipesContext);
-    const recipes = recipesContext.recipes;
-    const recipe = recipes.find(r => r.id === props.id);
+
+  useEffect(() => {
+    getData();
+  }, [])
+
+  const [recipe, setRecipe] = useState<Recipe>();
+
+  async function getData() {
+    await axios("https://i403375core.venus.fhict.nl/Recipe/" + props.id)
+    .then((response) => {
+      setData(response);
+    })
+    .catch((error) => {
+      console.error("Error fetching data: ", error);
+      setError(error);
+    });
+  }
+  
+  function setData(data: AxiosResponse) {
+    console.log(data);
+    let recipeTest: Recipe = JSON.parse(JSON.stringify(data.data));
+    setRecipe(recipeTest)
+    console.log(recipeTest);
+  }
+  
+  function setError(error:any) {
+    console.log(error);
+    
+  }
+
     const { name } = useParams<{ name: string; }>();
     const starsArray = new Array(5).fill(0);
     const iconsStyling = { margin: "5px" };

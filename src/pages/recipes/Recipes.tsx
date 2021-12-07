@@ -1,15 +1,11 @@
 import { IonButton, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonList, IonModal } from '@ionic/react';
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Virtuoso } from 'react-virtuoso'
-import ModalCreateRecipe from '../../components/ModalCreateRecipe';
-import RecipeListItem from '../../components/RecipeListItem';
-import './Recipes.css';
-import { createContext } from 'react';
-import RecipesContext, { RecipesContextProvider } from '../../store/RecipesContext';
-import RecipeInfoModal from '../../components/RecipeInfoModal';
+import ModalCreateRecipe from '../../components/Recipes/ModalCreateRecipe';
+import RecipeListItem from '../../components/Recipes/RecipeListItem';
+import RecipeInfoModal from '../../components/Recipes/RecipeInfoModal';
 import axios, { AxiosResponse } from 'axios';
 import { Recipe } from '../../store/RecipesContext';
-import { List } from 'react-virtuoso/dist/List';
+import './Recipes.css';
 
 interface Data {
   page: number;
@@ -103,7 +99,6 @@ useEffect(() => {
     }
 
 	return (
-    <RecipesContextProvider>
 		<IonPage>
       <IonHeader>
         <IonToolbar>
@@ -118,10 +113,10 @@ useEffect(() => {
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonModal isOpen={showRecipeCreateModal}>
+        <IonModal isOpen={showRecipeCreateModal} onDidDismiss={() => setshowRecipeCreateModal(false)}>
           <ModalCreateRecipe showRecipeCreateModal={showRecipeCreateModal} setShowRecipeCreateModal={setshowRecipeCreateModal} />
         </IonModal>
-        <IonModal isOpen={showRecipeInfoModal == 0 ? false : true} >
+        <IonModal isOpen={showRecipeInfoModal == 0 ? false : true}  onDidDismiss={() => setShowRecipeInfoModal(0)}>
             < RecipeInfoModal id={showRecipeInfoModal} setShowRecipeInfoModal={setShowRecipeInfoModal}/>
           </IonModal>
         <IonList id='menu-list'>
@@ -129,7 +124,6 @@ useEffect(() => {
         </IonList>
       </IonContent>
     </IonPage>
-    </RecipesContextProvider>
 	);
 };
 

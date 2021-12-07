@@ -1,5 +1,4 @@
 import {
-  IonModal,
   IonButton,
   IonContent,
   IonGrid,

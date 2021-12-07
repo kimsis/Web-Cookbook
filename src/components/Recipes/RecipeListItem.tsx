@@ -1,5 +1,5 @@
-import { IonItem, IonIcon, IonLabel, IonCard, IonImg, IonRow, IonCol, IonGrid } from '@ionic/react';
-import { star, starHalf, starOutline, time, megaphone, cellular, fastFood, earth, egg, timer } from 'ionicons/icons';
+import { IonIcon, IonCard, IonImg, IonRow, IonCol, IonGrid } from '@ionic/react';
+import { star, starHalf, starOutline, time, megaphone, earth } from 'ionicons/icons';
 import './RecipeListItem.css';
 
 const RecipeListItem: React.FC<{

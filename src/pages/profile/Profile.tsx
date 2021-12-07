@@ -1,13 +1,14 @@
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar} from '@ionic/react';
 import React, { useContext } from "react";
-import RegisterComponent from '../../components/LoginComponent';
-import LoginComponent from '../../components/LoginComponent';
-import ProfileComponent from '../../components/ProfileComponent';
+import RegisterComponent from '../../components/Profile/Register/RegisterComponent';
+import LoginComponent from '../../components/Profile/Login/LoginComponent';
+import ProfileComponent from '../../components/Profile/ProfileComponent';
 import UserContext from '../../store/UserContext';
 import './Profile.css';
 
 const ProfileContent: React.FC<{
 }> = (props) => {
+    
     const userContext = useContext(UserContext);
     const user = userContext.user;
 
