@@ -10,6 +10,7 @@ import {
 
 import { useLocation } from 'react-router-dom';
 import {
+	person,
 	fastFoodOutline,
 	fastFoodSharp,
 	locationOutline,
@@ -32,6 +33,12 @@ export interface AppPage {
 }
 
 const appPages: AppPage[] = [
+	{
+		title: 'Profile',
+		url: '/profile',
+		iosIcon: person,
+		mdIcon: person,
+	},
 	{
 		title: 'Recipes',
 		url: '/recipes',

@@ -19,7 +19,7 @@ const RecipeListItem: React.FC<{
     const starStyling = { fontSize: titleFontSize, width: "1em",height: "1em",color: "#F2AB27" }
 
 	return (        
-		<IonCard key={props.id}>
+		<IonCard>
             <IonGrid style={{color:"black", justifyContent:"center"}}>
 			<IonRow>
                 <IonCol size="4"style={{display:"flex"}}>

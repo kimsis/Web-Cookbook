@@ -2,8 +2,6 @@ import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
-import Page from './pages/Page';
-import RecipeInfo from './components/RecipeInfoModal';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -24,32 +22,30 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import Recipes from './pages/recipes/Recipes';
-import { RecipesContextProvider } from './store/RecipesContext';
+import Profile from './pages/profile/Profile';
+import { UserContextProvider } from './store/UserContext';
 
 const App: React.FC = () => {
 
 
   return (
+    <UserContextProvider>
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId="main">
           <Menu />
           <IonRouterOutlet id="main">
-            <RecipesContextProvider>
-            <Route path="/" exact={true}>
-              <Redirect to="/page/Inbox" />
-            </Route>
-            <Route path="/page/:name" exact={true}>
-              <Page />
-            </Route>
-            <Route path="/recipes" exact={true}>
-              < Recipes />
-            </Route>
-            </RecipesContextProvider>
+              <Route path="/recipes" exact={true}>
+                < Recipes />
+              </Route>
+              <Route path="/profile" exact={true}>
+                < Profile />
+              </Route>
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>
     </IonApp>
+    </UserContextProvider>
   );
 };
 

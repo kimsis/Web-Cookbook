@@ -5,32 +5,36 @@ import ModalCreateRecipe from '../../components/ModalCreateRecipe';
 import RecipeListItem from '../../components/RecipeListItem';
 import './Recipes.css';
 import { createContext } from 'react';
-import RecipesContext from '../../store/RecipesContext';
+import RecipesContext, { RecipesContextProvider } from '../../store/RecipesContext';
 import RecipeInfoModal from '../../components/RecipeInfoModal';
 import axios, { AxiosResponse } from 'axios';
-
-export interface Recipe {
-    id: number;
-    title: string;
-    sharedBy: string;
-    difficulty: number;
-    type: string;
-    instructions: string;
-    countryOfOrigin: string;
-    numberOfServings: string;
-    preparationTimeTicks: number;
-    rating: number;
-    imagePath: string;
-    ingredients: string[];
-    unlistedIngredients: string[];
-    timeToCook: string;
-}
+import { Recipe } from '../../store/RecipesContext';
+import { List } from 'react-virtuoso/dist/List';
 
 interface Data {
   page: number;
   size: number;
   items: Recipe[];
 }
+
+let dummyRecipes:Recipe[] = ([
+  {
+      id: 1,
+      title: "Swedish Meatballs",
+      sharedBy: "Elise Bauer",
+      difficulty: 3,
+      type: "Meatballs",
+      instructions: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mauris nibh, ultricies eget pulvinar sit amet, pharetra non ipsum. Donec ipsum tellus, pharetra vitae efficitur nec, vestibulum ac justo. Maecenas porta consequat odio, et rutrum nisi. Sed aliquet eget neque molestie vehicula. Quisque ultrices imperdiet tincidunt. Donec fermentum pellentesque massa, at malesuada est. Fusce a elit in nibh suscipit pellentesque. Phasellus leo sapien, scelerisque sed egestas in, ullamcorper vitae tellus.",
+      countryOfOrigin: "Sweden",
+      numberOfServings: "4 to 6 servings",
+      preparationTimeTicks: 20,
+      imagePath: "https://api.time.com/wp-content/uploads/2018/05/swedish-meatballs-turkey.jpg",
+      ingredients: ["1 tablespoon butter", "1/2 large onion", "1/4 cup milk", "3 slices bread", "1 large egg", "3/4 pound ground beef", "1/2 pound ground pork", "1 teaspoon kosher salt", "1 teaspoon black pepper", "1/2 teaspoon freshly grated nutmeg", "1/2 teaspoon ground cardamom"],
+      unlistedIngredients: ["salt or smthn"],
+      rating: 4.5,
+      timeToCook: "80 min",
+  }
+])
 
 
 
@@ -43,8 +47,7 @@ useEffect(() => {
 
     const [showRecipeCreateModal, setshowRecipeCreateModal] = useState(false);
     const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
-    const recipesContext = useContext(RecipesContext);
-    const recipes = recipesContext.recipes;
+    const [recipes, setRecipes] = useState<Recipe[] | null>();
 
 
 
@@ -56,7 +59,7 @@ useEffect(() => {
       .then((response) => {
         recipesArray = JSON.parse(JSON.stringify(response.data));
         console.log(recipesArray.items);
-        recipesContext.setRecipes(recipesArray.items)
+        setRecipes(recipesArray.items)
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -78,7 +81,29 @@ useEffect(() => {
       console.log(id);
       setShowRecipeInfoModal(id);
     }
+
+    let RecipeList;
+    if (recipes != null) {
+      RecipeList = recipes.map((recipe) =>
+        <div key={recipe.id} onClick={() => setshowRecipeInfoModal(recipe.id)}>
+          <RecipeListItem
+            id={recipe.id}
+            title={recipe.title}
+            sharedBy={recipe.sharedBy}
+            countryOfOrigin={recipe.countryOfOrigin}
+            type={recipe.type}
+            rating={recipe.rating}
+            imagePath={recipe.imagePath}
+            timeToCook={recipe.preparationTimeTicks}
+          />
+        </div>
+      );
+    } else {
+      RecipeList = <div> No recipes found! </div>;
+    }
+
 	return (
+    <RecipesContextProvider>
 		<IonPage>
       <IonHeader>
         <IonToolbar>
@@ -100,25 +125,11 @@ useEffect(() => {
             < RecipeInfoModal id={showRecipeInfoModal} setShowRecipeInfoModal={setShowRecipeInfoModal}/>
           </IonModal>
         <IonList id='menu-list'>
-        { recipes.map((recipe, index) => {
-				return (
-          <div key={index} onClick={() => setshowRecipeInfoModal(recipe.id)}>
-					  <RecipeListItem
-              id={recipe.id}
-              title={recipe.title}
-              sharedBy={recipe.sharedBy}
-              countryOfOrigin={recipe.countryOfOrigin}
-              type={recipe.type}
-              rating={recipe.rating}
-              imagePath={recipe.imagePath}
-              timeToCook={recipe.preparationTimeTicks}
-					  />
-          </div>
-				);
-            })}
+        { RecipeList }
         </IonList>
       </IonContent>
     </IonPage>
+    </RecipesContextProvider>
 	);
 };
 
