@@ -1,19 +1,15 @@
 import {
-  IonBadge,
   IonButton,
-  IonCol,
-  IonContent,
-  IonGrid,
   IonImg,
   IonInput,
   IonItem,
   IonLabel,
-  IonRow,
   IonText,
 } from "@ionic/react";
 import { useForm } from "react-hook-form";
 import "./LoginComponent.css";
-import logo from "./logo.png";
+import logo from "../../../assets/logo.png";
+
 const LoginComponent: React.FC<{}> = ({}) => {
   const {
     register,
@@ -44,11 +40,9 @@ const LoginComponent: React.FC<{}> = ({}) => {
       </form>
       {/* To do: error handling after submit */}
       <IonText>
-        <p>or register</p>
+        <p>or</p>
       </IonText>
-      <IonButton expand="block" type="submit">
-        Register
-      </IonButton>
+      <IonButton expand="block">Register</IonButton>
     </div>
   );
 };
