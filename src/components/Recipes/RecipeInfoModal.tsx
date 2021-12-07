@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import './RecipeInfoModal.css';
 import { star, starHalf, starOutline, time, megaphone, cellular, fastFood, earth, egg, timer } from 'ionicons/icons';
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
-import RecipesContext, { Recipe } from '../../store/RecipesContext';
+import { Recipe } from '../../store/RecipesContext';
 import axios, { AxiosResponse } from 'axios';
 
 const RecipeInfoModal: React.FC<{
