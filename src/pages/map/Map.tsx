@@ -5,30 +5,36 @@ import GoogleMapReact from 'google-map-react';
 import ExploreContainer from '../../components/ExploreContainer';
 import './Map.css';
 
-const AnyReactComponent = ({ lat,lng,text }:{lat:any;lng:any;text:any}) => (
-  <div style={{
+const Marker = ({ lat,lng,text }:{lat:any;lng:any;text:any;}) => (
+  <div  style={{
     color: 'white', 
     background: 'orange',
-    padding: '15px 10px',
-    display: 'inline-flex',
+    padding: '4px',
+    width: '50px',
+    display: 'block',
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '100%',
     transform: 'translate(-50%, -50%)',
   }}>
-        {text}
+    <p>
+      {text}
+    </p>
+        <img src="https://www.australia.com/content/australia/en/places/sydney-and-surrounds/guide-to-sydney/jcr:content/mainParsys/imagecontainer/imageContainerParsys/imagehighlights_835593945/ImageTile/imageHighlightsSrc.adapt.740.medium.jpg" width="25px" height="25px"/>
+        
 
   </div>
 );
 
 class SimpleMap extends React.Component {
+
   static defaultProps = {
     center: {
       lat: 51.449747,
       lng: 5.473891
     },
-    zoom: 17
+    zoom: 17,
   };
 
   render() {
@@ -39,32 +45,32 @@ class SimpleMap extends React.Component {
           defaultCenter={SimpleMap.defaultProps.center}
           defaultZoom={SimpleMap.defaultProps.zoom}
         >
-          <AnyReactComponent
+          <Marker
                 lat ={ 51.450790}
                 lng ={5.471861}
             text="Lidl"
           />
-                    <AnyReactComponent
+                    <Marker
                 lat ={ 51.451563}
                 lng ={5.472298}
             text="Albert Heijn"
           />
-                    <AnyReactComponent
+                    <Marker
                 lat ={ 51.449972}
                 lng ={5.472884}
             text="The Food Corner"
           />
-                    <AnyReactComponent
+                    <Marker
                 lat ={ 51.448399}
                 lng ={5.474719}
             text="Athene"
           />
-                    <AnyReactComponent
+                    <Marker
                 lat ={ 51.449359}
                 lng ={5.473838}
             text="Kam Po"
           />
-                    <AnyReactComponent
+                    <Marker
                 lat ={ 51.447382}
                 lng ={5.475611}
             text="Sri Ganesh Indiaas"
