@@ -1,8 +1,5 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonItem, IonIcon, IonLabel, IonButton, IonImg, IonGrid, IonRow, IonCol, IonChip, ViewItem, } from '@ionic/react';
-import { useParams } from 'react-router';
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
-import ExploreContainer from '../../components/ExploreContainer';
 import './Map.css';
 
 const Marker = ({ lat,lng,text }:{lat:any;lng:any;text:any;}) => (

@@ -42,7 +42,7 @@ const App: React.FC = () => {
                 < Profile />
               </Route>
               <Route path="/map" exact={true}>
-              <Map />
+                < Map />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>
