@@ -45,10 +45,9 @@ const ModalCreateRecipe: React.FC<{
       numberOfServings: parseInt(data.numberOfServings),
       preparationTimeTicks: parseInt(data.preparationTimeTicks),
       ingredients: [],
-      imagePath: "path",
+      imagePath:
+        "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     };
-    console.log("creating new recipe with data:", data);
-    alert(JSON.stringify(data));
     axios
       .post("https://i403375core.venus.fhict.nl/Recipe", {
         ...data,
