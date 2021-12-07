@@ -22,7 +22,7 @@ const RegisterComponent: React.FC<{}> = ({}) => {
     console.log("Register data:", data);
   };
   return (
-    <div className="ion-padding">
+    <div className="content">
       <IonImg src={logo} className="center" />
       <h3>Welcome to PartiRecept</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -41,7 +41,7 @@ const RegisterComponent: React.FC<{}> = ({}) => {
           <IonInput {...register("password")} />
         </IonItem>
         <IonItem>
-          <IonLabel position="stacked">Repeart assword</IonLabel>
+          <IonLabel position="stacked">Repeat password</IonLabel>
           <IonInput {...register("password_repeat")} />
           {/* To do: match passwords */}
         </IonItem>
@@ -53,7 +53,6 @@ const RegisterComponent: React.FC<{}> = ({}) => {
       <IonText>
         <p>or</p>
       </IonText>
-      <IonButton expand="block">Login</IonButton>
     </div>
   );
 };

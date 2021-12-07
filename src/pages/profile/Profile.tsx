@@ -1,54 +1,49 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar} from '@ionic/react';
-import React, { useContext } from "react";
-import RegisterComponent from '../../components/Profile/Register/RegisterComponent';
-import LoginComponent from '../../components/Profile/Login/LoginComponent';
-import ProfileComponent from '../../components/Profile/ProfileComponent';
-import UserContext from '../../store/UserContext';
-import './Profile.css';
+import {
+  IonButtons,
+  IonHeader,
+  IonMenuButton,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
+import React, { useContext, useState } from "react";
+import RegisterComponent from "../../components/Profile/Register/RegisterComponent";
+import LoginComponent from "../../components/Profile/Login/LoginComponent";
+import ProfileComponent from "../../components/Profile/ProfileComponent";
+import UserContext from "../../store/UserContext";
+import "./Profile.css";
+import UserHandle from "../../components/Profile/UserHandle/UserHandle";
 
-const ProfileContent: React.FC<{
-}> = (props) => {
-    
-    const userContext = useContext(UserContext);
-    const user = userContext.user;
+const Profile: React.FC<{}> = (props) => {
+  const userContext = useContext(UserContext);
+  const user = userContext.user;
 
-    if(user != null) {
-        return (
-            <IonContent>
-                <ProfileComponent />
-            </IonContent>
-        );
-    } else {
-        return (
-            <IonContent>
-                <LoginComponent />
-            </IonContent>
-        )
-    }
-};
+  const [component, setComponent] = useState("Login");
 
-const Profile: React.FC<{
-}> = (props) => {
+  let profileContent;
+  let contentName = "";
 
-    const userContext = useContext(UserContext);
-    const user = userContext.user;
+  if (user != null && component == "Profile") {
+    contentName = "Profile Overview";
+    profileContent = <ProfileComponent />;
+  } else {
+    contentName = "Login";
+    profileContent = <UserHandle />;
+  }
 
-	return (
-	<IonPage>
+  return (
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>Profile Overview</IonTitle>
+          <IonTitle>{contentName}</IonTitle>
         </IonToolbar>
       </IonHeader>
-
-      <IonContent fullscreen>
-          < ProfileContent />
-      </IonContent>
+      {profileContent}
     </IonPage>
-	);
+  );
 };
 
 export default Profile;

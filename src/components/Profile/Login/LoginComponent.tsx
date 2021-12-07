@@ -20,7 +20,7 @@ const LoginComponent: React.FC<{}> = ({}) => {
     console.log("Login data:", data);
   };
   return (
-    <div className="ion-padding">
+    <div className="content">
       <IonImg src={logo} className="center" />
       <h3>Welcome to PartiRecept</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -42,7 +42,6 @@ const LoginComponent: React.FC<{}> = ({}) => {
       <IonText>
         <p>or</p>
       </IonText>
-      <IonButton expand="block">Register</IonButton>
     </div>
   );
 };
