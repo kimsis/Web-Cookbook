@@ -42,45 +42,45 @@ const RecipeInfoModal: React.FC<{
 
     const { name } = useParams<{ name: string; }>();
     const starsArray = new Array(5).fill(0);
-    const iconsStyling = { margin: "5px" };
+    const iconsStyling = { margin: "0px", marginRight: "8px" };
     return (
       <IonContent>
-        <IonGrid style={{ padding: '50px' }}>
+        <IonGrid style={{ padding: '10px', paddingTop: '50px' }}>
           <IonRow>
-            <IonCol size="3"><IonImg src={recipe?.imagePath}></IonImg></IonCol>
+            <IonCol size="5"><IonImg src={recipe?.imagePath}></IonImg></IonCol>
             <IonCol>
               <IonRow>
                 <IonCol>
-                  <h1>{recipe?.title}</h1>
+                  <div>{recipe?.title}</div>
                 </IonCol>
                 <IonCol className="ion-align-self-center ion-float-right">              {
                   starsArray.map((x, i) => {
                     if (i + 1 <= (recipe?.rating ? recipe.rating : 0)) {
-                      return <IonIcon icon={star} style={{width: "30px",height: "30px"}}></IonIcon>
+                      return <IonIcon icon={star} style={{height: "10px"}}></IonIcon>
                     }
                     else if (i + 1 > (recipe?.rating ? recipe.rating : 0) && i < (recipe?.rating ? recipe.rating : 0)) {
-                      return <IonIcon icon={starHalf} style={{width: "30px",height: "30px"}}></IonIcon>
+                      return <IonIcon icon={starHalf} style={{height: "10px"}}></IonIcon>
                     }
-                    return <IonIcon icon={starOutline} style={{width: "30px",height: "30px"}}></IonIcon>
+                    return <IonIcon icon={starOutline} style={{height: "10px"}}></IonIcon>
                   })
                 }</IonCol>
 
               </IonRow>
               <IonItem color="none" lines="none" >
                 <IonIcon icon={time} slot="start" style={iconsStyling} />
-                <p>Time to cook: {recipe?.timeToCook}</p>
+                <div>Time to cook: {recipe?.timeToCook}</div>
               </IonItem>
               <IonItem color="none" lines="none">
                 <IonIcon icon={megaphone} slot="start" style={iconsStyling} />
-                <p>Shared by: {recipe?.sharedBy}</p>
+                <div>Shared by: {recipe?.sharedBy}</div>
               </IonItem>
               <IonItem color="none" lines="none">
                 <IonIcon icon={cellular} color = "warning" slot="start" style={iconsStyling} />
-                <p>Difficulty to cook: {recipe?.difficulty}</p>
+                <div>Difficulty to cook: {recipe?.difficulty}</div>
               </IonItem>
               <IonItem color="none" lines="none">
                 <IonIcon icon={fastFood} slot="start" style={iconsStyling} />
-                <p>Dish type: {recipe?.type}</p>
+                <div>Dish type: {recipe?.type}</div>
               </IonItem>
             </IonCol>
           </IonRow>
@@ -119,14 +119,16 @@ const RecipeInfoModal: React.FC<{
             <IonCol ><h1>Instructions</h1>
               <p>{recipe?.instructions}</p> </IonCol>
           </IonRow>
-
           <IonRow>
+              { /*
+              Unnecessary
             <IonCol size="1">
               <IonButton color="warning" fill="outline">Delete</IonButton>
             </IonCol>
             <IonCol size="1" offset="8">
               <IonButton color="warning" fill="solid">Edit</IonButton>
             </IonCol>
+              */ }
             <IonCol >
               <IonButton color="warning" fill="outline" onClick={() => props.setShowRecipeInfoModal(0)}>Close</IonButton>
             </IonCol>

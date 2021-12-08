@@ -1,6 +1,6 @@
 import './LoginComponent.css';
 
-const LoginComponent: React.FC<{}> = ({ }) => {
+const LoginComponent: React.FC<{}> = (props) => {
   return (
     <div className="container">
       <strong>Login</strong>

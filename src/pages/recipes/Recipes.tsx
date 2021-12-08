@@ -13,27 +13,6 @@ interface Data {
   items: Recipe[];
 }
 
-let dummyRecipes:Recipe[] = ([
-  {
-      id: 1,
-      title: "Swedish Meatballs",
-      sharedBy: "Elise Bauer",
-      difficulty: 3,
-      type: "Meatballs",
-      instructions: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mauris nibh, ultricies eget pulvinar sit amet, pharetra non ipsum. Donec ipsum tellus, pharetra vitae efficitur nec, vestibulum ac justo. Maecenas porta consequat odio, et rutrum nisi. Sed aliquet eget neque molestie vehicula. Quisque ultrices imperdiet tincidunt. Donec fermentum pellentesque massa, at malesuada est. Fusce a elit in nibh suscipit pellentesque. Phasellus leo sapien, scelerisque sed egestas in, ullamcorper vitae tellus.",
-      countryOfOrigin: "Sweden",
-      numberOfServings: "4 to 6 servings",
-      preparationTimeTicks: 20,
-      imagePath: "https://api.time.com/wp-content/uploads/2018/05/swedish-meatballs-turkey.jpg",
-      ingredients: ["1 tablespoon butter", "1/2 large onion", "1/4 cup milk", "3 slices bread", "1 large egg", "3/4 pound ground beef", "1/2 pound ground pork", "1 teaspoon kosher salt", "1 teaspoon black pepper", "1/2 teaspoon freshly grated nutmeg", "1/2 teaspoon ground cardamom"],
-      unlistedIngredients: ["salt or smthn"],
-      rating: 4.5,
-      timeToCook: "80 min",
-  }
-])
-
-
-
 const Recipes: React.FC<{
 }> = (props) => {
 
@@ -53,9 +32,7 @@ useEffect(() => {
     async function getData() {
       await axios("https://i403375core.venus.fhict.nl/Recipe/PagedList")
       .then((response) => {
-        recipesArray = JSON.parse(JSON.stringify(response.data));
-        console.log(recipesArray.items);
-        setRecipes(recipesArray.items)
+        setData(response);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -64,8 +41,10 @@ useEffect(() => {
     }
     
     function setData(data: AxiosResponse) {
-      console.log(data);
-      
+      recipesArray = JSON.parse(JSON.stringify(data.data));
+      console.log(recipesArray.items);
+      setRecipes(recipesArray.items)
+
     }
     
     function setError(error:any) {

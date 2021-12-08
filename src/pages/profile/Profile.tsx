@@ -1,53 +1,48 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar} from '@ionic/react';
-import React, { useContext } from "react";
+import {
+	IonButtons,
+	IonHeader,
+	IonMenuButton,
+	IonPage,
+	IonTitle,
+	IonToolbar,
+} from '@ionic/react';
+import React, { useContext, useState } from 'react';
 import RegisterComponent from '../../components/Profile/Register/RegisterComponent';
 import LoginComponent from '../../components/Profile/Login/LoginComponent';
 import ProfileComponent from '../../components/Profile/ProfileComponent';
 import UserContext from '../../store/UserContext';
 import './Profile.css';
 
-const ProfileContent: React.FC<{
-}> = (props) => {
-    
-    const userContext = useContext(UserContext);
-    const user = userContext.user;
+const Profile: React.FC<{}> = (props) => {
+	const userContext = useContext(UserContext);
+	const user = userContext.user;
 
-    if(user != null) {
-        return (
-            <IonContent>
-                <ProfileComponent />
-            </IonContent>
-        );
-    } else {
-        return (
-            <IonContent>
-                <LoginComponent />
-            </IonContent>
-        )
-    }
-};
+	const [component, setComponent] = useState('Profile');
 
-const Profile: React.FC<{
-}> = (props) => {
+	let profileContent;
+	let contentName = '';
 
-    const userContext = useContext(UserContext);
-    const user = userContext.user;
+	if (user != null || component == 'Profile') {
+		contentName = 'Profile Overview';
+		profileContent = <ProfileComponent />;
+	} else {
+		contentName = 'Login';
+		profileContent = <LoginComponent />;
+	}
+
 
 	return (
-	<IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton />
-          </IonButtons>
-          <IonTitle>Profile Overview</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonContent fullscreen>
-          < ProfileContent />
-      </IonContent>
-    </IonPage>
+		<IonPage>
+			<IonHeader>
+				<IonToolbar>
+					<IonButtons slot='start'>
+						<IonMenuButton />
+					</IonButtons>
+					<IonTitle>{contentName}</IonTitle>
+				</IonToolbar>
+			</IonHeader>
+        {profileContent}
+		</IonPage>
 	);
 };
 
