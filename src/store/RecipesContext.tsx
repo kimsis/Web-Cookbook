@@ -13,6 +13,8 @@ export interface Recipe {
     preparationTimeTicks: number;
     rating: number;
     imagePath: string;
+    longitude: number;
+    latitude: number;
     ingredients: string[];
     unlistedIngredients: string[];
     timeToCook: string;
@@ -30,6 +32,8 @@ let dummyRecipes:Recipe[] = ([
         numberOfServings: "4 to 6 servings",
         preparationTimeTicks: 20,
         imagePath: "https://api.time.com/wp-content/uploads/2018/05/swedish-meatballs-turkey.jpg",
+        longitude: 0,
+        latitude: 0,
         ingredients: ["1 tablespoon butter", "1/2 large onion", "1/4 cup milk", "3 slices bread", "1 large egg", "3/4 pound ground beef", "1/2 pound ground pork", "1 teaspoon kosher salt", "1 teaspoon black pepper", "1/2 teaspoon freshly grated nutmeg", "1/2 teaspoon ground cardamom"],
         unlistedIngredients: ["salt or smthn"],
         rating: 4.5,
@@ -46,6 +50,8 @@ let dummyRecipes:Recipe[] = ([
         numberOfServings: "4 to 6 servings",
         preparationTimeTicks: 10,
         imagePath: "https://api.time.com/wp-content/uploads/2018/05/swedish-meatballs-turkey.jpg",
+        longitude: 0,
+        latitude: 0,
         ingredients: ["1 tablespoon butter", "1/2 large onion", "1/4 cup milk", "3 slices bread", "1 large egg", "3/4 pound ground beef", "1/2 pound ground pork", "1 teaspoon kosher salt", "1 teaspoon black pepper", "1/2 teaspoon freshly grated nutmeg", "1/2 teaspoon ground cardamom"],
         unlistedIngredients: ["nothing"],
         rating: 4.0,
@@ -62,6 +68,8 @@ let dummyRecipes:Recipe[] = ([
         numberOfServings: "1 serving",
         preparationTimeTicks: 15,
         imagePath: "https://api.time.com/wp-content/uploads/2018/05/swedish-meatballs-turkey.jpg",
+        longitude: 0,
+        latitude: 0,
         ingredients: ["1 tablespoon butter", "1/2 large onion", "1/4 cup milk", "3 slices bread", "1 large egg", "3/4 pound ground beef", "1/2 pound ground pork", "1 teaspoon kosher salt", "1 teaspoon black pepper", "1/2 teaspoon freshly grated nutmeg", "1/2 teaspoon ground cardamom"],
         unlistedIngredients: ["yes"],
         rating: 5,
@@ -78,6 +86,8 @@ let dummyRecipes:Recipe[] = ([
         numberOfServings: "1 serving",
         preparationTimeTicks: 15,
         imagePath: "https://api.time.com/wp-content/uploads/2018/05/swedish-meatballs-turkey.jpg",
+        longitude: 0,
+        latitude: 0,
         ingredients: ["1 tablespoon butter", "1/2 large onion", "1/4 cup milk", "3 slices bread", "1 large egg", "3/4 pound ground beef", "1/2 pound ground pork", "1 teaspoon kosher salt", "1 teaspoon black pepper", "1/2 teaspoon freshly grated nutmeg", "1/2 teaspoon ground cardamom"],
         unlistedIngredients: ["yes"],
         rating: 5,

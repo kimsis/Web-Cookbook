@@ -25,6 +25,8 @@ let dummyRecipes:Recipe[] = ([
       numberOfServings: "4 to 6 servings",
       preparationTimeTicks: 20,
       imagePath: "https://api.time.com/wp-content/uploads/2018/05/swedish-meatballs-turkey.jpg",
+      longitude: 0,
+      latitude: 0,
       ingredients: ["1 tablespoon butter", "1/2 large onion", "1/4 cup milk", "3 slices bread", "1 large egg", "3/4 pound ground beef", "1/2 pound ground pork", "1 teaspoon kosher salt", "1 teaspoon black pepper", "1/2 teaspoon freshly grated nutmeg", "1/2 teaspoon ground cardamom"],
       unlistedIngredients: ["salt or smthn"],
       rating: 4.5,
