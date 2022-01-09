@@ -16,14 +16,13 @@ import UserHandle from "../../components/Profile/UserHandle/UserHandle";
 
 const Profile: React.FC<{}> = (props) => {
   const userContext = useContext(UserContext);
-  const user = userContext.user;
 
   const [component, setComponent] = useState("Login");
 
   let profileContent;
   let contentName = "";
 
-  if (user != null && component == "Profile") {
+  if (userContext.user != null && component == "Profile") {
     contentName = "Profile Overview";
     profileContent = <ProfileComponent />;
   } else {

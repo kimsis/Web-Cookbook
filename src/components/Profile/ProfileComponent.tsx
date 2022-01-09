@@ -70,7 +70,7 @@ const ProfileComponent: React.FC<{}> = ({}) => {
 			<IonItem style={{ marginTop: '20px' }}>
 				<IonCol>
           <IonRow class="ion-justify-content-center">
-            <IonButton> Logout </IonButton>
+            <IonButton onClick={() => {userContext.setUser(null)}}> Logout </IonButton>
           </IonRow>
 					<IonRow>
 						<div style={{ display: 'flex', fontSize: contentFontSize }}>
