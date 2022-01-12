@@ -13,4 +13,6 @@ export interface Recipe {
     ingredients: string[];
     unlistedIngredients: string[];
     timeToCook: string;
+    latitude: number;
+    longitude: number;
 }

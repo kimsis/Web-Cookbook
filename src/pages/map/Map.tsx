@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useContext, useEffect, useState } from 'react';
 import GoogleMapReact, { Props } from 'google-map-react';
 import './Map.css';
 import {
@@ -15,7 +15,8 @@ import {
 import ModalCreateRecipe from '../../components/Recipes/ModalCreateRecipe';
 import RecipeInfoModal from '../../components/Recipes/RecipeInfoModal';
 import axios, { AxiosResponse } from 'axios';
-import { Recipe } from '../../store/RecipesContext';
+import { Recipe } from '../../shared/interfaces/Recipe.interface';
+import AppContext from '../../store/AppContext';
 
 interface Data {
   page: number;
@@ -92,8 +93,10 @@ const SimpleMap: React.FC<{}> = (props) => {
     </IonContent>)
   }
 
+  let appContext = useContext(AppContext);
+
   async function getRecipes() {
-    await axios("https://i403375core.venus.fhict.nl/Recipe/PagedList")
+    await axios(appContext.http + "Recipe/PagedList")
     .then((response) => {
       recipesArray = JSON.parse(JSON.stringify(response.data));
       console.log(recipesArray.items);
