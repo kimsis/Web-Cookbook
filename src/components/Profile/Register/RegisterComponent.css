@@ -1,4 +1,4 @@
-.ion-padding {
+.content {
   max-width: 600px;
   margin: auto;
   display: flex;
@@ -10,4 +10,15 @@
   display: block;
   margin: auto;
   width: 100px;
+}
+.ion-padding {
+  max-width: 600px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.input-field {
+  padding: 16px;
 }

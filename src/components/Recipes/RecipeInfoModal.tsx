@@ -3,8 +3,9 @@ import { useParams } from 'react-router';
 import './RecipeInfoModal.css';
 import { star, starHalf, starOutline, time, megaphone, cellular, fastFood, earth, egg, timer } from 'ionicons/icons';
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
-import { Recipe } from '../../store/RecipesContext';
+import { Recipe } from '../../shared/interfaces/Recipe.interface';
 import axios, { AxiosResponse } from 'axios';
+import AppContext from '../../store/AppContext';
 
 const RecipeInfoModal: React.FC<{
   id: number,
@@ -16,9 +17,10 @@ const RecipeInfoModal: React.FC<{
   }, [])
 
   const [recipe, setRecipe] = useState<Recipe>();
+  const appContext = useContext(AppContext);
 
   async function getData() {
-    await axios("https://i403375core.venus.fhict.nl/Recipe/" + props.id)
+    await axios(appContext.http + "Recipe/" + props.id)
     .then((response) => {
       setData(response);
     })

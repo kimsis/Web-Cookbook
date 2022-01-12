@@ -9,6 +9,10 @@ import {
 import { useForm } from "react-hook-form";
 import "./LoginComponent.css";
 import logo from "../../../assets/logo.png";
+import axios from "axios";
+import { useContext } from "react";
+import AppContext from "../../../store/AppContext";
+import { useHistory } from "react-router";
 
 const LoginComponent: React.FC<{}> = ({}) => {
   const {
@@ -16,23 +20,42 @@ const LoginComponent: React.FC<{}> = ({}) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const appContext = useContext(AppContext);
+  const history = useHistory();
   const onSubmit = (data: any) => {
-    console.log("Login data:", data);
+    submitLogin(data);
   };
+
+  async function submitLogin(data: any) {
+    console.log("Login data:", data);
+		await axios
+			.post(appContext.http + 'authentication/login', data)
+			.then(function (response) {
+        if(response.status == 200) {
+          appContext.user = {JWTToken: response.data, email: data.email, id: 0, fullName: '', type: '', recipes: [], favourites: []}
+          history.replace("/profile");
+        }
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+      
+  }
+
   return (
     <div className="content">
       <IonImg src={logo} className="center" />
       <h3>Welcome to PartiRecept</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <IonItem>
+        <IonItem class="input-field">
           <IonLabel position="stacked">E-mail address</IonLabel>
           <IonInput {...register("email", { required: true })} />
         </IonItem>
         {errors.email && <IonText color="danger">Invalid email</IonText>}
 
-        <IonItem>
+        <IonItem class="input-field">
           <IonLabel position="stacked">Your password</IonLabel>
-          <IonInput {...register("password")} />
+          <IonInput type="password" {...register("password")} />
         </IonItem>
         <IonButton expand="block" type="submit">
           Login

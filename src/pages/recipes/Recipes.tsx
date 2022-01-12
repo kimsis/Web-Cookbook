@@ -1,11 +1,15 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonList, IonModal } from '@ionic/react';
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { IonButton, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonList, IonModal, IonSearchbar } from '@ionic/react';
+import React, { useContext, useEffect, useState } from "react";
+import ModalFilterRecipe from '../../components/Recipes/ModalFilterRecipe';
 import ModalCreateRecipe from '../../components/Recipes/ModalCreateRecipe';
 import RecipeListItem from '../../components/Recipes/RecipeListItem';
 import RecipeInfoModal from '../../components/Recipes/RecipeInfoModal';
 import axios, { AxiosResponse } from 'axios';
-import { Recipe } from '../../store/RecipesContext';
+import { Recipe } from '../../shared/interfaces/Recipe.interface';
 import './Recipes.css';
+import AppContext from '../../store/AppContext';
+import FilterContext, { FilterContextProvider } from '../../store/FiltersContext';
+import { Filter } from '../../shared/interfaces/Filter.interface';
 
 interface Data {
   page: number;
@@ -16,94 +20,103 @@ interface Data {
 const Recipes: React.FC<{
 }> = (props) => {
 
-useEffect(() => {
-  getData();
-}, [])
+  useEffect(() => {
+    getData();
+  }, [])
 
-    const [showRecipeCreateModal, setshowRecipeCreateModal] = useState(false);
-    const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
-    const [recipes, setRecipes] = useState<Recipe[] | null>();
+  const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
+  const [showRecipeFilterModal, setShowRecipeFilterModal] = useState(false);
+  const [recipes, setRecipes] = useState<Recipe[] | null>();
+  const [searchText, setSearchText] = useState('');
+  const appContext = useContext(AppContext);
+  const filterContext = useContext(FilterContext);
 
 
-
-    let recipesArray: Data;
-
-
-    async function getData() {
-      await axios("https://i403375core.venus.fhict.nl/Recipe/PagedList")
+  let recipesArray: Data;
+  async function getData(attributes: string = '') {
+    await axios(appContext.http + "Recipe/PagedList" + attributes)
       .then((response) => {
+        console.log(response);
         setData(response);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
         setError(error);
       });
-    }
-    
-    function setData(data: AxiosResponse) {
-      recipesArray = JSON.parse(JSON.stringify(data.data));
-      console.log(recipesArray.items);
-      setRecipes(recipesArray.items)
+  }
 
-    }
-    
-    function setError(error:any) {
-      console.log(error);
-      
-    }
+  function setData(data: AxiosResponse) {
+    recipesArray = JSON.parse(JSON.stringify(data.data));
+    console.log(recipesArray.items);
+    setRecipes(recipesArray.items)
+  }
 
-    function setshowRecipeInfoModal(id: number) {
-      console.log(id);
-      setShowRecipeInfoModal(id);
-    }
+  function setError(error: any) {
+    console.log(error);
+  }
 
-    let RecipeList;
-    if (recipes != null) {
-      RecipeList = recipes.map((recipe) =>
-        <div key={recipe.id} onClick={() => setshowRecipeInfoModal(recipe.id)}>
-          <RecipeListItem
-            id={recipe.id}
-            title={recipe.title}
-            sharedBy={recipe.sharedBy}
-            countryOfOrigin={recipe.countryOfOrigin}
-            type={recipe.type}
-            rating={recipe.rating}
-            imagePath={recipe.imagePath}
-            timeToCook={recipe.preparationTimeTicks}
-          />
-        </div>
-      );
-    } else {
-      RecipeList = <div> No recipes found! </div>;
-    }
+  function SearchFiltered() {
+    let httpAddition = "?title=" + searchText;
+    filterContext.filters.map((filter) => httpAddition += "&" + filter.type + "=" + filter.value);
+    console.log(httpAddition);
+  }
 
-	return (
-		<IonPage>
+  function FilterModalDismiss() {
+    setShowRecipeFilterModal(false)
+    SearchFiltered();
+  }
+  function SearchText(value:string) {
+    setSearchText(value);
+    SearchFiltered();
+  }
+
+  let RecipeList;
+  if (recipes != null) {
+    RecipeList = recipes.map((recipe) =>
+      <div key={recipe.id} onClick={() => setShowRecipeInfoModal(recipe.id)}>
+        <RecipeListItem
+          id={recipe.id}
+          title={recipe.title}
+          sharedBy={recipe.sharedBy}
+          countryOfOrigin={recipe.countryOfOrigin}
+          type={recipe.type}
+          rating={recipe.rating}
+          imagePath={recipe.imagePath}
+          timeToCook={recipe.preparationTimeTicks}
+        />
+      </div>
+    );
+  } else {
+    RecipeList = <div> No recipes found! </div>;
+  }
+
+  return (
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>Recipes Overview</IonTitle>
-          <IonButtons slot="end">
-            <IonButton color="secondary" fill="solid" onClick={() => setshowRecipeCreateModal(true)}>Add Recipe</IonButton>
-          </IonButtons>
+          <IonTitle>Explore Recipes</IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonModal isOpen={showRecipeCreateModal} onDidDismiss={() => setshowRecipeCreateModal(false)}>
-          <ModalCreateRecipe showRecipeCreateModal={showRecipeCreateModal} setShowRecipeCreateModal={setshowRecipeCreateModal} />
+        <IonModal isOpen={showRecipeFilterModal} onDidDismiss={() => FilterModalDismiss()}>
+          <ModalFilterRecipe showRecipeFilterModal={showRecipeFilterModal} setShowRecipeFilterModal={setShowRecipeFilterModal} />
         </IonModal>
-        <IonModal isOpen={showRecipeInfoModal == 0 ? false : true}  onDidDismiss={() => setShowRecipeInfoModal(0)}>
-            < RecipeInfoModal id={showRecipeInfoModal} setShowRecipeInfoModal={setShowRecipeInfoModal}/>
-          </IonModal>
+        <IonModal isOpen={showRecipeInfoModal == 0 ? false : true} onDidDismiss={() => setShowRecipeInfoModal(0)}>
+          < RecipeInfoModal id={showRecipeInfoModal} setShowRecipeInfoModal={setShowRecipeInfoModal} />
+        </IonModal>
+        <IonSearchbar value={searchText} onIonChange={e => SearchText(e.detail.value!)} showCancelButton="focus"></IonSearchbar>
+        <IonButton class='filter' onClick={e => getData()}>All</IonButton>
+        <IonButton class='filter' onClick={() => setShowRecipeFilterModal(true)}>+Filter</IonButton>
         <IonList id='menu-list'>
-        { RecipeList }
+          {RecipeList}
         </IonList>
       </IonContent>
     </IonPage>
-	);
+  );
 };
 
 export default Recipes;

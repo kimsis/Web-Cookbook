@@ -13,17 +13,19 @@ import {
 	IonItemDivider,
 	IonTextarea,
 } from '@ionic/react';
-import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useRef, useState } from 'react';
 import axios from 'axios';
 import { cloudUploadOutline } from 'ionicons/icons';
 import { useForm } from 'react-hook-form';
 import './ModalCreateRecipe.css';
+import AppContext from '../../store/AppContext';
 
 const ModalCreateRecipe: React.FC<{
 	showRecipeCreateModal: boolean;
 	setShowRecipeCreateModal: Dispatch<SetStateAction<boolean>>;
 }> = (props) => {
 	const [image, setImage] = useState('');
+	const appContext = useContext(AppContext);
 	const {
 		register,
 		handleSubmit,
@@ -51,9 +53,10 @@ const ModalCreateRecipe: React.FC<{
 		console.log('creating new recipe with data:', data);
 
 		axios
-			.post('https://i403375core.venus.fhict.nl/Recipe', data)
+			.post(appContext.http + 'Recipe', data, {headers: {'x-auth': appContext.user?.JWTToken == undefined? '' : appContext.user.JWTToken}})
 			.then(function (response) {
 				console.log(response);
+				props.setShowRecipeCreateModal(false);
 			})
 			.catch(function (error) {
 				console.log(error);

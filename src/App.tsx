@@ -23,32 +23,43 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import Recipes from './pages/recipes/Recipes';
 import Profile from './pages/profile/Profile';
-import { UserContextProvider } from './store/UserContext';
+import { AppContextProvider } from './store/AppContext';
+import { FilterContextProvider } from './store/FiltersContext';
+import Login from './pages/login/Login';
+import Vendors from './pages/vendors/Vendors';
 
 const App: React.FC = () => {
 
 
   return (
-    <UserContextProvider>
-    <IonApp>
-      <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
-              <Route path="/recipes" exact={true}>
-                < Recipes />
-              </Route>
-              <Route path="/profile" exact={true}>
-                < Profile />
-              </Route>
-              <Route path="/map" exact={true}>
-                < Map />
-            </Route>
-          </IonRouterOutlet>
-        </IonSplitPane>
-      </IonReactRouter>
-    </IonApp>
-    </UserContextProvider>
+    <AppContextProvider>
+      <FilterContextProvider>
+        <IonApp>
+          <IonReactRouter>
+            <IonSplitPane contentId="main">
+              <Menu />
+              <IonRouterOutlet id="main">
+                <Route path="/recipes" exact={true}>
+                  < Recipes />
+                </Route>
+                <Route path="/vendors" exact={true}>
+                  < Vendors />
+                </Route>
+                <Route path="/profile" exact={true}>
+                  < Profile />
+                </Route>
+                <Route path="/login" exact={true}>
+                  < Login />
+                </Route>
+                <Route path="/map" exact={true}>
+                  < Map />
+                </Route>
+              </IonRouterOutlet>
+            </IonSplitPane>
+          </IonReactRouter>
+        </IonApp>
+      </FilterContextProvider>
+    </AppContextProvider>
   );
 };
 
