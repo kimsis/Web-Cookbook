@@ -16,29 +16,29 @@ const ModalFilterRecipe: React.FC<{
 	const filterContext = useContext(FilterContext);
 
 	let CountriesOfOriginList = filterContext.countryOfOrigin.map((countryOfOrigin) =>
-       <IonButton class='filterItem' onClick={() => addFilter('countryOfOrigin', countryOfOrigin)}> {countryOfOrigin}</IonButton>
-    );
+		<IonButton class='filterItem' onClick={() => addFilter('countryOfOrigin', countryOfOrigin)}> {countryOfOrigin}</IonButton>
+	);
 
 	let DishTypesList = filterContext.dishType.map((dishType) =>
-       <IonButton class='filterItem' onClick={() => addFilter('dishType', dishType)}> {dishType}</IonButton>
-    );
+		<IonButton class='filterItem' onClick={() => addFilter('dishType', dishType)}> {dishType}</IonButton>
+	);
 
 	let PreparationTimesList = filterContext.preparationTime.map((preparationTime) =>
-       <IonButton class='filterItem' onClick={() => addFilter('preparationTimeTicks', preparationTime)}> {preparationTime}</IonButton>
-    );
+		<IonButton class='filterItem' onClick={() => addFilter('preparationTimeTicks', preparationTime)}> {preparationTime}</IonButton>
+	);
 
 	let DifficultiesList = filterContext.difficulty.map((difficulty) =>
-       <IonButton class='filterItem' onClick={() => addFilter('difficulty', difficulty)}> {difficulty}</IonButton>
-    );
+		<IonButton class='filterItem' onClick={() => addFilter('difficulty', difficulty)}> {difficulty}</IonButton>
+	);
 
 	// Add the filter to the array of selected filters
-	function addFilter(type:string, filter:string | number){
-		let addition:Filter =  {type: type, value: filter};
+	function addFilter(type: string, filter: string | number) {
+		let addition: Filter = { type: type, value: filter };
 		// Check if the filter exists
-		if(filterContext.filters.find(e => e.type == addition.type && e.value == addition.value)){
+		if (filterContext.filters.find(e => e.type == addition.type && e.value == addition.value)) {
 			// Find the index of the filter and remove it from the array
 			let index = filterContext.filters.findIndex(e => e.type == addition.type && e.value == addition.value);
-			if(index > -1) {
+			if (index > -1) {
 				filterContext.filters.splice(index, 1);
 			}
 		} else {
@@ -74,6 +74,9 @@ const ModalFilterRecipe: React.FC<{
 				</IonRow>
 				<IonRow>
 					{DifficultiesList}
+				</IonRow>
+				<IonRow >
+					<IonButton color="warning" fill="outline" onClick={() => props.setShowRecipeFilterModal(false)}>Close</IonButton>
 				</IonRow>
 			</IonGrid>
 		</IonContent>

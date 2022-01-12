@@ -56,7 +56,7 @@ const RegisterComponent: React.FC<{}> = ({}) => {
           <IonLabel position="stacked">Full Name</IonLabel>
           <IonInput {...register("name", { required: true })} />
         </IonItem>
-        {errors.name && <IonText color="danger">Please enter a Name</IonText>}
+        {errors.name && <IonText color="danger">Please enter a name</IonText>}
         <IonItem class="input-field">
           <IonLabel position="stacked">E-mail address</IonLabel>
           <IonInput type="email" {...register("email", { required: true })} />

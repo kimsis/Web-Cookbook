@@ -70,7 +70,7 @@ const Marker = ({ lat, lng, text, id, imagePath, handleToggleOpen }: { lat: any;
 
 const SimpleMap: React.FC<{}> = (props) => {
 
-  const [isModalVisible, setIsModalVisible] = useState(0);
+  const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
   const [itemId, setItemId] = useState(-1);
   const [recipes, setRecipes] = useState<Recipe[] | null>();
   // const [ingredients, setIngredients] = useState<Ingredient[] | null>();
@@ -86,8 +86,8 @@ const SimpleMap: React.FC<{}> = (props) => {
   const NovFC: React.FC<{ id: number }> = (props) => {
 
     return (<IonContent >
-      <IonModal isOpen={isModalVisible == 0 ? false : true} onDidDismiss={() => setIsModalVisible(0)}>
-        <RecipeInfoModal id={props.id} setShowRecipeInfoModal={() => setIsModalVisible} />
+      <IonModal isOpen={showRecipeInfoModal == 0 ? false : true} onDidDismiss={() => setShowRecipeInfoModal(0)}>
+        <RecipeInfoModal id={showRecipeInfoModal} setShowRecipeInfoModal={setShowRecipeInfoModal} />
       </IonModal>
 
     </IonContent>)
@@ -128,7 +128,7 @@ const SimpleMap: React.FC<{}> = (props) => {
 
   function handleToggleOpen(e: any) {
     setItemId(e)
-    setIsModalVisible(1)
+    setShowRecipeInfoModal(e)
   };
 
   let center = {
