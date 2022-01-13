@@ -75,18 +75,19 @@ const ModalCreateRecipe: React.FC<{
   //Submit POST request to API
 
   const onSubmit = (data: any) => {
+    console.log(appContext.user);
     data = {
       ...data,
       difficulty: parseInt(data.difficulty),
       numberOfServings: parseInt(data.numberOfServings),
       preparationTimeTicks: parseInt(data.preparationTimeTicks),
+      sharedBy: appContext.user?.id,
       ingredients: [],
-      imagePath: "test",
+      imagePath,
       longitude: 0,
       latitude: 0,
       rating: 0,
     };
-    console.log("creating new recipe with data:", data);
 
     axios
       .post(appContext.http + "Recipe", data, {
@@ -102,7 +103,7 @@ const ModalCreateRecipe: React.FC<{
         props.setShowRecipeCreateModal(false);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error + " Reached maximum number of recipes");
       });
   };
 
@@ -146,10 +147,10 @@ const ModalCreateRecipe: React.FC<{
                   <IonInput {...register("preparationTimeTicks")} />
                 </IonItem>
               }
-              <IonItem>
+              {/* <IonItem>
                 <IonLabel position="stacked">Shared by</IonLabel>
                 <IonInput autocomplete="off" {...register("sharedBy")} />
-              </IonItem>
+              </IonItem> */}
 
               <IonItem>
                 <IonLabel position="stacked">Type of cuisine</IonLabel>

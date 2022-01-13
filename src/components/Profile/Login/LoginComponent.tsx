@@ -28,18 +28,25 @@ const LoginComponent: React.FC<{}> = ({}) => {
 
   async function submitLogin(data: any) {
     console.log("Login data:", data);
-		await axios
-			.post(appContext.http + 'authentication/login', data)
-			.then(function (response) {
-        if(response.status == 200) {
-          appContext.user = {JWTToken: response.data, email: data.email, id: 0, fullName: '', type: '', recipes: [], favourites: []}
+    await axios
+      .post(appContext.http + "authentication/login", data)
+      .then(function (response) {
+        if (response.status == 200) {
+          appContext.user = {
+            JWTToken: response.data.jwtToken,
+            email: response.data.email,
+            id: response.data.id,
+            fullName: response.data.name,
+            type: "",
+            recipes: [],
+            favourites: [],
+          };
           history.replace("/profile");
         }
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
-      
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   return (
