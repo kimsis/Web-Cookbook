@@ -1,0 +1,16 @@
+.content {
+  max-width: 600px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.center {
+  display: block;
+  margin: auto;
+  width: 100px;
+}
+.input-field {
+  padding: 16px;
+}

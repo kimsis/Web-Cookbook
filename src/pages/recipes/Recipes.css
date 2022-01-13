@@ -1,0 +1,7 @@
+.filter {
+  --border-radius: 20px;
+}
+.recipe-list {
+  margin: auto;
+  max-width: 800px;
+}
