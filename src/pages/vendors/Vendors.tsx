@@ -1,11 +1,24 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonList, IonModal, IonSearchbar } from '@ionic/react';
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonMenuButton,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonList,
+  IonModal,
+  IonSearchbar,
+} from "@ionic/react";
 import React, { useContext, useEffect, useState } from "react";
-import RecipeInfoModal from '../../components/Recipes/RecipeInfoModal';
-import axios, { AxiosResponse } from 'axios';
-import './Vendors.css';
-import AppContext from '../../store/AppContext';
-import Vendor from '../../shared/interfaces/Vendor.interfdace';
-import VendorListItem from '../../components/Vendors/VendorListItem';
+import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
+import axios, { AxiosResponse } from "axios";
+import "./Vendors.css";
+import AppContext from "../../store/AppContext";
+import Vendor from "../../shared/interfaces/Vendor.interfdace";
+import VendorListItem from "../../components/Vendors/VendorListItem";
+import ModalCreateVendor from "../../components/Vendors/ModalCreateVendor";
 
 interface Data {
   page: number;
@@ -13,17 +26,14 @@ interface Data {
   items: Vendor[];
 }
 
-const Vendors: React.FC<{
-}> = (props) => {
-
+const Vendors: React.FC<{}> = (props) => {
   useEffect(() => {
     getData();
-  }, [])
-
+  }, []);
+  const [showVendorCreateModal, setShowVendorCreateModal] = useState(false);
   const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
   const [vendors, setVendors] = useState<Vendor[] | null>();
   const appContext = useContext(AppContext);
-
 
   let vendorsArray: Data;
   async function getData() {
@@ -39,7 +49,7 @@ const Vendors: React.FC<{
 
   function setData(data: AxiosResponse) {
     vendorsArray = JSON.parse(JSON.stringify(data.data));
-    setVendors(vendorsArray.items)
+    setVendors(vendorsArray.items);
   }
 
   function setError(error: any) {
@@ -48,7 +58,7 @@ const Vendors: React.FC<{
 
   let VendorList;
   if (vendors != null) {
-    VendorList = vendors.map((vendor) =>
+    VendorList = vendors.map((vendor) => (
       <div key={vendor.id} onClick={() => setShowRecipeInfoModal(vendor.id)}>
         <VendorListItem
           id={vendor.id}
@@ -56,9 +66,9 @@ const Vendors: React.FC<{
           imagePath={vendor.imagePath}
         />
       </div>
-    );
+    ));
   } else {
-    VendorList = <div> No recipes found! </div>;
+    VendorList = <div> No vendors found! </div>;
   }
 
   return (
@@ -73,12 +83,28 @@ const Vendors: React.FC<{
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonModal isOpen={showRecipeInfoModal == 0 ? false : true} onDidDismiss={() => setShowRecipeInfoModal(0)}>
-          < RecipeInfoModal id={showRecipeInfoModal} setShowRecipeInfoModal={setShowRecipeInfoModal} />
+        <IonButton onClick={() => setShowVendorCreateModal(true)}>
+          + Add Vendor
+        </IonButton>
+        <IonModal
+          isOpen={showVendorCreateModal}
+          onDidDismiss={() => setShowVendorCreateModal(false)}
+        >
+          <ModalCreateVendor
+            showVendorCreateModal={showVendorCreateModal}
+            setShowVendorCreateModal={setShowVendorCreateModal}
+          />
         </IonModal>
-        <IonList id='menu-list'>
-          {VendorList}
-        </IonList>
+        <IonModal
+          isOpen={showRecipeInfoModal == 0 ? false : true}
+          onDidDismiss={() => setShowRecipeInfoModal(0)}
+        >
+          <RecipeInfoModal
+            id={showRecipeInfoModal}
+            setShowRecipeInfoModal={setShowRecipeInfoModal}
+          />
+        </IonModal>
+        <IonList id="menu-list">{VendorList}</IonList>
       </IonContent>
     </IonPage>
   );

@@ -6,11 +6,8 @@ import {
   IonItem,
   IonLabel,
   IonInput,
-  IonSelect,
-  IonSelectOption,
   IonCol,
   IonIcon,
-  IonItemDivider,
   IonTextarea,
   IonImg,
 } from "@ionic/react";
@@ -18,22 +15,20 @@ import React, {
   Dispatch,
   SetStateAction,
   useContext,
-  useEffect,
   useRef,
   useState,
 } from "react";
 import axios from "axios";
 import { cloudUploadOutline } from "ionicons/icons";
 import { useForm } from "react-hook-form";
-import "./ModalCreateRecipe.css";
 import AppContext from "../../store/AppContext";
 import SimpleMap, { Marker } from "../../pages/map/Map";
 import GoogleMapReact, { Props } from "google-map-react";
-import { Console } from "console";
+import "./ModalCreateVendor.css";
 
-const ModalCreateRecipe: React.FC<{
-  showRecipeCreateModal: boolean;
-  setShowRecipeCreateModal: Dispatch<SetStateAction<boolean>>;
+const ModalCreateVendor: React.FC<{
+  showVendorCreateModal: boolean;
+  setShowVendorCreateModal: Dispatch<SetStateAction<boolean>>;
 }> = (props) => {
   const [image, setImage] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -63,15 +58,15 @@ const ModalCreateRecipe: React.FC<{
     axios
       .post("https://api.cloudinary.com/v1_1/dafrxyo42/image/upload", formData)
       .then((data) => {
+        console.log(data);
         setimagePath(data.data.url);
+        console.log(imagePath);
       })
       .catch((error) => {
         console.log(error);
       });
     setImage("");
   };
-  //Upload selected image
-  const uploadImage = () => {};
   const handleRef = () => {
     fileInput.current?.click();
   };
@@ -79,22 +74,16 @@ const ModalCreateRecipe: React.FC<{
   //Submit POST request to API
 
   const onSubmit = (data: any) => {
-    console.log(appContext.user);
-    console.log(imagePath);
     data = {
       ...data,
-      difficulty: parseInt(data.difficulty),
-      numberOfServings: parseInt(data.numberOfServings),
-      preparationTimeTicks: parseInt(data.preparationTimeTicks),
-      sharedBy: appContext.user?.id,
-      ingredients: [],
       imagePath: imagePath,
       latitude: marker.lat,
       longitude: marker.lng,
+      ingredients: [],
     };
 
     axios
-      .post(appContext.http + "Recipe", data, {
+      .post(appContext.http + "Vendor", data, {
         headers: {
           "x-auth":
             appContext.user?.JWTToken == undefined
@@ -104,10 +93,10 @@ const ModalCreateRecipe: React.FC<{
       })
       .then((response) => {
         console.log(response);
-        props.setShowRecipeCreateModal(false);
+        props.setShowVendorCreateModal(false);
       })
       .catch((error) => {
-        console.log(error + " Reached maximum number of recipes");
+        console.log(error);
       });
   };
 
@@ -123,7 +112,7 @@ const ModalCreateRecipe: React.FC<{
       setMarker({ ...obj, markerImagePath });
     }
     return (
-      <IonContent style={{ height: "40vh" }}>
+      <IonContent style={{ height: "35vh" }}>
         <GoogleMapReact
           onClick={_onClick}
           style={{ height: "100%" }}
@@ -145,10 +134,9 @@ const ModalCreateRecipe: React.FC<{
 
   return (
     <IonContent className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
-      <h3>Add new recipe</h3>
+      <h3>Add new vendor</h3>
       {/* form */}
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* <img src={image} /> //Display Selected Image*/}
         <IonGrid>
           <IonRow>
             <IonCol size="4" style={{ margin: "auto" }}>
@@ -170,103 +158,32 @@ const ModalCreateRecipe: React.FC<{
             </IonCol>
             <IonCol size="8">
               <IonItem>
-                <IonLabel position="stacked">Name of Dish</IonLabel>
                 <IonInput
+                  placeholder="Vendor name"
                   autocomplete="off"
                   required={true}
-                  {...register("title")}
+                  {...register("name")}
                 />
               </IonItem>
-              {
-                <IonItem>
-                  <IonLabel position="stacked">Time to cook</IonLabel>
-                  <IonInput {...register("preparationTimeTicks")} />
-                </IonItem>
-              }
-              {/* <IonItem>
-                <IonLabel position="stacked">Shared by</IonLabel>
-                <IonInput autocomplete="off" {...register("sharedBy")} />
-              </IonItem> */}
-
               <IonItem>
-                <IonLabel position="stacked">Type of cuisine</IonLabel>
-                <IonSelect
-                  {...register("type")}
-                  cancelText="Cancel"
-                  okText="Add"
-                >
-                  <IonSelectOption value="Turkish">Turkish</IonSelectOption>
-                  <IonSelectOption value="Mexican">Mexican</IonSelectOption>
-                  <IonSelectOption value="Italian">Italian</IonSelectOption>
-                </IonSelect>
+                <IonTextarea
+                  rows={6}
+                  placeholder="Add more information about the vendor"
+                  {...register("description")}
+                ></IonTextarea>
               </IonItem>
             </IonCol>
           </IonRow>
         </IonGrid>
         <IonGrid>
-          <h3>More Details</h3>
-          <IonItem>
-            <IonLabel position="stacked">Difficulty</IonLabel>
-            <IonSelect
-              {...register("difficulty")}
-              cancelText="Cancel"
-              okText="Add"
-            >
-              <IonSelectOption value={0}>Beginner</IonSelectOption>
-              <IonSelectOption value={1}>Intermediate</IonSelectOption>
-              <IonSelectOption value={2}>Advanced</IonSelectOption>
-            </IonSelect>
-          </IonItem>
-          <IonItem>
-            <IonLabel position="stacked">Country of origin</IonLabel>
-            <IonInput autocomplete="off" {...register("countryOfOrigin")} />
-          </IonItem>
-          <IonItem>
-            <IonLabel position="stacked">Number of servings</IonLabel>
-            <IonInput
-              autocomplete="off"
-              type="number"
-              {...register("numberOfServings")}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel position="stacked">Preparation Time</IonLabel>
-            <IonInput
-              autocomplete="off"
-              {...register("preparationTimeTicks")}
-              type="number"
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel position="stacked">Ingredients</IonLabel>
-            <IonSelect
-              multiple={true}
-              {...register("unlistedIngredients")}
-              cancelText="Cancel"
-              okText="Add"
-            >
-              <IonSelectOption value="tomato">Tomato</IonSelectOption>
-              <IonSelectOption value="egg">Egg</IonSelectOption>
-              <IonSelectOption value="butter">Butter</IonSelectOption>
-            </IonSelect>
-          </IonItem>
-          <IonItemDivider />
-          <h3 className="ion-padding">Instructions</h3>
-          <IonItem>
-            <IonTextarea
-              rows={6}
-              placeholder="Add instructions here..."
-              {...register("instructions")}
-            ></IonTextarea>
-          </IonItem>
-          <h3>Select Location</h3>
+          <h3>Where is this vendor located?</h3>
           <MapFC />
         </IonGrid>
         <IonGrid className="ion-padding">
           <IonRow class="ion-justify-content-around">
-            <IonButton type="submit">Add Recipe</IonButton>
+            <IonButton type="submit">Add vendor</IonButton>
             <IonButton
-              onClick={() => props.setShowRecipeCreateModal(false)}
+              onClick={() => props.setShowVendorCreateModal(false)}
               fill="outline"
               color="medium"
             >
@@ -280,4 +197,4 @@ const ModalCreateRecipe: React.FC<{
   );
 };
 
-export default ModalCreateRecipe;
+export default ModalCreateVendor;
