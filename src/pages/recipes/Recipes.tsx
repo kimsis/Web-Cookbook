@@ -68,9 +68,14 @@ const Recipes: React.FC<{}> = (props) => {
 
   function SearchFiltered() {
     let httpAddition = "?title=" + searchText;
+<<<<<<< Updated upstream
     filterContext.filters.map(
       (filter) => (httpAddition += "&" + filter.type + "=" + filter.value)
     );
+=======
+    filterContext.filters.map((filter) => httpAddition += "&" + filter.type + "=" + filter.value);
+    getData(httpAddition);
+>>>>>>> Stashed changes
     console.log(httpAddition);
   }
 
@@ -138,21 +143,12 @@ const Recipes: React.FC<{}> = (props) => {
             setShowRecipeInfoModal={setShowRecipeInfoModal}
           />
         </IonModal>
-        <IonSearchbar
-          value={searchText}
-          onIonChange={(e) => SearchText(e.detail.value!)}
-          showCancelButton="focus"
-        ></IonSearchbar>
-        <IonButton class="filter" onClick={(e) => getData()}>
-          All
-        </IonButton>
-        <IonButton
-          class="filter"
-          onClick={() => setShowRecipeFilterModal(true)}
-        >
-          +Filter
-        </IonButton>
-        {RecipeList}
+        <IonSearchbar value={searchText} onIonChange={e => SearchText(e.detail.value == undefined ? '' : e.detail.value)} showCancelButton="focus"></IonSearchbar>
+        <IonButton class='filter' onClick={e => getData()}>All</IonButton>
+        <IonButton class='filter' onClick={() => setShowRecipeFilterModal(true)}>+Filter</IonButton>
+        <IonList id='menu-list'>
+          {RecipeList}
+        </IonList>
       </IonContent>
     </IonPage>
   );
