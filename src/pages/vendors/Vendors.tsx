@@ -16,9 +16,10 @@ import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
 import axios, { AxiosResponse } from "axios";
 import "./Vendors.css";
 import AppContext from "../../store/AppContext";
-import Vendor from "../../shared/interfaces/Vendor.interfdace";
+import Vendor from "../../shared/interfaces/Vendor.interface";
 import VendorListItem from "../../components/Vendors/VendorListItem";
 import ModalCreateVendor from "../../components/Vendors/ModalCreateVendor";
+import VendorInfoModal from "../../components/Profile/Vendors/VendorInfoModal";
 
 interface Data {
   page: number;
@@ -58,7 +59,7 @@ const Vendors: React.FC<{}> = (props) => {
 
   let VendorList;
   if (vendors != null) {
-    VendorList = vendors.map((vendor) =>
+    VendorList = vendors.map((vendor) => (
       <div key={vendor.id} onClick={() => setShowVendorInfoModal(vendor.id)}>
         <VendorListItem
           id={vendor.id}
@@ -96,10 +97,17 @@ const Vendors: React.FC<{}> = (props) => {
             showVendorCreateModal={showVendorCreateModal}
             setShowVendorCreateModal={setShowVendorCreateModal}
           />
-        <IonModal isOpen={showVendorInfoModal == 0 ? false : true} onDidDismiss={() => setShowVendorInfoModal(0)}>
-          < VendorInfoModal id={showVendorInfoModal} setShowVendorInfoModal={setShowVendorInfoModal} />
         </IonModal>
         <IonModal
+          isOpen={showVendorInfoModal == 0 ? false : true}
+          onDidDismiss={() => setShowVendorInfoModal(0)}
+        >
+          <VendorInfoModal
+            id={showVendorInfoModal}
+            setShowVendorInfoModal={setShowVendorInfoModal}
+          />
+        </IonModal>
+        {/* <IonModal
           isOpen={showRecipeInfoModal == 0 ? false : true}
           onDidDismiss={() => setShowRecipeInfoModal(0)}
         >
@@ -107,7 +115,7 @@ const Vendors: React.FC<{}> = (props) => {
             id={showRecipeInfoModal}
             setShowRecipeInfoModal={setShowRecipeInfoModal}
           />
-        </IonModal>
+        </IonModal> */}
         <IonList id="menu-list">{VendorList}</IonList>
       </IonContent>
     </IonPage>

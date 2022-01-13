@@ -15,9 +15,9 @@ import {
 import ModalCreateRecipe from "../../components/Recipes/ModalCreateRecipe";
 import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
 import axios, { AxiosResponse } from "axios";
-import { Recipe } from "../../shared/interfaces/Recipe.interface";
+import Recipe from "../../shared/interfaces/Recipe.interface";
 import AppContext from "../../store/AppContext";
-import { Vendor } from "../../shared/interfaces/Vendor.interface";
+import Vendor from "../../shared/interfaces/Vendor.interface";
 import VendorInfoModal from "../../components/Profile/Vendors/VendorInfoModal";
 
 interface RecipeData {
@@ -192,7 +192,7 @@ const SimpleMap: React.FC<{}> = (props) => {
   let vendorMarkerList;
 
   if (recipes != null) {
-    recipeMarkerList = recipes.map((recipe) => 
+    recipeMarkerList = recipes.map((recipe) => (
       <Marker
         id={recipe.id}
         text={recipe.title}
@@ -201,13 +201,13 @@ const SimpleMap: React.FC<{}> = (props) => {
         lat={recipe.latitude}
         handleToggleOpen={() => handleToggleOpenRecipe(recipe.id)}
       />
-    );
+    ));
   } else {
     recipeMarkerList = <div> No recipes found! </div>;
   }
 
   if (vendors != null) {
-    vendorMarkerList = vendors.map((vendor) => 
+    vendorMarkerList = vendors.map((vendor) => (
       <Marker
         id={vendor.id}
         text={vendor.name}
@@ -216,7 +216,7 @@ const SimpleMap: React.FC<{}> = (props) => {
         lat={vendor.latitude}
         handleToggleOpen={() => handleToggleOpenVendor(vendor.id)}
       />
-    );
+    ));
   } else {
     vendorMarkerList = <div> No vendors found! </div>;
   }
