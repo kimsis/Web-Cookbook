@@ -4,8 +4,9 @@ import RecipeInfoModal from '../../components/Recipes/RecipeInfoModal';
 import axios, { AxiosResponse } from 'axios';
 import './Vendors.css';
 import AppContext from '../../store/AppContext';
-import { Vendor } from '../../shared/interfaces/Vendor.interfdace';
+import { Vendor } from '../../shared/interfaces/Vendor.interface';
 import VendorListItem from '../../components/Profile/Vendors/VendorListItem';
+import VendorInfoModal from '../../components/Profile/Vendors/VendorInfoModal';
 
 interface Data {
   page: number;
@@ -20,7 +21,7 @@ const Vendors: React.FC<{
     getData();
   }, [])
 
-  const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
+  const [showVendorInfoModal, setShowVendorInfoModal] = useState(0);
   const [vendors, setVendors] = useState<Vendor[] | null>();
   const appContext = useContext(AppContext);
 
@@ -51,16 +52,18 @@ const Vendors: React.FC<{
   let VendorList;
   if (vendors != null) {
     VendorList = vendors.map((vendor) =>
-      <div key={vendor.id} onClick={() => setShowRecipeInfoModal(vendor.id)}>
+      <div key={vendor.id} onClick={() => setShowVendorInfoModal(vendor.id)}>
         <VendorListItem
           id={vendor.id}
           name={vendor.name}
           imagePath={vendor.imagePath}
+          latitude={vendor.latitude}
+          longitude={vendor.longitude}
         />
       </div>
     );
   } else {
-    VendorList = <div> No recipes found! </div>;
+    VendorList = <div> No vendors found! </div>;
   }
 
   return (
@@ -70,13 +73,13 @@ const Vendors: React.FC<{
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>Explore Recipes</IonTitle>
+          <IonTitle>Explore Vendors</IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonModal isOpen={showRecipeInfoModal == 0 ? false : true} onDidDismiss={() => setShowRecipeInfoModal(0)}>
-          < RecipeInfoModal id={showRecipeInfoModal} setShowRecipeInfoModal={setShowRecipeInfoModal} />
+        <IonModal isOpen={showVendorInfoModal == 0 ? false : true} onDidDismiss={() => setShowVendorInfoModal(0)}>
+          < VendorInfoModal id={showVendorInfoModal} setShowVendorInfoModal={setShowVendorInfoModal} />
         </IonModal>
         <IonList id='menu-list'>
           {VendorList}
