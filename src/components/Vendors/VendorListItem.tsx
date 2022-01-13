@@ -6,6 +6,8 @@ const VendorListItem: React.FC<{
     id: number;
     name: string;
     imagePath: string;
+    longitude: number;
+    latitude: number;
 }> = (props) => {
     const titleFontSize = "2.7vw";
     const contentFontSize = "2.5vw";

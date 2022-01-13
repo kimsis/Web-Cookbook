@@ -31,7 +31,7 @@ const Vendors: React.FC<{}> = (props) => {
     getData();
   }, []);
   const [showVendorCreateModal, setShowVendorCreateModal] = useState(false);
-  const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
+  const [showVendorInfoModal, setShowVendorInfoModal] = useState(0);
   const [vendors, setVendors] = useState<Vendor[] | null>();
   const appContext = useContext(AppContext);
 
@@ -58,12 +58,14 @@ const Vendors: React.FC<{}> = (props) => {
 
   let VendorList;
   if (vendors != null) {
-    VendorList = vendors.map((vendor) => (
-      <div key={vendor.id} onClick={() => setShowRecipeInfoModal(vendor.id)}>
+    VendorList = vendors.map((vendor) =>
+      <div key={vendor.id} onClick={() => setShowVendorInfoModal(vendor.id)}>
         <VendorListItem
           id={vendor.id}
           name={vendor.name}
           imagePath={vendor.imagePath}
+          latitude={vendor.latitude}
+          longitude={vendor.longitude}
         />
       </div>
     ));
@@ -78,7 +80,7 @@ const Vendors: React.FC<{}> = (props) => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>Explore Recipes</IonTitle>
+          <IonTitle>Explore Vendors</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -94,6 +96,8 @@ const Vendors: React.FC<{}> = (props) => {
             showVendorCreateModal={showVendorCreateModal}
             setShowVendorCreateModal={setShowVendorCreateModal}
           />
+        <IonModal isOpen={showVendorInfoModal == 0 ? false : true} onDidDismiss={() => setShowVendorInfoModal(0)}>
+          < VendorInfoModal id={showVendorInfoModal} setShowVendorInfoModal={setShowVendorInfoModal} />
         </IonModal>
         <IonModal
           isOpen={showRecipeInfoModal == 0 ? false : true}

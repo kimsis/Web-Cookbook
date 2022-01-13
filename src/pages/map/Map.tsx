@@ -1,6 +1,6 @@
-import React, { Component, useContext, useEffect, useState } from 'react';
-import GoogleMapReact, { Props } from 'google-map-react';
-import './Map.css';
+import React, { Component, useContext, useEffect, useState } from "react";
+import GoogleMapReact, { Props } from "google-map-react";
+import "./Map.css";
 import {
   IonButton,
   IonButtons,
@@ -11,87 +11,134 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import ModalCreateRecipe from '../../components/Recipes/ModalCreateRecipe';
-import RecipeInfoModal from '../../components/Recipes/RecipeInfoModal';
-import axios, { AxiosResponse } from 'axios';
-import Recipe from '../../shared/interfaces/Recipe.interface';
-import AppContext from '../../store/AppContext';
+} from "@ionic/react";
+import ModalCreateRecipe from "../../components/Recipes/ModalCreateRecipe";
+import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
+import axios, { AxiosResponse } from "axios";
+import { Recipe } from "../../shared/interfaces/Recipe.interface";
+import AppContext from "../../store/AppContext";
+import { Vendor } from "../../shared/interfaces/Vendor.interface";
+import VendorInfoModal from "../../components/Profile/Vendors/VendorInfoModal";
 
-interface Data {
+interface RecipeData {
   page: number;
   size: number;
   items: Recipe[];
 }
 
+interface VendorData {
+  page: number;
+  size: number;
+  items: Vendor[];
+}
 
-export const Marker = ({ lat, lng, text, id, markerImagePath, handleToggleOpen }: { lat?: any; lng?: any; text?: any; id?: number; markerImagePath?: any; handleToggleOpen?: any; }) => (
-  <div style={{
-    width: '50px',
-    transform: 'translate(-50%, -100%)'
-  }}>
-    <div onClick={(e) => id &&  handleToggleOpen(id) }
+export const Marker = ({
+  lat,
+  lng,
+  text,
+  id,
+  markerImagePath,
+  handleToggleOpen,
+}: {
+  lat?: any;
+  lng?: any;
+  text?: any;
+  id?: number;
+  markerImagePath?: any;
+  handleToggleOpen?: any;
+}) => (
+  <div
+    style={{
+      width: "50px",
+      transform: "translate(-50%, -100%)",
+    }}
+  >
+    <div
+      onClick={(e) => id && handleToggleOpen(id)}
       style={{
-        color: 'white',
-        background: 'orange',
-        padding: '4px',
-        width: '50px',
-        height: 'auto',
-        display: 'block',
-        textAlign: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '30%',
-      }}>
-      {markerImagePath && <img
-        src={markerImagePath}
-        width='40px'
-        height='40px'
-        style={{
-          borderRadius: '50%'
-        }}
-      />}
-
+        color: "white",
+        background: "orange",
+        padding: "4px",
+        width: "50px",
+        height: "auto",
+        display: "block",
+        textAlign: "center",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: "30%",
+      }}
+    >
+      {markerImagePath && (
+        <img
+          src={markerImagePath}
+          width="40px"
+          height="40px"
+          style={{
+            borderRadius: "50%",
+          }}
+        />
+      )}
     </div>
-    <div style={{
-      width: 0,
-      height: 0,
-      borderLeft: '20px solid transparent',
-      borderRight: '20px solid transparent',
-      borderTop: '20px solid orange',
-      transform: 'translate(13%, -25%)'
-    }}>
-    </div>
+    <div
+      style={{
+        width: 0,
+        height: 0,
+        borderLeft: "20px solid transparent",
+        borderRight: "20px solid transparent",
+        borderTop: "20px solid orange",
+        transform: "translate(13%, -25%)",
+      }}
+    ></div>
     <p>{text}</p>
   </div>
 );
 
-
-
 const SimpleMap: React.FC<{}> = (props) => {
-
   const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
+  const [showVendorInfoModal, setShowVendorInfoModal] = useState(0);
   const [itemId, setItemId] = useState(-1);
   const [recipes, setRecipes] = useState<Recipe[] | null>();
-  // const [ingredients, setIngredients] = useState<Ingredient[] | null>();
+  const [vendors, setVendors] = useState<Vendor[] | null>();
 
-  let recipesArray: Data;
-  let ingredientsArray: Data;
+  let recipesArray: RecipeData;
+  let vendorsArray: VendorData;
 
   useEffect(() => {
     getRecipes();
-    // getIngredients();
-  }, [])
+    getVendors();
+  }, []);
 
   const NovFC: React.FC<{ id: number }> = (props) => {
+    return (
+      <IonContent>
+        <IonModal
+          isOpen={showRecipeInfoModal == 0 ? false : true}
+          onDidDismiss={() => setShowRecipeInfoModal(0)}
+        >
+          <RecipeInfoModal
+            id={showRecipeInfoModal}
+            setShowRecipeInfoModal={setShowRecipeInfoModal}
+          />
+        </IonModal>
+      </IonContent>
+    );
+  };
 
-    return (<IonContent >
-      <IonModal isOpen={showRecipeInfoModal == 0 ? false : true} onDidDismiss={() => setShowRecipeInfoModal(0)}>
-        <RecipeInfoModal id={showRecipeInfoModal} setShowRecipeInfoModal={setShowRecipeInfoModal} />
-      </IonModal>
-
-    </IonContent>)
-  }
+  const VendorFC: React.FC<{ id: number }> = (props) => {
+    return (
+      <IonContent>
+        <IonModal
+          isOpen={showVendorInfoModal == 0 ? false : true}
+          onDidDismiss={() => setShowVendorInfoModal(0)}
+        >
+          <VendorInfoModal
+            id={showVendorInfoModal}
+            setShowVendorInfoModal={setShowVendorInfoModal}
+          />
+        </IonModal>
+      </IonContent>
+    );
+  };
 
   let appContext = useContext(AppContext);
 
@@ -99,7 +146,8 @@ const SimpleMap: React.FC<{}> = (props) => {
     await axios(appContext.http + "Recipe/PagedList")
       .then((response) => {
         recipesArray = JSON.parse(JSON.stringify(response.data));
-        setRecipes(recipesArray.items)
+        console.log(recipesArray.items);
+        setRecipes(recipesArray.items);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -107,28 +155,32 @@ const SimpleMap: React.FC<{}> = (props) => {
       });
   }
 
-  // async function getIngredients() {
-  //   await axios("https://i403375core.venus.fhict.nl/Ingredient/PagedList")
-  //   .then((response) => {
-  //     ingredientsArray = JSON.parse(JSON.stringify(response.data));
-  //     console.log(ingredientsArray.items);
-  //     setRecipes(ingredientsArray.items)
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error fetching data: ", error);
-  //     setError(error);
-  //   });
-  // }
+  async function getVendors() {
+    await axios(appContext.http + "Vendor/PagedList")
+      .then((response) => {
+        vendorsArray = JSON.parse(JSON.stringify(response.data));
+        console.log(vendorsArray.items);
+        setVendors(vendorsArray.items);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+        setError(error);
+      });
+  }
 
   function setError(error: any) {
     console.log(error);
-
   }
 
-  function handleToggleOpen(e: any) {
-    setItemId(e)
-    setShowRecipeInfoModal(e)
-  };
+  function handleToggleOpenRecipe(e: any) {
+    setItemId(e);
+    setShowRecipeInfoModal(e);
+  }
+
+  function handleToggleOpenVendor(e: any) {
+    setItemId(e);
+    setShowVendorInfoModal(e);
+  }
 
   let center = {
     lat: 51.449747,
@@ -136,53 +188,78 @@ const SimpleMap: React.FC<{}> = (props) => {
   };
   let zoom = 17;
 
-  let MarkerList;
+  let recipeMarkerList;
+  let vendorMarkerList;
 
   if (recipes != null) {
-    MarkerList = recipes.map((recipe) =>
+    recipeMarkerList = recipes.map((recipe) => 
       <Marker
         id={recipe.id}
         text={recipe.title}
         markerImagePath={recipe.imagePath}
         lng={recipe.longitude}
         lat={recipe.latitude}
-        handleToggleOpen={() => handleToggleOpen(recipe.id)}
+        handleToggleOpen={() => handleToggleOpenRecipe(recipe.id)}
       />
     );
   } else {
-    MarkerList = <div> No recipes found! </div>;
+    recipeMarkerList = <div> No recipes found! </div>;
   }
 
-  // if (ingredients != null) {
-  //   MarkerList = ingredients.map((ingredient) =>
-  //       <Marker
-  //         id={ingredient.id}
-  //         text={ingredient.title}
-  //         imagePath={ingredient.imagePath}
-  //         lng = {ingredient.longitude}
-  //         lat = {ingredient.latitude}
-  //         handleToggleOpen= {() => handleToggleOpen(ingredient.id)}
-  //       />
-  //   );
-  // } else {
-  //   MarkerList = <div> No ingredients found! </div>;
-  // }
-
+  if (vendors != null) {
+    vendorMarkerList = vendors.map((vendor) => 
+      <Marker
+        id={vendor.id}
+        text={vendor.name}
+        markerImagePath={vendor.imagePath}
+        lng={vendor.longitude}
+        lat={vendor.latitude}
+        handleToggleOpen={() => handleToggleOpenVendor(vendor.id)}
+      />
+    );
+  } else {
+    vendorMarkerList = <div> No vendors found! </div>;
+  }
 
   return (
     <IonPage>
-      <div style={{ position: 'relative', height: '100vh', width: '100%' }}>
-        <div style={{ position: 'absolute', zIndex: '150', top: '3%', width: '100%', textAlign: 'center', display: 'inline-block' }}>
-          <IonButton color="secondary" fill="solid" onClick={() => { }} style={{ width: '250px' }} >Recipes</IonButton>
-          <IonButton color="secondary" fill="solid" style={{ width: '250px' }} >Ingredients</IonButton>
+      <div style={{ position: "relative", height: "100vh", width: "100%" }}>
+        <div
+          style={{
+            position: "absolute",
+            zIndex: "150",
+            top: "3%",
+            width: "100%",
+            textAlign: "center",
+            display: "inline-block",
+          }}
+        >
+          <IonButton
+            color="secondary"
+            fill="solid"
+            onClick={() => {}}
+            style={{ width: "250px" }}
+          >
+            Recipes
+          </IonButton>
+          <IonButton
+            color="secondary"
+            fill="solid"
+            onClick={() => {}}
+            style={{ width: "250px" }}
+          >
+            Vendors
+          </IonButton>
         </div>
         <GoogleMapReact
           bootstrapURLKeys={{
-            key: 'AIzaSyC_n0tFC99A24CfBUdscGVjGenGf7PILNw',
+            key: "AIzaSyC_n0tFC99A24CfBUdscGVjGenGf7PILNw",
           }}
           defaultCenter={center}
-          defaultZoom={zoom}>
-          {MarkerList}
+          defaultZoom={zoom}
+        >
+          {vendorMarkerList}
+          {recipeMarkerList}
           {/* <Marker lat={51.45079} lng={5.471861} text='Lidl' id={1} handleToggleOpen={() => handleToggleOpen(1)} />
           <Marker lat={51.451563} lng={5.472298} text='Albert Heijn' id={2} handleToggleOpen={() => handleToggleOpen(50)} />
           <Marker lat={51.449972} lng={5.472884} text='The Food Corner' id={3} handleToggleOpen={() => handleToggleOpen(55)} />
@@ -191,9 +268,10 @@ const SimpleMap: React.FC<{}> = (props) => {
           <Marker lat={51.447382} lng={5.475611} text='Sri Ganesh Indiaaas' id={6} handleToggleOpen={() => handleToggleOpen(6)} /> */}
         </GoogleMapReact>
         <NovFC id={itemId} />
+        <VendorFC id={itemId} />
       </div>
-    </IonPage >
+    </IonPage>
   );
-}
+};
 
 export default SimpleMap;
