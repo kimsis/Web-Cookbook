@@ -111,56 +111,9 @@ const ProfileComponent: React.FC<{}> = ({ }) => {
     RecipeList = <div> No recipes created! </div>;
   }
 
-<<<<<<< HEAD
-	function Logout() {
-		appContext.user = null;
-		localStorage.clear();
-		history.replace('/login')
-	}
-	return (
-		<IonContent fullscreen>
-			<IonModal isOpen={showRecipeCreateModal} onDidDismiss={() => setShowRecipeCreateModal(false)}>
-				<ModalCreateRecipe showRecipeCreateModal={showRecipeCreateModal} setShowRecipeCreateModal={setShowRecipeCreateModal} />
-			</IonModal>
-			<IonItem style={{ marginTop: '20px' }}>
-				<IonCol>
-					<IonRow class="ion-justify-content-center">
-						<IonButton onClick={() => { Logout() }}> Logout </IonButton>
-					</IonRow>
-					<IonRow class="ion-justify-content-center">
-						<IonButton onClick={() => setShowRecipeCreateModal(true)}> Add Recipe </IonButton>
-					</IonRow>
-					<IonRow>
-						<div style={{ display: 'flex', fontSize: contentFontSize }}>
-							<IonIcon icon={person} slot='start' style={iconsStyling} />
-							<div style={{ margin: 'auto' }}>{appContext.user?.fullName}</div>
-						</div>
-					</IonRow>
-					<IonRow>
-						<div style={{ display: 'flex', fontSize: contentFontSize }}>
-							<IonIcon icon={mail} slot='start' style={iconsStyling} />
-							<div style={{ margin: 'auto' }}>{appContext.user?.email}</div>
-						</div>
-					</IonRow>
-				</IonCol>
-			</IonItem>
-			<IonItem>
-				<IonCol>
-					<IonRow><p> Recipes</p> </IonRow>
-					{RecipeList}
-				</IonCol>
-			</IonItem>
-			<IonItem>
-				<IonCol>
-					<IonRow><p> Favourites </p></IonRow>
-					{FavouritesList}
-				</IonCol>
-			</IonItem>
-		</IonContent>
-	);
-=======
   function Logout() {
     appContext.user = null;
+	localStorage.clear();
     history.replace("/Login");
   }
   return (
@@ -200,7 +153,7 @@ const ProfileComponent: React.FC<{}> = ({ }) => {
               />
             </div>
             <div>
-              <h4>{appContext.user?.fullName + "user"}</h4>
+              <h4>{appContext.user?.fullName}</h4>
             </div>
             <h4>{appContext.user?.email ? "" : "placeholder@email.com"}</h4>
           </IonRow>
@@ -229,7 +182,6 @@ const ProfileComponent: React.FC<{}> = ({ }) => {
       </IonItem>
     </IonContent>
   );
->>>>>>> 4c814237dd105552237357602ecba1b114fd018f
 };
 
 export default ProfileComponent;

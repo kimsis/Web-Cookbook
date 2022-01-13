@@ -63,9 +63,7 @@ const ModalCreateRecipe: React.FC<{
     axios
       .post("https://api.cloudinary.com/v1_1/dafrxyo42/image/upload", formData)
       .then((data) => {
-        console.log(data);
         setimagePath(data.data.url);
-        console.log(imagePath);
       })
       .catch((error) => {
         console.log(error);
@@ -82,6 +80,7 @@ const ModalCreateRecipe: React.FC<{
 
   const onSubmit = (data: any) => {
     console.log(appContext.user);
+    console.log(imagePath);
     data = {
       ...data,
       difficulty: parseInt(data.difficulty),
@@ -89,7 +88,7 @@ const ModalCreateRecipe: React.FC<{
       preparationTimeTicks: parseInt(data.preparationTimeTicks),
       sharedBy: appContext.user?.id,
       ingredients: [],
-      imagePath,
+      imagePath: imagePath,
       latitude: marker.lat,
       longitude: marker.lng,
     };
