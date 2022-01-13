@@ -30,7 +30,7 @@ export const Marker = ({ lat, lng, text, id, markerImagePath, handleToggleOpen }
     width: '50px',
     transform: 'translate(-50%, -100%)'
   }}>
-    <div onClick={(e) =>  handleToggleOpen(id) }
+    <div onClick={(e) => id &&  handleToggleOpen(id) }
       style={{
         color: 'white',
         background: 'orange',
