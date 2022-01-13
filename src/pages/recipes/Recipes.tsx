@@ -13,23 +13,15 @@ import {
 } from "@ionic/react";
 import React, { useContext, useEffect, useState } from "react";
 import ModalFilterRecipe from "../../components/Recipes/ModalFilterRecipe";
-import ModalCreateRecipe from "../../components/Recipes/ModalCreateRecipe";
 import RecipeListItem from "../../components/Recipes/RecipeListItem";
 import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
 import axios, { AxiosResponse } from "axios";
-import { Recipe } from "../../shared/interfaces/Recipe.interface";
+import Recipe from "../../shared/interfaces/Recipe.interface";
+import Data from "../../shared/interfaces/Data.interface";
 import "./Recipes.css";
 import AppContext from "../../store/AppContext";
-import FilterContext, {
-  FilterContextProvider,
-} from "../../store/FiltersContext";
-import { Filter } from "../../shared/interfaces/Filter.interface";
+import FilterContext from "../../store/FiltersContext";
 
-interface Data {
-  page: number;
-  size: number;
-  items: Recipe[];
-}
 
 const Recipes: React.FC<{}> = (props) => {
   useEffect(() => {
@@ -47,7 +39,6 @@ const Recipes: React.FC<{}> = (props) => {
   async function getData(attributes: string = "") {
     await axios(appContext.http + "Recipe/PagedList" + attributes)
       .then((response) => {
-        console.log(response);
         setData(response);
       })
       .catch((error) => {
@@ -58,7 +49,6 @@ const Recipes: React.FC<{}> = (props) => {
 
   function setData(data: AxiosResponse) {
     recipesArray = JSON.parse(JSON.stringify(data.data));
-    console.log(recipesArray.items);
     setRecipes(recipesArray.items);
   }
 
@@ -68,15 +58,10 @@ const Recipes: React.FC<{}> = (props) => {
 
   function SearchFiltered() {
     let httpAddition = "?title=" + searchText;
-<<<<<<< Updated upstream
     filterContext.filters.map(
       (filter) => (httpAddition += "&" + filter.type + "=" + filter.value)
     );
-=======
-    filterContext.filters.map((filter) => httpAddition += "&" + filter.type + "=" + filter.value);
     getData(httpAddition);
->>>>>>> Stashed changes
-    console.log(httpAddition);
   }
 
   function FilterModalDismiss() {

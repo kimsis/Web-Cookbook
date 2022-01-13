@@ -9,7 +9,6 @@ import {
 import React, { useContext, useState } from "react";
 import ProfileComponent from "../../components/Profile/ProfileComponent";
 import "./Profile.css";
-import UserHandle from "../../components/Profile/UserHandle/UserHandle";
 import AppContext from "../../store/AppContext";
 import { useHistory } from "react-router";
 
@@ -17,11 +16,13 @@ const Profile: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
   const history = useHistory();
   
-
-  let profileContent;
-
+  let user = localStorage.getItem("user");
+  if(user != null) {
+    appContext.user = JSON.parse(user);
+  }
+  
   if (appContext.user == null) {
-    history.replace("/Login");
+    history.replace("/login");
   }
 
   return (

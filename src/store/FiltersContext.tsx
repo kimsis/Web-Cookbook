@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { Filter } from "../shared/interfaces/Filter.interface";
+import Filter from "../shared/interfaces/Filter.interface";
 
 let dummyCountryOfOrigin:string[] = ['Bulgarian', 'Turkish', 'Japanese', 'Indian'];
 let dummyDishType:string[] = ['Breakfast', 'Brunch', 'Lunch', 'Snack', 'Dinner', 'Dessert'];

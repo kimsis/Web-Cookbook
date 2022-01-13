@@ -1,7 +1,7 @@
-export interface Recipe {
+export default interface Recipe {
     id: number;
     title: string;
-    sharedBy: string;
+    sharedBy: {id: number, name: string};
     difficulty: number;
     type: string;
     instructions: string;

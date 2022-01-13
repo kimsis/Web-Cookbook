@@ -24,7 +24,6 @@ const RegisterComponent: React.FC<{}> = ({}) => {
   const appContext = useContext(AppContext);
 
   const onSubmit = (data: any) => {
-    console.log("Register data:", data);
     var regex=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$/;
     if(!data.password.match(regex)) {
       setError('password', {type: 'custom', message: 'Password must be at least 8 symbols, contain 1 special character, an uppercase and a lowercase letter and a number.'});

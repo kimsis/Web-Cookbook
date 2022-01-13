@@ -20,7 +20,7 @@ import "./RecipeListItem.css";
 const RecipeListItem: React.FC<{
   id: number;
   title: string;
-  sharedBy: string;
+  sharedBy: {id:number, name:string};
   countryOfOrigin: string;
   type: string;
   rating: number;
@@ -79,7 +79,7 @@ const RecipeListItem: React.FC<{
                 slot="start"
                 style={{ fontSize: 24, marginBottom: "-5px", color: "#374957" }}
               />
-              Shared by: {props.sharedBy}
+              Shared by: {props.sharedBy.name}
             </div>
           </IonRow>
           <IonRow>

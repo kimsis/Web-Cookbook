@@ -3,7 +3,7 @@ import {
 	IonContent, IonGrid, IonItem, IonRow,
 } from '@ionic/react';
 import React, { Dispatch, SetStateAction, useContext } from 'react';
-import { Filter } from '../../shared/interfaces/Filter.interface';
+import Filter from '../../shared/interfaces/Filter.interface';
 import FilterContext from '../../store/FiltersContext';
 import './ModalFilterRecipe.css';
 

@@ -15,10 +15,9 @@ import {
   const Login: React.FC<{}> = (props) => {
     const appContext = useContext(AppContext);
     const history = useHistory();
-    
   
-    if (appContext.user != null) {
-      history.replace("/Profile");
+    if (appContext.user != null || localStorage.getItem('user') != null) {
+      history.replace("/profile");
     }
   
     return (

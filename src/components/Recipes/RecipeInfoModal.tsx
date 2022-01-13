@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import './RecipeInfoModal.css';
 import { star, starHalf, starOutline, time, megaphone, cellular, fastFood, earth, egg, timer } from 'ionicons/icons';
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
-import { Recipe } from '../../shared/interfaces/Recipe.interface';
+import Recipe from '../../shared/interfaces/Recipe.interface';
 import axios, { AxiosResponse } from 'axios';
 import AppContext from '../../store/AppContext';
 
@@ -31,10 +31,8 @@ const RecipeInfoModal: React.FC<{
   }
   
   function setData(data: AxiosResponse) {
-    console.log(data);
     let recipeTest: Recipe = JSON.parse(JSON.stringify(data.data));
     setRecipe(recipeTest)
-    console.log(recipeTest);
   }
   
   function setError(error:any) {
@@ -74,7 +72,7 @@ const RecipeInfoModal: React.FC<{
               </IonItem>
               <IonItem color="none" lines="none">
                 <IonIcon icon={megaphone} slot="start" style={iconsStyling} />
-                <div>Shared by: {recipe?.sharedBy}</div>
+                <div>Shared by: {recipe?.sharedBy.name}</div>
               </IonItem>
               <IonItem color="none" lines="none">
                 <IonIcon icon={cellular} color = "warning" slot="start" style={iconsStyling} />

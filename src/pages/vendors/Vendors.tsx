@@ -4,8 +4,8 @@ import RecipeInfoModal from '../../components/Recipes/RecipeInfoModal';
 import axios, { AxiosResponse } from 'axios';
 import './Vendors.css';
 import AppContext from '../../store/AppContext';
-import { Vendor } from '../../shared/interfaces/Vendor.interfdace';
-import VendorListItem from '../../components/Profile/Vendors/VendorListItem';
+import Vendor from '../../shared/interfaces/Vendor.interfdace';
+import VendorListItem from '../../components/Vendors/VendorListItem';
 
 interface Data {
   page: number;
@@ -29,7 +29,6 @@ const Vendors: React.FC<{
   async function getData() {
     await axios(appContext.http + "Vendor/PagedList")
       .then((response) => {
-        console.log(response);
         setData(response);
       })
       .catch((error) => {
@@ -40,7 +39,6 @@ const Vendors: React.FC<{
 
   function setData(data: AxiosResponse) {
     vendorsArray = JSON.parse(JSON.stringify(data.data));
-    console.log(vendorsArray.items);
     setVendors(vendorsArray.items)
   }
 

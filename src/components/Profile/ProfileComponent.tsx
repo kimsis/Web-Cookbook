@@ -10,9 +10,12 @@ import {
 	IonText,
 	IonTitle,
 } from '@ionic/react';
+import axios, { AxiosResponse } from 'axios';
 import { person, mail } from 'ionicons/icons';
-import { useContext, useState } from 'react';
+import { Dispatch, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
+import Data from '../../shared/interfaces/Data.interface';
+import Recipe from '../../shared/interfaces/Recipe.interface';
 import AppContext from '../../store/AppContext';
 import ModalCreateRecipe from '../Recipes/ModalCreateRecipe';
 import RecipeListItem from '../Recipes/RecipeListItem';
@@ -26,6 +29,44 @@ const ProfileComponent: React.FC<{}> = ({ }) => {
 		height: '1.5em',
 		fontSize: contentFontSize,
 	};
+	const [recipeList, setRecipeList] = useState<Recipe[] | null>();
+	const [favouritesList, setFavouritesList] = useState<Recipe[] | null>();
+
+	useEffect(() => {
+		if (appContext.user?.id != undefined) {
+			getData();
+		}
+	}, []);
+
+	async function getData(id: number = appContext.user?.id || 0) {
+		await axios(appContext.http + "Recipe/" + id)
+			.then((response) => {
+				appContext.user!.recipes = setData(response, setRecipeList);
+			})
+			.catch((error) => {
+				console.error("Error fetching data: ", error);
+				setError(error);
+			});
+		await axios(appContext.http + "Favourites/" + id)
+			.then((response) => {
+				appContext.user!.favourites = setData(response, setFavouritesList);
+			})
+			.catch((error) => {
+				console.error("Error fetching data: ", error);
+				setError(error);
+			});
+	}
+
+	function setData(data: AxiosResponse, setRecipes: Dispatch<Recipe[]>): Recipe[] {
+		let recipesArray:Data = JSON.parse(JSON.stringify(data.data));
+		setRecipes(recipesArray.items);
+		return recipesArray.items;
+	}
+
+	function setError(error: any) {
+		console.log(error);
+	}
+
 
 	const [showRecipeCreateModal, setShowRecipeCreateModal] = useState(false);
 	const appContext = useContext(AppContext);
@@ -72,7 +113,8 @@ const ProfileComponent: React.FC<{}> = ({ }) => {
 
 	function Logout() {
 		appContext.user = null;
-		history.replace('/Login')
+		localStorage.clear();
+		history.replace('/login')
 	}
 	return (
 		<IonContent fullscreen>

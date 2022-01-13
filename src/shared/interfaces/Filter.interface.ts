@@ -1,4 +1,4 @@
-export interface Filter {
+export default interface Filter {
     type: string;
     value: string | number;
 }

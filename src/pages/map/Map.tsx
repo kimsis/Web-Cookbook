@@ -15,7 +15,7 @@ import {
 import ModalCreateRecipe from '../../components/Recipes/ModalCreateRecipe';
 import RecipeInfoModal from '../../components/Recipes/RecipeInfoModal';
 import axios, { AxiosResponse } from 'axios';
-import { Recipe } from '../../shared/interfaces/Recipe.interface';
+import Recipe from '../../shared/interfaces/Recipe.interface';
 import AppContext from '../../store/AppContext';
 
 interface Data {
@@ -99,7 +99,6 @@ const SimpleMap: React.FC<{}> = (props) => {
     await axios(appContext.http + "Recipe/PagedList")
       .then((response) => {
         recipesArray = JSON.parse(JSON.stringify(response.data));
-        console.log(recipesArray.items);
         setRecipes(recipesArray.items)
       })
       .catch((error) => {

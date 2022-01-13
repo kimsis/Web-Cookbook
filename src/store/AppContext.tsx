@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { User } from "../shared/interfaces/User.interface";
+import User from "../shared/interfaces/User.interface";
 
 let currentUser:User | null = null;
 

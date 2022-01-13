@@ -1,11 +1,11 @@
-import {Recipe} from "./Recipe.interface"
+import Recipe from "./Recipe.interface"
 
-export interface User {
+export default interface User {
     JWTToken: string;
     id: number;
     fullName: string;
     email: string;
     type: string;
     recipes: Recipe[];
-    favourites: string[]; //for now
+    favourites: Recipe[];
 }
