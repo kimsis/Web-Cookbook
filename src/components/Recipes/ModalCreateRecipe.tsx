@@ -18,6 +18,7 @@ import React, {
   Dispatch,
   SetStateAction,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from "react";
@@ -26,6 +27,8 @@ import { cloudUploadOutline } from "ionicons/icons";
 import { useForm } from "react-hook-form";
 import "./ModalCreateRecipe.css";
 import AppContext from "../../store/AppContext";
+import SimpleMap, { Marker } from "../../pages/map/Map";
+import GoogleMapReact, { Props } from "google-map-react";
 import { Console } from "console";
 
 const ModalCreateRecipe: React.FC<{
@@ -35,6 +38,9 @@ const ModalCreateRecipe: React.FC<{
   const [image, setImage] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [imagePath, setimagePath] = useState("");
+  const markerImagePath =
+    "https://icon-library.com/images/dot-icon/dot-icon-17.jpg"; //Image for the marker
+  const [marker, setMarker] = useState({ lat: 0, lng: 0, markerImagePath });
   const appContext = useContext(AppContext);
   const {
     register,
@@ -87,6 +93,8 @@ const ModalCreateRecipe: React.FC<{
       longitude: 0,
       latitude: 0,
       rating: 0,
+      latitude: marker.lat,
+      longitude: marker.lng,
     };
 
     axios
@@ -105,6 +113,38 @@ const ModalCreateRecipe: React.FC<{
       .catch((error) => {
         console.log(error + " Reached maximum number of recipes");
       });
+  };
+
+  const MapFC: React.FC<{}> = (props) => {
+    const center = {
+      lat: 51.449747,
+      lng: 5.473891,
+    };
+    const zoom = 17;
+    const maxZoom = 300;
+
+    function _onClick(obj: any) {
+      setMarker({ ...obj, markerImagePath });
+    }
+    return (
+      <IonContent style={{ height: "25vh" }}>
+        <GoogleMapReact
+          onClick={_onClick}
+          style={{ height: "100%" }}
+          bootstrapURLKeys={{
+            key: "AIzaSyC_n0tFC99A24CfBUdscGVjGenGf7PILNw",
+          }}
+          defaultCenter={marker.lat ? marker : center}
+          defaultZoom={marker.lat ? maxZoom : zoom}
+        >
+          <Marker
+            lng={marker.lng}
+            lat={marker.lat}
+            markerImagePath={marker.markerImagePath}
+          />
+        </GoogleMapReact>
+      </IonContent>
+    );
   };
 
   return (
@@ -222,6 +262,8 @@ const ModalCreateRecipe: React.FC<{
               {...register("instructions")}
             ></IonTextarea>
           </IonItem>
+          <h3 className="ion-padding">Select Location</h3>
+          <MapFC />
         </IonGrid>
         <IonGrid className="ion-padding">
           <IonRow class="ion-justify-content-around">

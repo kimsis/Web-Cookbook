@@ -25,12 +25,12 @@ interface Data {
 }
 
 
-const Marker = ({ lat, lng, text, id, imagePath, handleToggleOpen }: { lat: any; lng: any; text: any; id: number; imagePath: any; handleToggleOpen: any; }) => (
+export const Marker = ({ lat, lng, text, id, markerImagePath, handleToggleOpen }: { lat?: any; lng?: any; text?: any; id?: number; markerImagePath?: any; handleToggleOpen?: any; }) => (
   <div style={{
     width: '50px',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -100%)'
   }}>
-    <div onClick={(e) => handleToggleOpen(text)}
+    <div onClick={(e) => id &&  handleToggleOpen(id) }
       style={{
         color: 'white',
         background: 'orange',
@@ -43,14 +43,14 @@ const Marker = ({ lat, lng, text, id, imagePath, handleToggleOpen }: { lat: any;
         justifyContent: 'center',
         borderRadius: '30%',
       }}>
-      <img
-        src={imagePath}
+      {markerImagePath && <img
+        src={markerImagePath}
         width='40px'
         height='40px'
         style={{
           borderRadius: '50%'
         }}
-      />
+      />}
 
     </div>
     <div style={{
@@ -80,7 +80,7 @@ const SimpleMap: React.FC<{}> = (props) => {
 
   useEffect(() => {
     getRecipes();
-   // getIngredients();
+    // getIngredients();
   }, [])
 
   const NovFC: React.FC<{ id: number }> = (props) => {
@@ -97,15 +97,15 @@ const SimpleMap: React.FC<{}> = (props) => {
 
   async function getRecipes() {
     await axios(appContext.http + "Recipe/PagedList")
-    .then((response) => {
-      recipesArray = JSON.parse(JSON.stringify(response.data));
-      console.log(recipesArray.items);
-      setRecipes(recipesArray.items)
-    })
-    .catch((error) => {
-      console.error("Error fetching data: ", error);
-      setError(error);
-    });
+      .then((response) => {
+        recipesArray = JSON.parse(JSON.stringify(response.data));
+        console.log(recipesArray.items);
+        setRecipes(recipesArray.items)
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+        setError(error);
+      });
   }
 
   // async function getIngredients() {
@@ -121,9 +121,9 @@ const SimpleMap: React.FC<{}> = (props) => {
   //   });
   // }
 
-  function setError(error:any) {
+  function setError(error: any) {
     console.log(error);
-    
+
   }
 
   function handleToggleOpen(e: any) {
@@ -141,14 +141,14 @@ const SimpleMap: React.FC<{}> = (props) => {
 
   if (recipes != null) {
     MarkerList = recipes.map((recipe) =>
-        <Marker
-          id={recipe.id}
-          text={recipe.title}
-          imagePath={recipe.imagePath}
-          lng = {recipe.longitude}
-          lat = {recipe.latitude}
-          handleToggleOpen= {() => handleToggleOpen(recipe.id)}
-        />
+      <Marker
+        id={recipe.id}
+        text={recipe.title}
+        markerImagePath={recipe.imagePath}
+        lng={recipe.longitude}
+        lat={recipe.latitude}
+        handleToggleOpen={() => handleToggleOpen(recipe.id)}
+      />
     );
   } else {
     MarkerList = <div> No recipes found! </div>;
