@@ -16,7 +16,6 @@ import { useHistory } from "react-router";
 const Profile: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
   const history = useHistory();
-  
 
   let profileContent;
 

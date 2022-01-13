@@ -64,9 +64,11 @@ const LoginComponent: React.FC<{}> = ({}) => {
           <IonLabel position="stacked">Your password</IonLabel>
           <IonInput type="password" {...register("password")} />
         </IonItem>
-        <IonButton expand="block" type="submit">
-          Login
-        </IonButton>
+        <div style={{ padding: "0 20px" }}>
+          <IonButton expand="block" type="submit">
+            Login
+          </IonButton>
+        </div>
       </form>
       {/* To do: error handling after submit */}
       <IonText>
