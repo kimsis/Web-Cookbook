@@ -16,7 +16,11 @@ const UserHandle: React.FC<{}> = ({}) => {
   };
 
   return (
-    <IonContent fullscreen class="ion-padding ion-align-items-end">
+    <IonContent
+      fullscreen
+      class="ion-padding ion-align-items-end"
+      style={{ alignSelf: "center" }}
+    >
       {register ? <RegisterComponent /> : <LoginComponent />}
       <IonRow class="ion-justify-content-center">
         <IonButton className="button" fill="outline" onClick={handleChange}>

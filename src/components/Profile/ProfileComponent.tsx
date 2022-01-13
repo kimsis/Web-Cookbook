@@ -23,12 +23,12 @@ import './ProfileComponent';
 
 const ProfileComponent: React.FC<{}> = ({ }) => {
 	const contentFontSize = '2.5vw';
-	const iconsStyling = {
-		margin: '5px',
-		width: '1.5em',
-		height: '1.5em',
-		fontSize: contentFontSize,
-	};
+	//const iconsStyling = {
+	//	margin: '5px',
+	//	width: '1.5em',
+	//	height: '1.5em',
+	//	fontSize: contentFontSize,
+	//};
 	const [recipeList, setRecipeList] = useState<Recipe[] | null>();
 	const [favouritesList, setFavouritesList] = useState<Recipe[] | null>();
 
@@ -68,49 +68,50 @@ const ProfileComponent: React.FC<{}> = ({ }) => {
 	}
 
 
-	const [showRecipeCreateModal, setShowRecipeCreateModal] = useState(false);
-	const appContext = useContext(AppContext);
-	const history = useHistory();
-	let RecipeList;
-	if (appContext.user?.recipes != null) {
-		RecipeList = appContext.user.recipes.map((recipe) => (
-			<div key={recipe.id}>
-				<RecipeListItem
-					id={recipe.id}
-					title={recipe.title}
-					sharedBy={recipe.sharedBy}
-					countryOfOrigin={recipe.countryOfOrigin}
-					type={recipe.type}
-					rating={recipe.rating}
-					imagePath={recipe.imagePath}
-					timeToCook={recipe.preparationTimeTicks}
-				/>
-			</div>
-		));
-	} else {
-		RecipeList = <div> No recipes created! </div>;
-	}
+  const [showRecipeCreateModal, setShowRecipeCreateModal] = useState(false);
+  const appContext = useContext(AppContext);
+  const history = useHistory();
+  let RecipeList;
+  if (appContext.user?.recipes != null) {
+    RecipeList = appContext.user.recipes.map((recipe) => (
+      <div key={recipe.id}>
+        <RecipeListItem
+          id={recipe.id}
+          title={recipe.title}
+          sharedBy={recipe.sharedBy}
+          countryOfOrigin={recipe.countryOfOrigin}
+          type={recipe.type}
+          rating={recipe.rating}
+          imagePath={recipe.imagePath}
+          timeToCook={recipe.preparationTimeTicks}
+        />
+      </div>
+    ));
+  } else {
+    RecipeList = <div> No recipes created! </div>;
+  }
 
-	let FavouritesList;
-	if (appContext.user?.favourites != null) {
-		FavouritesList = appContext.user.recipes.map((recipe) => (
-			<div key={recipe.id}>
-				<RecipeListItem
-					id={recipe.id}
-					title={recipe.title}
-					sharedBy={recipe.sharedBy}
-					countryOfOrigin={recipe.countryOfOrigin}
-					type={recipe.type}
-					rating={recipe.rating}
-					imagePath={recipe.imagePath}
-					timeToCook={recipe.preparationTimeTicks}
-				/>
-			</div>
-		));
-	} else {
-		RecipeList = <div> No recipes created! </div>;
-	}
+  let FavouritesList;
+  if (appContext.user?.favourites != null) {
+    FavouritesList = appContext.user.recipes.map((recipe) => (
+      <div key={recipe.id}>
+        <RecipeListItem
+          id={recipe.id}
+          title={recipe.title}
+          sharedBy={recipe.sharedBy}
+          countryOfOrigin={recipe.countryOfOrigin}
+          type={recipe.type}
+          rating={recipe.rating}
+          imagePath={recipe.imagePath}
+          timeToCook={recipe.preparationTimeTicks}
+        />
+      </div>
+    ));
+  } else {
+    RecipeList = <div> No recipes created! </div>;
+  }
 
+<<<<<<< HEAD
 	function Logout() {
 		appContext.user = null;
 		localStorage.clear();
@@ -157,6 +158,78 @@ const ProfileComponent: React.FC<{}> = ({ }) => {
 			</IonItem>
 		</IonContent>
 	);
+=======
+  function Logout() {
+    appContext.user = null;
+    history.replace("/Login");
+  }
+  return (
+    <IonContent fullscreen className="profile-info">
+      <IonModal
+        isOpen={showRecipeCreateModal}
+        onDidDismiss={() => setShowRecipeCreateModal(false)}
+      >
+        <ModalCreateRecipe
+          showRecipeCreateModal={showRecipeCreateModal}
+          setShowRecipeCreateModal={setShowRecipeCreateModal}
+        />
+      </IonModal>
+      <IonItem>
+        <IonCol>
+          <IonRow class="ion-justify-content-end">
+            <IonButton
+              onClick={() => {
+                Logout();
+              }}
+            >
+              Logout
+            </IonButton>
+          </IonRow>
+          <IonRow
+            class="ion-align-items-center"
+            style={{ flexDirection: "column" }}
+          >
+            <div>
+              <IonIcon
+                icon={person}
+                slot="start"
+                style={{
+                  fontSize: 100,
+                  color: "#374957",
+                }}
+              />
+            </div>
+            <div>
+              <h4>{appContext.user?.fullName + "user"}</h4>
+            </div>
+            <h4>{appContext.user?.email ? "" : "placeholder@email.com"}</h4>
+          </IonRow>
+        </IonCol>
+      </IonItem>
+      <IonItem>
+        <IonCol>
+          <IonRow className="ion-align-items-center">
+            <p>My Recipes</p>
+            <IonRow class="ion-justify-content-center">
+              <IonButton onClick={() => setShowRecipeCreateModal(true)}>
+                + Add Recipe
+              </IonButton>
+            </IonRow>
+          </IonRow>
+          {RecipeList}
+        </IonCol>
+      </IonItem>
+      <IonItem>
+        <IonCol>
+          <IonRow>
+            <p>My Favourites </p>
+          </IonRow>
+          {FavouritesList}
+        </IonCol>
+      </IonItem>
+    </IonContent>
+  );
+>>>>>>> 4c814237dd105552237357602ecba1b114fd018f
 };
 
 export default ProfileComponent;
