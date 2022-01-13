@@ -12,8 +12,7 @@ import {
   IonIcon,
   IonItemDivider,
   IonTextarea,
-  IonModal,
-  IonPage,
+  IonImg,
 } from "@ionic/react";
 import React, {
   Dispatch,
@@ -30,16 +29,18 @@ import "./ModalCreateRecipe.css";
 import AppContext from "../../store/AppContext";
 import SimpleMap, { Marker } from "../../pages/map/Map";
 import GoogleMapReact, { Props } from "google-map-react";
+import { Console } from "console";
 
 const ModalCreateRecipe: React.FC<{
   showRecipeCreateModal: boolean;
   setShowRecipeCreateModal: Dispatch<SetStateAction<boolean>>;
 }> = (props) => {
   const [image, setImage] = useState("");
-
-  const imagePath = "https://icon-library.com/images/dot-icon/dot-icon-17.jpg"; //Image for the marker
-  const [marker, setMarker] = useState({ lat: 0, lng: 0, imagePath });
-
+  const [imageUrl, setImageUrl] = useState("");
+  const [imagePath, setimagePath] = useState("");
+  const markerImagePath =
+    "https://icon-library.com/images/dot-icon/dot-icon-17.jpg"; //Image for the marker
+  const [marker, setMarker] = useState({ lat: 0, lng: 0, markerImagePath });
   const appContext = useContext(AppContext);
   const {
     register,
@@ -47,13 +48,37 @@ const ModalCreateRecipe: React.FC<{
     formState: { errors },
   } = useForm();
   const fileInput = useRef<HTMLInputElement>(null);
-  const imageSelectedHandler = (event: any) => {
-    const imageURL: any = URL.createObjectURL(event.target.files[0]);
-    setImage(imageURL);
+
+  //Select the image from the file input
+
+  const imageSelectedHandler = (file: any) => {
+    const imageURL: any = URL.createObjectURL(file);
+    setImage(file);
+    setImageUrl(imageURL);
+    console.log(file);
+    uploadImage();
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "fan6fnua");
+    axios
+      .post("https://api.cloudinary.com/v1_1/dafrxyo42/image/upload", formData)
+      .then((data) => {
+        console.log(data);
+        setimagePath(data.data.url);
+        console.log(imagePath);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setImage("");
   };
+  //Upload selected image
+  const uploadImage = () => {};
   const handleRef = () => {
     fileInput.current?.click();
   };
+
+  //Submit POST request to API
 
   const onSubmit = (data: any) => {
     data = {
@@ -79,11 +104,11 @@ const ModalCreateRecipe: React.FC<{
               : appContext.user.JWTToken,
         },
       })
-      .then(function (response) {
+      .then((response) => {
         console.log(response);
         props.setShowRecipeCreateModal(false);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -97,7 +122,7 @@ const ModalCreateRecipe: React.FC<{
     const maxZoom = 300;
 
     function _onClick(obj: any) {
-      setMarker({ ...obj, imagePath });
+      setMarker({ ...obj, markerImagePath });
     }
     return (
       <IonContent style={{ height: "25vh" }}>
@@ -113,7 +138,7 @@ const ModalCreateRecipe: React.FC<{
           <Marker
             lng={marker.lng}
             lat={marker.lat}
-            imagePath={marker.imagePath}
+            markerImagePath={marker.markerImagePath}
           />
         </GoogleMapReact>
       </IonContent>
@@ -138,8 +163,12 @@ const ModalCreateRecipe: React.FC<{
                   accept="image/*"
                   {...register("imagePath")}
                   ref={fileInput}
+                  onChange={(event: any) => {
+                    imageSelectedHandler(event.target.files[0]);
+                  }}
                 />
               </IonButton>
+              <IonImg src={imageUrl}></IonImg>
             </IonCol>
             <IonCol size="8">
               <IonItem>
@@ -231,11 +260,9 @@ const ModalCreateRecipe: React.FC<{
               {...register("instructions")}
             ></IonTextarea>
           </IonItem>
-
           <h3 className="ion-padding">Select Location</h3>
           <MapFC />
         </IonGrid>
-
         <IonGrid className="ion-padding">
           <IonRow class="ion-justify-content-around">
             <IonButton type="submit">Add Recipe</IonButton>

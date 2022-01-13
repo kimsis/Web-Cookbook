@@ -25,7 +25,7 @@ interface Data {
 }
 
 
-export const Marker = ({ lat, lng, text, id, imagePath, handleToggleOpen }: { lat?: any; lng?: any; text?: any; id?: number; imagePath?: any; handleToggleOpen?: any; }) => (
+export const Marker = ({ lat, lng, text, id, markerImagePath, handleToggleOpen }: { lat?: any; lng?: any; text?: any; id?: number; markerImagePath?: any; handleToggleOpen?: any; }) => (
   <div style={{
     width: '50px',
     transform: 'translate(-50%, -100%)'
@@ -43,8 +43,8 @@ export const Marker = ({ lat, lng, text, id, imagePath, handleToggleOpen }: { la
         justifyContent: 'center',
         borderRadius: '30%',
       }}>
-      {imagePath && <img
-        src={imagePath}
+      {markerImagePath && <img
+        src={markerImagePath}
         width='40px'
         height='40px'
         style={{
@@ -144,7 +144,7 @@ const SimpleMap: React.FC<{}> = (props) => {
       <Marker
         id={recipe.id}
         text={recipe.title}
-        imagePath={recipe.imagePath}
+        markerImagePath={recipe.imagePath}
         lng={recipe.longitude}
         lat={recipe.latitude}
         handleToggleOpen={() => handleToggleOpen(recipe.id)}
