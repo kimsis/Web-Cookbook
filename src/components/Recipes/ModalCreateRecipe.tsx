@@ -90,9 +90,6 @@ const ModalCreateRecipe: React.FC<{
       sharedBy: appContext.user?.id,
       ingredients: [],
       imagePath,
-      longitude: 0,
-      latitude: 0,
-      rating: 0,
       latitude: marker.lat,
       longitude: marker.lng,
     };
