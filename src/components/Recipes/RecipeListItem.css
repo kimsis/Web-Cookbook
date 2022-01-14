@@ -2,10 +2,8 @@ h2 {
   margin: 0;
 }
 .dish-image::part(image) {
-  width: 100%;
-  height: 100%;
-  border-radius: 5px !important;
   overflow: hidden;
+  cursor: pointer;
   object-fit: cover;
 }
 .recipe-info {
