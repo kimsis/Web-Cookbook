@@ -1,11 +1,12 @@
 import Recipe from "./Recipe.interface"
 
 export default interface User {
-    JWTToken: string;
     id: number;
     fullName: string;
     email: string;
-    type: string;
+    JWTToken: string;
+    type: boolean;
     recipes: Recipe[];
     favourites: Recipe[];
+    expiry: number;
 }

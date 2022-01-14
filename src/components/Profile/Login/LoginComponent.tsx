@@ -13,6 +13,7 @@ import axios from "axios";
 import { useContext } from "react";
 import AppContext from "../../../store/AppContext";
 import { useHistory } from "react-router";
+import { title } from "process";
 
 const LoginComponent: React.FC<{}> = ({}) => {
   const {
@@ -36,10 +37,14 @@ const LoginComponent: React.FC<{}> = ({}) => {
             email: data.email,
             id: response.data.id,
             fullName: response.data.name,
-            type: "",
+            type: response.data.isAdmin,
             recipes: [],
             favourites: [],
+            // Getting the time of Login and adding an expiry of 24h, the duration of the token
+            expiry: (new Date().getTime() + 86400000),
           };
+          console.log(appContext.user);
+          
           localStorage.setItem("user", JSON.stringify(appContext.user));
           history.replace("/profile");
         }
@@ -62,8 +67,10 @@ const LoginComponent: React.FC<{}> = ({}) => {
 
         <IonItem class="input-field">
           <IonLabel position="stacked">Your password</IonLabel>
-          <IonInput type="password" {...register("password")} />
+          <IonInput type="password" {...register("password", { required: true })} />
         </IonItem>
+        {errors.password && <IonText color="danger">Invalid Password</IonText>}
+
         <div style={{ padding: "0 20px" }}>
           <IonButton expand="block" type="submit">
             Login

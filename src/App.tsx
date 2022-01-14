@@ -27,6 +27,7 @@ import { AppContextProvider } from './store/AppContext';
 import { FilterContextProvider } from './store/FiltersContext';
 import Login from './pages/login/Login';
 import Vendors from './pages/vendors/Vendors';
+import ManageContent from './pages/manageContent/ManageContent';
 
 const App: React.FC = () => {
 
@@ -42,17 +43,20 @@ const App: React.FC = () => {
                 <Route path="/" exact={true}>
                   <Redirect to="/recipes" />
                 </Route>
+                <Route path="/profile" exact={true}>
+                  < Profile />
+                </Route>
+                <Route path="/login" exact={true}>
+                  < Login />
+                </Route>
                 <Route path="/recipes" exact={true}>
                   < Recipes />
                 </Route>
                 <Route path="/vendors" exact={true}>
                   < Vendors />
                 </Route>
-                <Route path="/profile" exact={true}>
-                  < Profile />
-                </Route>
-                <Route path="/login" exact={true}>
-                  < Login />
+                <Route path="/manageContent" exact={true}>
+                  < ManageContent />
                 </Route>
                 <Route path="/map" exact={true}>
                   < Map />

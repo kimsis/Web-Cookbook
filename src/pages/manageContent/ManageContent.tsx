@@ -7,29 +7,25 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import React, { useContext, useState } from "react";
-import ProfileComponent from "../../components/Profile/ProfileComponent";
-import "./Profile.css";
+import "./ManageContent.css";
 import AppContext from "../../store/AppContext";
 import { useHistory } from "react-router";
-import User from "../../shared/interfaces/User.interface";
 
-const Profile: React.FC<{}> = (props) => {
+const ManageContent: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
   const history = useHistory();
   
-  let userString = localStorage.getItem("user");
-  if(userString != null) {
-    let user:User = JSON.parse(userString);
-    if(user.expiry < new Date().getTime()){
-      appContext.user = null;
-      localStorage.clear();
-    } else {
-      appContext.user = user;
-    }
+  let user = localStorage.getItem("user");
+  if(user != null) {
+    appContext.user = JSON.parse(user);
   }
   
   if (appContext.user == null) {
     history.replace("/login");
+  } else if (!appContext.user.type) {
+    console.log(appContext.user);
+    
+    history.replace("/profile");
   }
 
   return (
@@ -39,12 +35,11 @@ const Profile: React.FC<{}> = (props) => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle> Profile </IonTitle>
+          <IonTitle> Manage Content </IonTitle>
         </IonToolbar>
       </IonHeader>
-      <ProfileComponent />
     </IonPage>
   );
 };
 
-export default Profile;
+export default ManageContent;
