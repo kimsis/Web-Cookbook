@@ -124,26 +124,28 @@ const RecipeListItem: React.FC<{
                   slot="start"
                   style={{
                     fontSize: 24,
+                    marginRight: "5px",
                     marginBottom: "-5px",
-                    color: "#374957",
+                    color: "#F2AB27",
                   }}
                 />
-                Shared by: {props.sharedBy.name}
+                <b>Shared by</b> {props.sharedBy.name}
               </div>
             </IonRow>
             <IonRow>
-              <div className="recipe-info">
+              <h6 className="recipe-info">
                 <IonIcon
                   icon={time}
                   slot="start"
                   style={{
                     fontSize: 24,
+                    marginRight: "5px",
                     marginBottom: "-5px",
-                    color: "#374957",
+                    color: "#F2AB27",
                   }}
                 />
-                Time to cook: {props.timeToCook}
-              </div>
+                <b>Cook</b> {props.timeToCook} minutes
+              </h6>
             </IonRow>
             <IonRow>
               <div className="recipe-info">
@@ -153,10 +155,11 @@ const RecipeListItem: React.FC<{
                   style={{
                     fontSize: 24,
                     marginBottom: "-5px",
-                    color: "#374957",
+                    marginRight: "5px",
+                    color: "#F2AB27",
                   }}
                 />
-                Cuisine: {props.countryOfOrigin}
+                <b>{props.type} cuisine </b>
               </div>
             </IonRow>
           </IonCol>

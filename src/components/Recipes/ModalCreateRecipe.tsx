@@ -166,12 +166,19 @@ const ModalCreateRecipe: React.FC<{
                   }}
                 />
               </IonButton>
-              <IonImg src={imageUrl}></IonImg>
+              {/* Check if an image file is uploaded */}
+              {imageUrl ? (
+                <IonImg src={imageUrl}></IonImg>
+              ) : (
+                <p className="ion-padding">Select picture of the dish</p>
+              )}
+              {/*  */}
             </IonCol>
             <IonCol size="8">
               <IonItem>
-                <IonLabel position="stacked">Name of Dish</IonLabel>
+                <IonLabel position="stacked">Dish name</IonLabel>
                 <IonInput
+                  // value="Musaka" // Temporary value to create recipe faster, comment out in production
                   autocomplete="off"
                   required={true}
                   {...register("title")}
@@ -180,7 +187,10 @@ const ModalCreateRecipe: React.FC<{
               {
                 <IonItem>
                   <IonLabel position="stacked">Time to cook</IonLabel>
-                  <IonInput {...register("preparationTimeTicks")} />
+                  <IonInput
+                    // value={5} // Temporary value to create recipe faster, comment out in production
+                    {...register("preparationTimeTicks")}
+                  />
                 </IonItem>
               }
               {/* <IonItem>
@@ -189,8 +199,9 @@ const ModalCreateRecipe: React.FC<{
               </IonItem> */}
 
               <IonItem>
-                <IonLabel position="stacked">Type of cuisine</IonLabel>
+                <IonLabel position="stacked">Cuisine type</IonLabel>
                 <IonSelect
+                  // value="Mexican" // Temporary value to create recipe faster, comment out in production
                   {...register("type")}
                   cancelText="Cancel"
                   okText="Add"
@@ -204,10 +215,11 @@ const ModalCreateRecipe: React.FC<{
           </IonRow>
         </IonGrid>
         <IonGrid>
-          <h3>More Details</h3>
+          <h3>Aditional Details</h3>
           <IonItem>
             <IonLabel position="stacked">Difficulty</IonLabel>
             <IonSelect
+              // value={1} // Temporary value to create recipe faster, comment out in production
               {...register("difficulty")}
               cancelText="Cancel"
               okText="Add"
@@ -251,7 +263,7 @@ const ModalCreateRecipe: React.FC<{
             </IonSelect>
           </IonItem>
           <IonItemDivider />
-          <h3 className="ion-padding">Instructions</h3>
+          <h3>Instructions</h3>
           <IonItem>
             <IonTextarea
               rows={6}
@@ -259,7 +271,7 @@ const ModalCreateRecipe: React.FC<{
               {...register("instructions")}
             ></IonTextarea>
           </IonItem>
-          <h3>Select Location</h3>
+          <h5>Click on the map where the dish can be found(Optional)</h5>
           <MapFC />
         </IonGrid>
         <IonGrid className="ion-padding">

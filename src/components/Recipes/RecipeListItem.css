@@ -4,7 +4,7 @@ h2 {
 .dish-image::part(image) {
   overflow: hidden;
   cursor: pointer;
-  object-fit: cover;
+  object-fit: contain;
 }
 .recipe-info {
   font-size: large;
