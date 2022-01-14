@@ -11,16 +11,18 @@ import ProfileComponent from "../../components/Profile/ProfileComponent";
 import "./Profile.css";
 import AppContext from "../../store/AppContext";
 import { useHistory } from "react-router";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Profile: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
   const history = useHistory();
-  
+
   let user = localStorage.getItem("user");
-  if(user != null) {
+  if (user != null) {
     appContext.user = JSON.parse(user);
   }
-  
+
   if (appContext.user == null) {
     history.replace("/login");
   }
@@ -35,6 +37,7 @@ const Profile: React.FC<{}> = (props) => {
           <IonTitle> Profile </IonTitle>
         </IonToolbar>
       </IonHeader>
+      <ToastContainer />
       <ProfileComponent />
     </IonPage>
   );
