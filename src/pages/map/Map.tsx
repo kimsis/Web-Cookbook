@@ -187,9 +187,9 @@ const SimpleMap: React.FC<{}> = (props) => {
   function selectMarkerType(e: any) {
     setMarkerType(e);
     if (e == vendorMarkerList) {
-      setSelected(true);
-    } else {
       setSelected(false);
+    } else {
+      setSelected(true);
     }
   }
 
@@ -239,7 +239,6 @@ const SimpleMap: React.FC<{}> = (props) => {
         />
       ));
       setVendorMarkerList(vendorMarkerList);
-      setSelected(false);
     } else {
       setVendorMarkerList([<div> No vendors found! </div>]);
     }
@@ -248,11 +247,9 @@ const SimpleMap: React.FC<{}> = (props) => {
   useEffect(() => {
     if (recipeMarkerList.length > 0) {
       selectMarkerType(recipeMarkerList);
-
       setSelected(true);
     } else {
       selectMarkerType(vendorMarkerList);
-
       setSelected(false);
     }
   }, [recipeMarkerList]);
@@ -271,7 +268,7 @@ const SimpleMap: React.FC<{}> = (props) => {
           }}
         >
           <IonButton
-            color={color == true ? "secondary" : "primary"}
+            color={color == false ? "secondary" : "primary"}
             fill="solid"
             onClick={() => selectMarkerType(recipeMarkerList)}
             style={{ width: "250px" }}
@@ -279,7 +276,7 @@ const SimpleMap: React.FC<{}> = (props) => {
             Recipes
           </IonButton>
           <IonButton
-            color={color === false ? "secondary" : "primary"}
+            color={color === true ? "secondary" : "primary"}
             fill="solid"
             onClick={() => selectMarkerType(vendorMarkerList)}
             style={{ width: "250px" }}
