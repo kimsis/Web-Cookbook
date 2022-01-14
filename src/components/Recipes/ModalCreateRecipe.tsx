@@ -13,6 +13,7 @@ import {
   IonItemDivider,
   IonTextarea,
   IonImg,
+  IonToast,
 } from "@ionic/react";
 import React, {
   Dispatch,
@@ -29,28 +30,32 @@ import "./ModalCreateRecipe.css";
 import AppContext from "../../store/AppContext";
 import SimpleMap, { Marker } from "../../pages/map/Map";
 import GoogleMapReact, { Props } from "google-map-react";
-import { Console } from "console";
+import { toast } from "react-toastify";
 
 const ModalCreateRecipe: React.FC<{
   showRecipeCreateModal: boolean;
   setShowRecipeCreateModal: Dispatch<SetStateAction<boolean>>;
 }> = (props) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const appContext = useContext(AppContext);
+  const fileInput = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [imagePath, setimagePath] = useState("");
   const markerImagePath =
     "https://icon-library.com/images/dot-icon/dot-icon-17.jpg"; //Image for the marker
   const [marker, setMarker] = useState({ lat: 0, lng: 0, markerImagePath });
-  const appContext = useContext(AppContext);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const fileInput = useRef<HTMLInputElement>(null);
-
+  const handleRef = () => {
+    fileInput.current?.click();
+  };
   //Select the image from the file input
-
+  function notify() {
+    toast("Your recipe have been added!");
+  }
   const imageSelectedHandler = (file: any) => {
     const imageURL: any = URL.createObjectURL(file);
     setImage(file);
@@ -69,11 +74,6 @@ const ModalCreateRecipe: React.FC<{
         console.log(error);
       });
     setImage("");
-  };
-  //Upload selected image
-  const uploadImage = () => {};
-  const handleRef = () => {
-    fileInput.current?.click();
   };
 
   //Submit POST request to API
@@ -103,8 +103,10 @@ const ModalCreateRecipe: React.FC<{
         },
       })
       .then((response) => {
-        console.log(response);
-        props.setShowRecipeCreateModal(false);
+        if (response.status == 200) {
+          props.setShowRecipeCreateModal(false);
+          notify();
+        }
       })
       .catch((error) => {
         console.log(error + " Reached maximum number of recipes");
