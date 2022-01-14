@@ -154,7 +154,13 @@ const ModalCreateVendor: React.FC<{
                   }}
                 />
               </IonButton>
-              <IonImg src={imageUrl}></IonImg>
+              {/* Check if an image file is uploaded */}
+              {imageUrl ? (
+                <IonImg src={imageUrl}></IonImg>
+              ) : (
+                <p className="ion-padding">Select picture of the vendor</p>
+              )}
+              {/*  */}
             </IonCol>
             <IonCol size="8">
               <IonItem>
@@ -176,7 +182,7 @@ const ModalCreateVendor: React.FC<{
           </IonRow>
         </IonGrid>
         <IonGrid>
-          <h3>Where is this vendor located?</h3>
+          <h5>Click on the map where the dish can be found</h5>
           <MapFC />
         </IonGrid>
         <IonGrid className="ion-padding">
