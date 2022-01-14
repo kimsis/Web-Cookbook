@@ -9,6 +9,7 @@ import {
   IonRow,
   IonCol,
   IonChip,
+  IonModal,
 } from "@ionic/react";
 import { useParams } from "react-router";
 import "./RecipeInfoModal.css";
@@ -23,6 +24,8 @@ import {
   earth,
   egg,
   timer,
+  qrCodeOutline,
+  qrCode,
 } from "ionicons/icons";
 import {
   Dispatch,
@@ -34,6 +37,18 @@ import {
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import axios, { AxiosResponse } from "axios";
 import AppContext from "../../store/AppContext";
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  InstapaperShareButton,
+  InstapaperIcon,
+  FacebookMessengerShareButton,
+  PinterestShareButton,
+  PinterestIcon,
+} from "react-share";
+import { Icon } from "ionicons/dist/types/components/icon/icon";
+import QRModal from "./QRModal";
+import { Oval } from "react-loader-spinner";
 
 const RecipeInfoModal: React.FC<{
   id: number;
@@ -44,12 +59,14 @@ const RecipeInfoModal: React.FC<{
   }, []);
 
   const [recipe, setRecipe] = useState<Recipe>();
+  const [isLoading, setIsLoading] = useState(true);
   const appContext = useContext(AppContext);
 
   async function getData() {
     await axios(appContext.http + "Recipe/" + props.id)
       .then((response) => {
         setData(response);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -76,6 +93,9 @@ const RecipeInfoModal: React.FC<{
     }
   };
 
+  // QR Code Modal
+  const [showQRModal, setShowshowQRModal] = useState(0);
+
   function setError(error: any) {
     console.log(error);
   }
@@ -83,8 +103,18 @@ const RecipeInfoModal: React.FC<{
   const { name } = useParams<{ name: string }>();
   const starsArray = new Array(5).fill(0);
   const iconsStyling = { margin: "0px", marginRight: "8px" };
-  return (
+  return isLoading ? (
+    <div style={{ margin: "auto" }}>
+      <Oval color="#F2AB27" />
+    </div>
+  ) : (
     <IonContent>
+      <IonModal
+        isOpen={showQRModal ? true : false}
+        onDidDismiss={() => setShowshowQRModal(0)}
+      >
+        <QRModal id={props.id} setShowQRModal={setShowshowQRModal} />
+      </IonModal>
       <IonGrid className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
         <h1>{recipe?.title}</h1>
         <IonRow>
@@ -93,7 +123,10 @@ const RecipeInfoModal: React.FC<{
           </IonCol>
           <IonCol>
             <IonRow>
-              <IonCol className="ion-align-self-center ion-float-right ion-justify-content-center">
+              <IonCol
+                sizeMd="12"
+                className="ion-align-self-center ion-float-right ion-justify-content-center"
+              >
                 {starsArray.map((x, i) => {
                   if (i + 1 <= (recipe?.rating ? recipe.rating : 0)) {
                     return (
@@ -181,51 +214,79 @@ const RecipeInfoModal: React.FC<{
             </IonItem>
           </IonCol>
         </IonRow>
-
+        <IonItem>
+          <IonLabel>Share the meal!</IonLabel>
+          <FacebookShareButton
+            url={"http://www.partirecept.com"}
+            quote={"PartiRecept - Explore the kitchen of Oud-Woensel"}
+            hashtag="#partirecept"
+          >
+            <FacebookIcon size={36} borderRadius={50} />
+          </FacebookShareButton>
+          <PinterestShareButton
+            url={"http://www.partirecept.com"}
+            title={"PartiRecept - Explore the kitchen of Oud-Woensel"}
+            media={recipe!.imagePath}
+          >
+            <PinterestIcon
+              style={{ margin: "5px" }}
+              size={36}
+              borderRadius={50}
+            ></PinterestIcon>
+          </PinterestShareButton>
+          <IonIcon
+            onClick={() => setShowshowQRModal(props.id)}
+            icon={qrCode}
+            size="large"
+            style={{ padding: "5px", color: "#F2AB27" }}
+          ></IonIcon>
+        </IonItem>
         <IonRow>
           <IonCol>
-            <h4>Details</h4>
-            <IonItem color="none" lines="none">
-              <IonIcon
-                icon={earth}
-                slot="start"
-                style={{
-                  fontSize: 24,
-                  marginRight: "5px",
-                  color: "#F2AB27",
-                }}
-              />
-              <p>
-                <b>Country of origin</b> {recipe?.countryOfOrigin}
-              </p>
-            </IonItem>
-            <IonItem color="none" lines="none">
-              <IonIcon
-                icon={egg}
-                slot="start"
-                style={{
-                  fontSize: 24,
-                  marginRight: "5px",
-                  color: "#F2AB27",
-                }}
-              />
-              <p>
-                <b>Serving size</b> {recipe?.numberOfServings} meals
-              </p>
-            </IonItem>
-            <IonItem color="none" lines="none">
-              <IonIcon
-                icon={timer}
-                slot="start"
-                style={{
-                  fontSize: 24,
-                  marginRight: "5px",
-                  color: "#F2AB27",
-                }}
-              />
-              <p>
-                <b>Preparation time</b> {recipe?.preparationTimeTicks} minutes
-              </p>
+            <IonItem>
+              {/* <h4>Details</h4> */}
+              <IonItem color="none" lines="none">
+                <IonIcon
+                  icon={earth}
+                  slot="start"
+                  style={{
+                    fontSize: 24,
+                    marginRight: "5px",
+                    color: "#F2AB27",
+                  }}
+                />
+                <p>
+                  <b>Country of origin</b> {recipe?.countryOfOrigin}
+                </p>
+              </IonItem>
+              <IonItem color="none" lines="none">
+                <IonIcon
+                  icon={egg}
+                  slot="start"
+                  style={{
+                    fontSize: 24,
+                    marginRight: "5px",
+                    color: "#F2AB27",
+                  }}
+                />
+                <p>
+                  <b>Serving size</b> {recipe?.numberOfServings} meals
+                </p>
+              </IonItem>
+              <IonItem color="none" lines="none">
+                <IonIcon
+                  icon={timer}
+                  slot="start"
+                  style={{
+                    fontSize: 24,
+                    marginRight: "5px",
+                    color: "#F2AB27",
+                  }}
+                />
+                <p>
+                  <b>Preparation time</b> {recipe?.preparationTimeTicks} minutes
+                </p>
+              </IonItem>
             </IonItem>
           </IonCol>
         </IonRow>
