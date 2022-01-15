@@ -60,6 +60,8 @@ const ProfileComponent: React.FC<{}> = ({ }) => {
 	function setData(data: AxiosResponse, setRecipes: Dispatch<Recipe[]>): Recipe[] {
 		let recipesArray:Data = JSON.parse(JSON.stringify(data.data));
 		setRecipes(recipesArray.items);
+    console.log(recipeList);
+    
 		return recipesArray.items;
 	}
 

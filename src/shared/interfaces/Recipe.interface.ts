@@ -1,4 +1,7 @@
-export default interface Recipe {
+import Displayable from "./Displayable.interface";
+
+export default interface Recipe extends Displayable
+ {
     id: number;
     title: string;
     sharedBy: {id: number, name: string};

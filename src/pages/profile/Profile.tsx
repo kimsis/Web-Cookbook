@@ -17,16 +17,20 @@ const Profile: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
   const history = useHistory();
   
-  let userString = localStorage.getItem("user");
-  if(userString != null) {
-    let user:User = JSON.parse(userString);
-    if(user.expiry < new Date().getTime()){
-      appContext.user = null;
-      localStorage.clear();
-    } else {
-      appContext.user = user;
-    }
-  }
+  // let userString = localStorage.getItem("user");
+  // if(userString != null) {
+  //   let user:User = JSON.parse(userString);
+  //   if(user.expiry < new Date().getTime()){
+  //     appContext.user = null;
+  //     localStorage.clear();
+  //   } else {
+  //     appContext.user = user;
+  //   }
+  // }
+  console.log(appContext.user?.expiry);
+  console.log(new Date().getTime());
+  console.log(appContext.user);
+  console.log(localStorage.getItem("user"));
   
   if (appContext.user == null) {
     history.replace("/login");

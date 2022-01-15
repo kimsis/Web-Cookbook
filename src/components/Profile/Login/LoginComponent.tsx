@@ -42,6 +42,7 @@ const LoginComponent: React.FC<{}> = ({}) => {
             favourites: [],
             // Getting the time of Login and adding an expiry of 24h, the duration of the token
             expiry: (new Date().getTime() + 86400000),
+            imagePath: "",
           };
           console.log(appContext.user);
           

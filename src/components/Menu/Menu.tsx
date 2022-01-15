@@ -92,8 +92,6 @@ const Menu: React.FC = () => {
 								/>
 							);
 						} else if (appContext.user != null && appContext.user.type) {
-							console.log(appContext.user);
-							
 							return (
 								<MenuItem
 									key={index}

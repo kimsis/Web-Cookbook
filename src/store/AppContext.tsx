@@ -11,10 +11,25 @@ const AppContext = createContext<{http: string | null, user: User | null}>({
     user: currentUser,
 });
 
+function getUser(): User | null {
+    let userString = localStorage.getItem("user");
+    if(userString != null) {
+        let user = JSON.parse(userString);
+        if(user.expiry < new Date().getTime()) {
+            localStorage.clear();
+            return null;
+        } else {
+        return JSON.parse(userString);
+        }
+    } else { 
+        return null;
+    }
+}
+
 export const AppContextProvider: React.FC = (props) => {
     const context = {
         http: http,
-        user: currentUser,
+        user: getUser(),
     };
 
     return  <AppContext.Provider value={context}>
