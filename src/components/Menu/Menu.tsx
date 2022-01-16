@@ -82,7 +82,7 @@ const Menu: React.FC = () => {
 						</IonItem>
 					</IonListHeader>
 					{appPages.map((appPage, index) => {
-						if (index != appPages.length - 1) {
+						if (index !== appPages.length - 1) {
 							return (
 								<MenuItem
 									key={index}

@@ -10,11 +10,11 @@ import {
 import logo from "../../../assets/logo.png";
 import { useForm } from "react-hook-form";
 import "./RegisterComponent.css";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import axios from "axios";
 import AppContext from "../../../store/AppContext";
 
-const RegisterComponent: React.FC<{}> = ({}) => {
+const RegisterComponent: React.FC<{}> = () => {
   const {
     register,
     handleSubmit,
@@ -34,7 +34,7 @@ const RegisterComponent: React.FC<{}> = ({}) => {
       });
       return;
     }
-    if (data.password != data.password_repeat) {
+    if (data.password !== data.password_repeat) {
       setError("password_repeat", {
         type: "custom",
         message: "Passwords do not match",

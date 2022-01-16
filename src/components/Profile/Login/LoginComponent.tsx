@@ -13,9 +13,8 @@ import axios from "axios";
 import { useContext } from "react";
 import AppContext from "../../../store/AppContext";
 import { useHistory } from "react-router";
-import { title } from "process";
 
-const LoginComponent: React.FC<{}> = ({}) => {
+const LoginComponent: React.FC<{}> = () => {
   const {
     register,
     handleSubmit,
@@ -31,7 +30,7 @@ const LoginComponent: React.FC<{}> = ({}) => {
     await axios
       .post(appContext.http + "authentication/login", data)
       .then(function (response) {
-        if (response.status == 200) {
+        if (response.status === 200) {
           appContext.user = {
             JWTToken: response.data.jwtToken,
             email: data.email,

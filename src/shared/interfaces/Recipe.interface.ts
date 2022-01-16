@@ -18,4 +18,5 @@ export default interface Recipe extends Displayable
     timeToCook: string;
     latitude: number;
     longitude: number;
+    isApproved: boolean;
 }

@@ -6,12 +6,11 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import ProfileComponent from "../../components/Profile/ProfileComponent";
 import "./Profile.css";
 import AppContext from "../../store/AppContext";
 import { useHistory } from "react-router";
-import User from "../../shared/interfaces/User.interface";
 
 const Profile: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);

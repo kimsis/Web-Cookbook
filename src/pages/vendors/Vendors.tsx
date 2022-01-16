@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonList, IonModal, IonSearchbar } from '@ionic/react';
+import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonList, IonModal } from '@ionic/react';
 import React, { useContext, useEffect, useState } from "react";
 import RecipeInfoModal from '../../components/Recipes/RecipeInfoModal';
 import axios, { AxiosResponse } from 'axios';
@@ -73,7 +73,7 @@ const Vendors: React.FC<{
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonModal isOpen={showRecipeInfoModal == 0 ? false : true} onDidDismiss={() => setShowRecipeInfoModal(0)}>
+        <IonModal isOpen={showRecipeInfoModal === 0 ? false : true} onDidDismiss={() => setShowRecipeInfoModal(0)}>
           < RecipeInfoModal id={showRecipeInfoModal} setShowRecipeInfoModal={setShowRecipeInfoModal} />
         </IonModal>
         <IonList id='menu-list'>

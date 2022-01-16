@@ -74,7 +74,7 @@ const Recipes: React.FC<{}> = (props) => {
   }
 
   let RecipeList;
-  if (recipes != null) {
+  if (recipes != null && recipes.length > 0) {
     RecipeList = recipes.map((recipe, key) => (
       <div
         className="recipe-list"
@@ -120,7 +120,7 @@ const Recipes: React.FC<{}> = (props) => {
           />
         </IonModal>
         <IonModal
-          isOpen={showRecipeInfoModal == 0 ? false : true}
+          isOpen={showRecipeInfoModal === 0 ? false : true}
           onDidDismiss={() => setShowRecipeInfoModal(0)}
         >
           <RecipeInfoModal
@@ -128,7 +128,7 @@ const Recipes: React.FC<{}> = (props) => {
             setShowRecipeInfoModal={setShowRecipeInfoModal}
           />
         </IonModal>
-        <IonSearchbar value={searchText} onIonChange={e => SearchText(e.detail.value == undefined ? '' : e.detail.value)} showCancelButton="focus"></IonSearchbar>
+        <IonSearchbar value={searchText} onIonChange={e => SearchText(e.detail.value === undefined ? '' : e.detail.value)} showCancelButton="focus"></IonSearchbar>
         <IonButton class='filter' onClick={e => getData()}>All</IonButton>
         <IonButton class='filter' onClick={() => setShowRecipeFilterModal(true)}>+Filter</IonButton>
         <IonList id='menu-list'>

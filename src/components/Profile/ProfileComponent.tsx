@@ -5,13 +5,10 @@ import {
 	IonIcon,
 	IonItem,
 	IonModal,
-	IonPage,
 	IonRow,
-	IonText,
-	IonTitle,
 } from '@ionic/react';
 import axios, { AxiosResponse } from 'axios';
-import { person, mail } from 'ionicons/icons';
+import { person } from 'ionicons/icons';
 import { Dispatch, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import Data from '../../shared/interfaces/Data.interface';
@@ -21,19 +18,13 @@ import ModalCreateRecipe from '../Recipes/ModalCreateRecipe';
 import RecipeListItem from '../Recipes/RecipeListItem';
 import './ProfileComponent';
 
-const ProfileComponent: React.FC<{}> = ({ }) => {
-	const contentFontSize = '2.5vw';
-	//const iconsStyling = {
-	//	margin: '5px',
-	//	width: '1.5em',
-	//	height: '1.5em',
-	//	fontSize: contentFontSize,
-	//};
-	const [recipeList, setRecipeList] = useState<Recipe[] | null>();
+const ProfileComponent: React.FC<{}> = () => {
+
+  const [recipeList, setRecipeList] = useState<Recipe[] | null>();
 	const [favouritesList, setFavouritesList] = useState<Recipe[] | null>();
 
 	useEffect(() => {
-		if (appContext.user?.id != undefined) {
+		if (appContext.user?.id !== undefined) {
 			getData();
 		}
 	}, []);
@@ -70,7 +61,7 @@ const ProfileComponent: React.FC<{}> = ({ }) => {
 	}
 
 
-  const [showRecipeCreateModal, setShowRecipeCreateModal] = useState(false);
+  const [showRecipeCreateModal, setShowRecipeCreateModal] = useState(0);
   const appContext = useContext(AppContext);
   const history = useHistory();
   let RecipeList;
@@ -121,8 +112,8 @@ const ProfileComponent: React.FC<{}> = ({ }) => {
   return (
     <IonContent fullscreen className="profile-info">
       <IonModal
-        isOpen={showRecipeCreateModal}
-        onDidDismiss={() => setShowRecipeCreateModal(false)}
+        isOpen={showRecipeCreateModal === 0 ? false : true}
+        onDidDismiss={() => setShowRecipeCreateModal(0)}
       >
         <ModalCreateRecipe
           showRecipeCreateModal={showRecipeCreateModal}
@@ -166,7 +157,7 @@ const ProfileComponent: React.FC<{}> = ({ }) => {
           <IonRow className="ion-align-items-center">
             <p>My Recipes</p>
             <IonRow class="ion-justify-content-center">
-              <IonButton onClick={() => setShowRecipeCreateModal(true)}>
+              <IonButton onClick={() => setShowRecipeCreateModal(-1)}>
                 + Add Recipe
               </IonButton>
             </IonRow>

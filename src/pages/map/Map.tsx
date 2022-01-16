@@ -1,20 +1,14 @@
-import React, { Component, useContext, useEffect, useState } from 'react';
-import GoogleMapReact, { Props } from 'google-map-react';
+import React, { useContext, useEffect, useState } from 'react';
+import GoogleMapReact from 'google-map-react';
 import './Map.css';
 import {
   IonButton,
-  IonButtons,
   IonContent,
-  IonHeader,
-  IonMenuButton,
   IonModal,
   IonPage,
-  IonTitle,
-  IonToolbar,
 } from '@ionic/react';
-import ModalCreateRecipe from '../../components/Recipes/ModalCreateRecipe';
 import RecipeInfoModal from '../../components/Recipes/RecipeInfoModal';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import Recipe from '../../shared/interfaces/Recipe.interface';
 import AppContext from '../../store/AppContext';
 
@@ -44,6 +38,7 @@ export const Marker = ({ lat, lng, text, id, markerImagePath, handleToggleOpen }
         borderRadius: '30%',
       }}>
       {markerImagePath && <img
+        alt='recipe'
         src={markerImagePath}
         width='40px'
         height='40px'
@@ -76,7 +71,6 @@ const SimpleMap: React.FC<{}> = (props) => {
   // const [ingredients, setIngredients] = useState<Ingredient[] | null>();
 
   let recipesArray: Data;
-  let ingredientsArray: Data;
 
   useEffect(() => {
     getRecipes();
@@ -86,7 +80,7 @@ const SimpleMap: React.FC<{}> = (props) => {
   const NovFC: React.FC<{ id: number }> = (props) => {
 
     return (<IonContent >
-      <IonModal isOpen={showRecipeInfoModal == 0 ? false : true} onDidDismiss={() => setShowRecipeInfoModal(0)}>
+      <IonModal isOpen={showRecipeInfoModal === 0 ? false : true} onDidDismiss={() => setShowRecipeInfoModal(0)}>
         <RecipeInfoModal id={showRecipeInfoModal} setShowRecipeInfoModal={setShowRecipeInfoModal} />
       </IonModal>
 
