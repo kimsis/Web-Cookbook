@@ -21,13 +21,14 @@ import Data from "../../shared/interfaces/Data.interface";
 import "./Recipes.css";
 import AppContext from "../../store/AppContext";
 import FilterContext from "../../store/FiltersContext";
+import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
 
 const Recipes: React.FC<{}> = (props) => {
   useEffect(() => {
     getData();
   }, []);
 
-  // const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
+  const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
   const [showRecipeFilterModal, setShowRecipeFilterModal] = useState(false);
   const [recipes, setRecipes] = useState<Recipe[] | null>();
   const [searchText, setSearchText] = useState("");
@@ -73,12 +74,12 @@ const Recipes: React.FC<{}> = (props) => {
   }
 
   let RecipeList;
-  if (recipes != null) {
+  if (recipes != null && recipes.length > 0) {
     RecipeList = recipes.map((recipe, key) => (
       <div
         className="recipe-list"
         key={recipe.id}
-        // onClick={() => setShowRecipeInfoModal(recipe.id)}
+      // onClick={() => setShowRecipeInfoModal(recipe.id)}
       >
         <RecipeListItem
           key={recipe.id}
@@ -118,19 +119,19 @@ const Recipes: React.FC<{}> = (props) => {
             setShowRecipeFilterModal={setShowRecipeFilterModal}
           />
         </IonModal>
-        {/* <IonModal
-          isOpen={showRecipeInfoModal == 0 ? false : true}
+        <IonModal
+          isOpen={showRecipeInfoModal === 0 ? false : true}
           onDidDismiss={() => setShowRecipeInfoModal(0)}
         >
           <RecipeInfoModal
             id={showRecipeInfoModal}
             setShowRecipeInfoModal={setShowRecipeInfoModal}
           />
-        </IonModal> */}
+        </IonModal>
         <IonSearchbar
           value={searchText}
           onIonChange={(e) =>
-            SearchText(e.detail.value == undefined ? "" : e.detail.value)
+            SearchText(e.detail.value === undefined ? "" : e.detail.value)
           }
           showCancelButton="focus"
         ></IonSearchbar>

@@ -3,18 +3,13 @@ import GoogleMapReact, { Props } from "google-map-react";
 import "./Map.css";
 import {
   IonButton,
-  IonButtons,
   IonContent,
-  IonHeader,
-  IonMenuButton,
   IonModal,
   IonPage,
   IonTitle,
-  IonToolbar,
 } from "@ionic/react";
-import ModalCreateRecipe from "../../components/Recipes/ModalCreateRecipe";
 import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import AppContext from "../../store/AppContext";
 import Vendor from "../../shared/interfaces/Vendor.interface";
@@ -70,6 +65,7 @@ export const Marker = ({
     >
       {markerImagePath && (
         <img
+          alt="item image"
           src={markerImagePath}
           width="40px"
           height="40px"
@@ -99,6 +95,8 @@ const SimpleMap: React.FC<{}> = (props) => {
   const [itemId, setItemId] = useState(-1);
   const [recipes, setRecipes] = useState<Recipe[] | null>();
   const [vendors, setVendors] = useState<Vendor[] | null>();
+  const [selectedMarkerType, setMarkerType] = useState<JSX.Element[]>([]);
+  const [color, setSelected] = useState(true);
 
   let recipesArray: RecipeData;
   let vendorsArray: VendorData;
@@ -128,7 +126,7 @@ const SimpleMap: React.FC<{}> = (props) => {
     return (
       <IonContent>
         <IonModal
-          isOpen={showVendorInfoModal == 0 ? false : true}
+          isOpen={showVendorInfoModal === 0 ? false : true}
           onDidDismiss={() => setShowVendorInfoModal(0)}
         >
           <VendorInfoModal
@@ -182,44 +180,75 @@ const SimpleMap: React.FC<{}> = (props) => {
     setShowVendorInfoModal(e);
   }
 
+  function selectMarkerType(e: any) {
+    setMarkerType(e);
+    if (e == vendorMarkerList) {
+      setSelected(false);
+    } else {
+      setSelected(true);
+    }
+  }
+
   let center = {
     lat: 51.449747,
     lng: 5.473891,
   };
   let zoom = 17;
 
-  let recipeMarkerList;
-  let vendorMarkerList;
+  const [recipeMarkerList, setRecipeMarkerList] = useState<JSX.Element[]>([
+    <div> No recipes found! </div>,
+  ]);
 
-  if (recipes != null) {
-    recipeMarkerList = recipes.map((recipe) => (
-      <Marker
-        id={recipe.id}
-        text={recipe.title}
-        markerImagePath={recipe.imagePath}
-        lng={recipe.longitude}
-        lat={recipe.latitude}
-        handleToggleOpen={() => handleToggleOpenRecipe(recipe.id)}
-      />
-    ));
-  } else {
-    recipeMarkerList = <div> No recipes found! </div>;
-  }
+  const [vendorMarkerList, setVendorMarkerList] = useState<JSX.Element[]>([
+    <div> No vendors found! </div>,
+  ]);
 
-  if (vendors != null) {
-    vendorMarkerList = vendors.map((vendor) => (
-      <Marker
-        id={vendor.id}
-        text={vendor.name}
-        markerImagePath={vendor.imagePath}
-        lng={vendor.longitude}
-        lat={vendor.latitude}
-        handleToggleOpen={() => handleToggleOpenVendor(vendor.id)}
-      />
-    ));
-  } else {
-    vendorMarkerList = <div> No vendors found! </div>;
-  }
+  useEffect(() => {
+    if (recipes != null) {
+      const recipeMarkerList = recipes.map((recipe) => (
+        <Marker
+          id={recipe.id}
+          text={recipe.title}
+          markerImagePath={recipe.imagePath}
+          lng={recipe.longitude}
+          lat={recipe.latitude}
+          handleToggleOpen={() => handleToggleOpenRecipe(recipe.id)}
+        />
+      ));
+      setRecipeMarkerList(recipeMarkerList);
+      setSelected(true);
+    } else {
+      setRecipeMarkerList([<div> No recipes found! </div>]);
+    }
+  }, [recipes]);
+
+  useEffect(() => {
+    if (vendors != null) {
+      const vendorMarkerList = vendors.map((vendor) => (
+        <Marker
+          id={vendor.id}
+          text={vendor.name}
+          markerImagePath={vendor.imagePath}
+          lng={vendor.longitude}
+          lat={vendor.latitude}
+          handleToggleOpen={() => handleToggleOpenVendor(vendor.id)}
+        />
+      ));
+      setVendorMarkerList(vendorMarkerList);
+    } else {
+      setVendorMarkerList([<div> No vendors found! </div>]);
+    }
+  }, [vendors]);
+
+  useEffect(() => {
+    if (recipeMarkerList.length > 0) {
+      selectMarkerType(recipeMarkerList);
+      setSelected(true);
+    } else {
+      selectMarkerType(vendorMarkerList);
+      setSelected(false);
+    }
+  }, [recipeMarkerList]);
 
   return (
     <IonPage>
@@ -235,17 +264,17 @@ const SimpleMap: React.FC<{}> = (props) => {
           }}
         >
           <IonButton
-            color="secondary"
+            color={color == false ? "secondary" : "primary"}
             fill="solid"
-            onClick={() => {}}
+            onClick={() => selectMarkerType(recipeMarkerList)}
             style={{ width: "250px" }}
           >
             Recipes
           </IonButton>
           <IonButton
-            color="secondary"
+            color={color === true ? "secondary" : "primary"}
             fill="solid"
-            onClick={() => {}}
+            onClick={() => selectMarkerType(vendorMarkerList)}
             style={{ width: "250px" }}
           >
             Vendors
@@ -258,8 +287,7 @@ const SimpleMap: React.FC<{}> = (props) => {
           defaultCenter={center}
           defaultZoom={zoom}
         >
-          {vendorMarkerList}
-          {recipeMarkerList}
+          {selectedMarkerType}
           {/* <Marker lat={51.45079} lng={5.471861} text='Lidl' id={1} handleToggleOpen={() => handleToggleOpen(1)} />
           <Marker lat={51.451563} lng={5.472298} text='Albert Heijn' id={2} handleToggleOpen={() => handleToggleOpen(50)} />
           <Marker lat={51.449972} lng={5.472884} text='The Food Corner' id={3} handleToggleOpen={() => handleToggleOpen(55)} />

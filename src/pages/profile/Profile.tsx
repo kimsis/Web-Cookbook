@@ -6,7 +6,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import ProfileComponent from "../../components/Profile/ProfileComponent";
 import "./Profile.css";
 import AppContext from "../../store/AppContext";
@@ -17,12 +17,12 @@ import "react-toastify/dist/ReactToastify.css";
 const Profile: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
   const history = useHistory();
-
-  let user = localStorage.getItem("user");
-  if (user != null) {
-    appContext.user = JSON.parse(user);
-  }
-
+  
+  console.log(appContext.user?.expiry);
+  console.log(new Date().getTime());
+  console.log(appContext.user);
+  console.log(localStorage.getItem("user"));
+  
   if (appContext.user == null) {
     history.replace("/login");
   }
