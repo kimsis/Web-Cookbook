@@ -17,7 +17,7 @@ import axios, { AxiosResponse } from "axios";
 import Data from "../../shared/interfaces/Data.interface";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import ModalCreateRecipe from "../../components/Recipes/ModalCreateRecipe";
-import Vendor from "../../shared/interfaces/Vendor.interfdace";
+import Vendor from "../../shared/interfaces/Vendor.interface";
 
 const ManageContent: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);

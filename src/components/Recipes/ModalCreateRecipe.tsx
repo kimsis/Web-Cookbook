@@ -13,6 +13,7 @@ import {
   IonItemDivider,
   IonTextarea,
   IonImg,
+  IonToast,
 } from "@ionic/react";
 import React, {
   Dispatch,
@@ -29,6 +30,7 @@ import "./ModalCreateRecipe.css";
 import AppContext from "../../store/AppContext";
 import { Marker } from "../../pages/map/Map";
 import GoogleMapReact from "google-map-react";
+import { toast } from "react-toastify";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 
 const ModalCreateRecipe: React.FC<{
@@ -80,12 +82,17 @@ const ModalCreateRecipe: React.FC<{
     console.log(error);
   }
 
+  const handleRef = () => {
+    fileInput.current?.click();
+  };
   //Select the image from the file input
-
+  function notify() {
+    toast("Your recipe have been added!");
+  }
   const imageSelectedHandler = (file: any) => {
     const imageURL: any = URL.createObjectURL(file);
     setimagePath(imageURL);
-    uploadImage();
+
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "fan6fnua");
@@ -97,11 +104,6 @@ const ModalCreateRecipe: React.FC<{
       .catch((error) => {
         console.log(error);
       });
-  };
-  //Upload selected image
-  const uploadImage = () => {};
-  const handleRef = () => {
-    fileInput.current?.click();
   };
 
   //Submit POST request to API
@@ -149,8 +151,10 @@ const ModalCreateRecipe: React.FC<{
         },
       })
       .then((response) => {
-        console.log(response);
-        props.setShowRecipeCreateModal(0);
+        if (response.status == 200) {
+          props.setShowRecipeCreateModal(0);
+          notify();
+        }
       })
       .catch((error) => {
         console.log(error + " Reached maximum number of recipes");
@@ -172,7 +176,7 @@ const ModalCreateRecipe: React.FC<{
       console.log(obj);
     }
     return (
-      <IonContent style={{ height: "25vh" }}>
+      <IonContent style={{ height: "40vh" }}>
         <GoogleMapReact
           onClick={_onClick}
           style={{ height: "100%" }}
@@ -193,8 +197,8 @@ const ModalCreateRecipe: React.FC<{
   };
 
   return (
-    <IonContent className="ion-padding">
-      <h3 className="ion-padding">Add Recipe</h3>
+    <IonContent className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
+      <h3>Add new recipe</h3>
       {/* form */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* <img src={image} /> //Display Selected Image*/}
@@ -203,7 +207,7 @@ const ModalCreateRecipe: React.FC<{
             <IonCol size="4" style={{ margin: "auto" }}>
               <IonButton onClick={handleRef} style={{ width: "100%" }}>
                 <IonIcon slot="start" icon={cloudUploadOutline} />
-                Choose Image
+                Picture
                 <input
                   hidden
                   type="file"
@@ -215,11 +219,17 @@ const ModalCreateRecipe: React.FC<{
                   }}
                 />
               </IonButton>
-              <IonImg src={imagePath}></IonImg>
+              {/* Check if an image file is uploaded */}
+              {imagePath ? (
+                <IonImg src={imagePath}></IonImg>
+              ) : (
+                <p className="ion-padding">Select picture of the dish</p>
+              )}
+              {/*  */}
             </IonCol>
             <IonCol size="8">
               <IonItem>
-                <IonLabel position="stacked">Name of Dish</IonLabel>
+                <IonLabel position="stacked">Dish name</IonLabel>
                 <IonInput
                   value={recipe?.title}
                   autocomplete="off"
@@ -230,7 +240,10 @@ const ModalCreateRecipe: React.FC<{
               {
                 <IonItem>
                   <IonLabel position="stacked">Time to cook</IonLabel>
-                  <IonInput value={recipe?.timeToCook} {...register("preparationTimeTicks")} />
+                  <IonInput
+                    value={recipe?.timeToCook}
+                    {...register("preparationTimeTicks")}
+                  />
                 </IonItem>
               }
               {/* <IonItem>
@@ -239,7 +252,7 @@ const ModalCreateRecipe: React.FC<{
               </IonItem> */}
 
               <IonItem>
-                <IonLabel position="stacked">Type of cuisine</IonLabel>
+                <IonLabel position="stacked">Cuisine type</IonLabel>
                 <IonSelect
                 value={recipe?.type}
                   {...register("type")}
@@ -255,7 +268,7 @@ const ModalCreateRecipe: React.FC<{
           </IonRow>
         </IonGrid>
         <IonGrid>
-          <h3 className="ion-padding">More Details</h3>
+          <h3>Aditional Details</h3>
           <IonItem>
             <IonLabel position="stacked">Difficulty</IonLabel>
             <IonSelect
@@ -306,15 +319,16 @@ const ModalCreateRecipe: React.FC<{
             </IonSelect>
           </IonItem>
           <IonItemDivider />
-          <h3 className="ion-padding">Instructions</h3>
+          <h3>Instructions</h3>
           <IonItem>
             <IonTextarea
             value={recipe?.instructions}
+              rows={6}
               placeholder="Add instructions here..."
               {...register("instructions")}
             ></IonTextarea>
           </IonItem>
-          <h3 className="ion-padding">Select Location</h3>
+          <h5>Click on the map where the dish can be found(Optional)</h5>
           <MapFC />
         </IonGrid>
         <IonGrid className="ion-padding">

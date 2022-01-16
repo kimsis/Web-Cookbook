@@ -14,14 +14,14 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import ModalFilterRecipe from "../../components/Recipes/ModalFilterRecipe";
 import RecipeListItem from "../../components/Recipes/RecipeListItem";
-import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
+// import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
 import axios, { AxiosResponse } from "axios";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import Data from "../../shared/interfaces/Data.interface";
 import "./Recipes.css";
 import AppContext from "../../store/AppContext";
 import FilterContext from "../../store/FiltersContext";
-
+import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
 
 const Recipes: React.FC<{}> = (props) => {
   useEffect(() => {
@@ -79,7 +79,7 @@ const Recipes: React.FC<{}> = (props) => {
       <div
         className="recipe-list"
         key={recipe.id}
-        onClick={() => setShowRecipeInfoModal(recipe.id)}
+        // onClick={() => setShowRecipeInfoModal(recipe.id)}
       >
         <RecipeListItem
           key={recipe.id}
@@ -128,12 +128,23 @@ const Recipes: React.FC<{}> = (props) => {
             setShowRecipeInfoModal={setShowRecipeInfoModal}
           />
         </IonModal>
-        <IonSearchbar value={searchText} onIonChange={e => SearchText(e.detail.value === undefined ? '' : e.detail.value)} showCancelButton="focus"></IonSearchbar>
-        <IonButton class='filter' onClick={e => getData()}>All</IonButton>
-        <IonButton class='filter' onClick={() => setShowRecipeFilterModal(true)}>+Filter</IonButton>
-        <IonList id='menu-list'>
-          {RecipeList}
-        </IonList>
+        <IonSearchbar
+          value={searchText}
+          onIonChange={(e) =>
+            SearchText(e.detail.value === undefined ? "" : e.detail.value)
+          }
+          showCancelButton="focus"
+        ></IonSearchbar>
+        <IonButton class="filter" onClick={(e) => getData()}>
+          All
+        </IonButton>
+        <IonButton
+          class="filter"
+          onClick={() => setShowRecipeFilterModal(true)}
+        >
+          +Filter
+        </IonButton>
+        <IonList id="menu-list">{RecipeList}</IonList>
       </IonContent>
     </IonPage>
   );

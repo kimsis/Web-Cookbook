@@ -11,21 +11,13 @@ import ProfileComponent from "../../components/Profile/ProfileComponent";
 import "./Profile.css";
 import AppContext from "../../store/AppContext";
 import { useHistory } from "react-router";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Profile: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
   const history = useHistory();
   
-  // let userString = localStorage.getItem("user");
-  // if(userString != null) {
-  //   let user:User = JSON.parse(userString);
-  //   if(user.expiry < new Date().getTime()){
-  //     appContext.user = null;
-  //     localStorage.clear();
-  //   } else {
-  //     appContext.user = user;
-  //   }
-  // }
   console.log(appContext.user?.expiry);
   console.log(new Date().getTime());
   console.log(appContext.user);
@@ -45,6 +37,7 @@ const Profile: React.FC<{}> = (props) => {
           <IonTitle> Profile </IonTitle>
         </IonToolbar>
       </IonHeader>
+      <ToastContainer />
       <ProfileComponent />
     </IonPage>
   );
