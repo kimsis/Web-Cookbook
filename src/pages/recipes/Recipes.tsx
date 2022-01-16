@@ -79,7 +79,7 @@ const Recipes: React.FC<{}> = (props) => {
       <div
         className="recipe-list"
         key={recipe.id}
-        // onClick={() => setShowRecipeInfoModal(recipe.id)}
+      // onClick={() => setShowRecipeInfoModal(recipe.id)}
       >
         <RecipeListItem
           key={recipe.id}

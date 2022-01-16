@@ -7,11 +7,9 @@ import {
   IonModal,
   IonPage,
   IonTitle,
-  IonToolbar,
 } from "@ionic/react";
-import ModalCreateRecipe from "../../components/Recipes/ModalCreateRecipe";
 import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import AppContext from "../../store/AppContext";
 import Vendor from "../../shared/interfaces/Vendor.interface";

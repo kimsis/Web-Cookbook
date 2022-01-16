@@ -53,21 +53,20 @@ const ModalCreateRecipe: React.FC<{
 
   // If the modal is opened with an id > 0 it's purpose is to edit an existing recipe
   useEffect(() => {
-    if(id > 0)
-    getData();
-  }, [])
-  
+    if (id > 0) getData();
+  }, []);
+
   async function getData() {
     await axios(appContext.http + "Recipe/" + id)
-    .then((response) => {
-      setData(response);
-    })
-    .catch((error) => {
-      console.error("Error fetching data: ", error);
-      setError(error);
-    });
+      .then((response) => {
+        setData(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+        setError(error);
+      });
   }
-  
+
   function setData(data: AxiosResponse) {
     let recipe: Recipe = JSON.parse(JSON.stringify(data.data));
     setRecipe(recipe);
@@ -75,10 +74,10 @@ const ModalCreateRecipe: React.FC<{
     // Set the Map marker, using the recipe data
     let lat = recipe.latitude;
     let lng = recipe.longitude;
-    setMarker({lat, lng, markerImagePath});
+    setMarker({ lat, lng, markerImagePath });
   }
-  
-  function setError(error:any) {
+
+  function setError(error: any) {
     console.log(error);
   }
 
@@ -123,42 +122,42 @@ const ModalCreateRecipe: React.FC<{
       longitude: marker.lng,
     };
 
-    if(id === -1) {
-    axios
-      .post(appContext.http + "Recipe", data, {
-        headers: {
-          "x-auth":
-            appContext.user?.JWTToken === undefined
-              ? ""
-              : appContext.user.JWTToken,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        props.setShowRecipeCreateModal(0);
-      })
-      .catch((error) => {
-        console.log(error + " Reached maximum number of recipes");
-      });
-    } else if(id > 0) {
+    if (id === -1) {
       axios
-      .put(appContext.http + "Recipe/" + id, data, {
-        headers: {
-          "x-auth":
-            appContext.user?.JWTToken === undefined
-              ? ""
-              : appContext.user.JWTToken,
-        },
-      })
-      .then((response) => {
-        if (response.status == 200) {
+        .post(appContext.http + "Recipe", data, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken === undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
+        .then((response) => {
+          console.log(response);
           props.setShowRecipeCreateModal(0);
-          notify();
-        }
-      })
-      .catch((error) => {
-        console.log(error + " Reached maximum number of recipes");
-      });
+        })
+        .catch((error) => {
+          console.log(error + " Reached maximum number of recipes");
+        });
+    } else if (id > 0) {
+      axios
+        .put(appContext.http + "Recipe/" + id, data, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken === undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            props.setShowRecipeCreateModal(0);
+            notify();
+          }
+        })
+        .catch((error) => {
+          console.log(error + " Reached maximum number of recipes");
+        });
     }
   };
 
@@ -254,7 +253,7 @@ const ModalCreateRecipe: React.FC<{
               <IonItem>
                 <IonLabel position="stacked">Cuisine type</IonLabel>
                 <IonSelect
-                value={recipe?.type}
+                  value={recipe?.type}
                   {...register("type")}
                   cancelText="Cancel"
                   okText="Add"
@@ -272,7 +271,7 @@ const ModalCreateRecipe: React.FC<{
           <IonItem>
             <IonLabel position="stacked">Difficulty</IonLabel>
             <IonSelect
-            value={recipe?.difficulty}
+              value={recipe?.difficulty}
               {...register("difficulty")}
               cancelText="Cancel"
               okText="Add"
@@ -284,12 +283,16 @@ const ModalCreateRecipe: React.FC<{
           </IonItem>
           <IonItem>
             <IonLabel position="stacked">Country of origin</IonLabel>
-            <IonInput value={recipe?.countryOfOrigin} autocomplete="off" {...register("countryOfOrigin")} />
+            <IonInput
+              value={recipe?.countryOfOrigin}
+              autocomplete="off"
+              {...register("countryOfOrigin")}
+            />
           </IonItem>
           <IonItem>
             <IonLabel position="stacked">Number of servings</IonLabel>
             <IonInput
-            value={recipe?.numberOfServings}
+              value={recipe?.numberOfServings}
               autocomplete="off"
               type="number"
               {...register("numberOfServings")}
@@ -298,7 +301,7 @@ const ModalCreateRecipe: React.FC<{
           <IonItem>
             <IonLabel position="stacked">Preparation Time</IonLabel>
             <IonInput
-            value={recipe?.preparationTimeTicks}
+              value={recipe?.preparationTimeTicks}
               autocomplete="off"
               {...register("preparationTimeTicks")}
               type="number"
@@ -307,7 +310,7 @@ const ModalCreateRecipe: React.FC<{
           <IonItem>
             <IonLabel position="stacked">Ingredients</IonLabel>
             <IonSelect
-            value={recipe?.unlistedIngredients}
+              value={recipe?.unlistedIngredients}
               multiple={true}
               {...register("unlistedIngredients")}
               cancelText="Cancel"
@@ -322,7 +325,7 @@ const ModalCreateRecipe: React.FC<{
           <h3>Instructions</h3>
           <IonItem>
             <IonTextarea
-            value={recipe?.instructions}
+              value={recipe?.instructions}
               rows={6}
               placeholder="Add instructions here..."
               {...register("instructions")}
