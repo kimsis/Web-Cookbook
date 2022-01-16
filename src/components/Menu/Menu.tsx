@@ -24,6 +24,8 @@ import {
 } from 'ionicons/icons';
 import './Menu.css';
 import MenuItem from './MenuItem';
+import { useContext } from 'react';
+import AppContext from '../../store/AppContext';
 
 export interface AppPage {
 	url: string;
@@ -52,21 +54,22 @@ const appPages: AppPage[] = [
 		mdIcon: locationSharp,
 	},
 	{
-		title: 'Manage Content',
-		url: '/manageContent',
-		iosIcon: listOutline,
-		mdIcon: listSharp,
-	},
-	{
 		title: 'Map',
 		url: '/map',
 		iosIcon: locateOutline,
 		mdIcon: locateSharp,
 	},
+	{
+		title: 'Manage Content',
+		url: '/manageContent',
+		iosIcon: listOutline,
+		mdIcon: listSharp,
+	}
 ];
 
 const Menu: React.FC = () => {
 	const location = useLocation();
+	const appContext = useContext(AppContext);
 
 	return (
 		<IonMenu contentId='main' type='overlay'>
@@ -79,14 +82,25 @@ const Menu: React.FC = () => {
 						</IonItem>
 					</IonListHeader>
 					{appPages.map((appPage, index) => {
-						return (
-							<MenuItem
-                				key={index}
-								index={index}
-								appPage={appPage}
-								pathname={location.pathname}
-							/>
-						);
+						if (index !== appPages.length - 1) {
+							return (
+								<MenuItem
+									key={index}
+									index={index}
+									appPage={appPage}
+									pathname={location.pathname}
+								/>
+							);
+						} else if (appContext.user != null && appContext.user.type) {
+							return (
+								<MenuItem
+									key={index}
+									index={index}
+									appPage={appPage}
+									pathname={location.pathname}
+								/>
+							)
+						}
 					})}
 				</IonList>
 			</IonContent>

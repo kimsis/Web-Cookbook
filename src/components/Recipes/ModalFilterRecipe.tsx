@@ -1,6 +1,6 @@
 import {
 	IonButton,
-	IonContent, IonGrid, IonItem, IonRow,
+	IonContent, IonGrid, IonRow,
 } from '@ionic/react';
 import React, { Dispatch, SetStateAction, useContext } from 'react';
 import Filter from '../../shared/interfaces/Filter.interface';
@@ -35,9 +35,9 @@ const ModalFilterRecipe: React.FC<{
 	function addFilter(type: string, filter: string | number) {
 		let addition: Filter = { type: type, value: filter };
 		// Check if the filter exists
-		if (filterContext.filters.find(e => e.type == addition.type && e.value == addition.value)) {
+		if (filterContext.filters.find(e => e.type === addition.type && e.value === addition.value)) {
 			// Find the index of the filter and remove it from the array
-			let index = filterContext.filters.findIndex(e => e.type == addition.type && e.value == addition.value);
+			let index = filterContext.filters.findIndex(e => e.type === addition.type && e.value === addition.value);
 			if (index > -1) {
 				filterContext.filters.splice(index, 1);
 			}

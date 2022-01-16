@@ -73,12 +73,12 @@ const Recipes: React.FC<{}> = (props) => {
   }
 
   let RecipeList;
-  if (recipes != null) {
+  if (recipes != null && recipes.length > 0) {
     RecipeList = recipes.map((recipe, key) => (
       <div
         className="recipe-list"
         key={recipe.id}
-        // onClick={() => setShowRecipeInfoModal(recipe.id)}
+      // onClick={() => setShowRecipeInfoModal(recipe.id)}
       >
         <RecipeListItem
           key={recipe.id}

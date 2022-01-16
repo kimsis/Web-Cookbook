@@ -9,7 +9,6 @@ import {
   IonToolbar,
   IonList,
   IonModal,
-  IonSearchbar,
 } from "@ionic/react";
 import React, { useContext, useEffect, useState } from "react";
 import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";

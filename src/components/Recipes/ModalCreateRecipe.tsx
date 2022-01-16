@@ -23,45 +23,76 @@ import React, {
   useRef,
   useState,
 } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { cloudUploadOutline } from "ionicons/icons";
 import { useForm } from "react-hook-form";
 import "./ModalCreateRecipe.css";
 import AppContext from "../../store/AppContext";
-import SimpleMap, { Marker } from "../../pages/map/Map";
-import GoogleMapReact, { Props } from "google-map-react";
 import { toast } from "react-toastify";
+import { Marker } from "../../pages/map/Map";
+import GoogleMapReact from "google-map-react";
+import Recipe from "../../shared/interfaces/Recipe.interface";
 
 const ModalCreateRecipe: React.FC<{
-  showRecipeCreateModal: boolean;
-  setShowRecipeCreateModal: Dispatch<SetStateAction<boolean>>;
+  showRecipeCreateModal: number;
+  setShowRecipeCreateModal: Dispatch<SetStateAction<number>>;
 }> = (props) => {
+  const id = props.showRecipeCreateModal;
+  const [imagePath, setimagePath] = useState("");
+  const markerImagePath =
+    "https://icon-library.com/images/dot-icon/dot-icon-17.jpg"; //Image for the marker
+  const [marker, setMarker] = useState({ lat: 0, lng: 0, markerImagePath });
+  const appContext = useContext(AppContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const appContext = useContext(AppContext);
   const fileInput = useRef<HTMLInputElement>(null);
-  const [image, setImage] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [imagePath, setimagePath] = useState("");
-  const markerImagePath =
-    "https://icon-library.com/images/dot-icon/dot-icon-17.jpg"; //Image for the marker
-  const [marker, setMarker] = useState({ lat: 0, lng: 0, markerImagePath });
+  const [recipe, setRecipe] = useState<Recipe>();
+
   const handleRef = () => {
     fileInput.current?.click();
   };
+
+  // If the modal is opened with an id > 0 it's purpose is to edit an existing recipe
+  useEffect(() => {
+    if (id > 0)
+      getData();
+  }, [])
+
+  async function getData() {
+    await axios(appContext.http + "Recipe/" + id)
+      .then((response) => {
+        setData(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+        setError(error);
+      });
+  }
+
+  function setData(data: AxiosResponse) {
+    let recipe: Recipe = JSON.parse(JSON.stringify(data.data));
+    setRecipe(recipe);
+    setimagePath(recipe.imagePath);
+    // Set the Map marker, using the recipe data
+    let lat = recipe.latitude;
+    let lng = recipe.longitude;
+    setMarker({ lat, lng, markerImagePath });
+  }
+
+  function setError(error: any) {
+    console.log(error);
+  }
+
   //Select the image from the file input
   function notify() {
     toast("Your recipe have been added!");
   }
   const imageSelectedHandler = (file: any) => {
     const imageURL: any = URL.createObjectURL(file);
-    setImage(file);
-    setImageUrl(imageURL);
-    console.log(file);
-
+    setimagePath(imageURL);
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "fan6fnua");
@@ -73,7 +104,6 @@ const ModalCreateRecipe: React.FC<{
       .catch((error) => {
         console.log(error);
       });
-    setImage("");
   };
 
   //Submit POST request to API
@@ -97,16 +127,14 @@ const ModalCreateRecipe: React.FC<{
       .post(appContext.http + "Recipe", data, {
         headers: {
           "x-auth":
-            appContext.user?.JWTToken == undefined
+            appContext.user?.JWTToken === undefined
               ? ""
               : appContext.user.JWTToken,
         },
       })
       .then((response) => {
-        if (response.status == 200) {
-          props.setShowRecipeCreateModal(false);
-          notify();
-        }
+        console.log(response);
+        props.setShowRecipeCreateModal(0);
       })
       .catch((error) => {
         console.log(error + " Reached maximum number of recipes");
@@ -114,6 +142,7 @@ const ModalCreateRecipe: React.FC<{
   };
 
   const MapFC: React.FC<{}> = (props) => {
+    // If opening the modal to edit a recipe, set the marker to its known location
     const center = {
       lat: 51.449747,
       lng: 5.473891,
@@ -123,6 +152,7 @@ const ModalCreateRecipe: React.FC<{
 
     function _onClick(obj: any) {
       setMarker({ ...obj, markerImagePath });
+      console.log(obj);
     }
     return (
       <IonContent style={{ height: "40vh" }}>
@@ -169,8 +199,8 @@ const ModalCreateRecipe: React.FC<{
                 />
               </IonButton>
               {/* Check if an image file is uploaded */}
-              {imageUrl ? (
-                <IonImg src={imageUrl}></IonImg>
+              {imagePath ? (
+                <IonImg src={imagePath}></IonImg>
               ) : (
                 <p className="ion-padding">Select picture of the dish</p>
               )}
@@ -180,7 +210,7 @@ const ModalCreateRecipe: React.FC<{
               <IonItem>
                 <IonLabel position="stacked">Dish name</IonLabel>
                 <IonInput
-                  // value="Musaka" // Temporary value to create recipe faster, comment out in production
+                  value={recipe?.title}
                   autocomplete="off"
                   required={true}
                   {...register("title")}
@@ -190,7 +220,7 @@ const ModalCreateRecipe: React.FC<{
                 <IonItem>
                   <IonLabel position="stacked">Time to cook</IonLabel>
                   <IonInput
-                    // value={5} // Temporary value to create recipe faster, comment out in production
+                    value={recipe?.timeToCook}
                     {...register("preparationTimeTicks")}
                   />
                 </IonItem>
@@ -203,7 +233,7 @@ const ModalCreateRecipe: React.FC<{
               <IonItem>
                 <IonLabel position="stacked">Cuisine type</IonLabel>
                 <IonSelect
-                  // value="Mexican" // Temporary value to create recipe faster, comment out in production
+                  value={recipe?.type}
                   {...register("type")}
                   cancelText="Cancel"
                   okText="Add"
@@ -221,7 +251,7 @@ const ModalCreateRecipe: React.FC<{
           <IonItem>
             <IonLabel position="stacked">Difficulty</IonLabel>
             <IonSelect
-              // value={1} // Temporary value to create recipe faster, comment out in production
+              value={recipe?.difficulty}
               {...register("difficulty")}
               cancelText="Cancel"
               okText="Add"
@@ -233,11 +263,12 @@ const ModalCreateRecipe: React.FC<{
           </IonItem>
           <IonItem>
             <IonLabel position="stacked">Country of origin</IonLabel>
-            <IonInput autocomplete="off" {...register("countryOfOrigin")} />
+            <IonInput value={recipe?.countryOfOrigin} autocomplete="off" {...register("countryOfOrigin")} />
           </IonItem>
           <IonItem>
             <IonLabel position="stacked">Number of servings</IonLabel>
             <IonInput
+              value={recipe?.numberOfServings}
               autocomplete="off"
               type="number"
               {...register("numberOfServings")}
@@ -246,6 +277,7 @@ const ModalCreateRecipe: React.FC<{
           <IonItem>
             <IonLabel position="stacked">Preparation Time</IonLabel>
             <IonInput
+              value={recipe?.preparationTimeTicks}
               autocomplete="off"
               {...register("preparationTimeTicks")}
               type="number"
@@ -254,6 +286,7 @@ const ModalCreateRecipe: React.FC<{
           <IonItem>
             <IonLabel position="stacked">Ingredients</IonLabel>
             <IonSelect
+              value={recipe?.unlistedIngredients}
               multiple={true}
               {...register("unlistedIngredients")}
               cancelText="Cancel"
@@ -269,6 +302,7 @@ const ModalCreateRecipe: React.FC<{
           <IonItem>
             <IonTextarea
               rows={6}
+              value={recipe?.instructions}
               placeholder="Add instructions here..."
               {...register("instructions")}
             ></IonTextarea>
@@ -280,7 +314,7 @@ const ModalCreateRecipe: React.FC<{
           <IonRow class="ion-justify-content-around">
             <IonButton type="submit">Add Recipe</IonButton>
             <IonButton
-              onClick={() => props.setShowRecipeCreateModal(false)}
+              onClick={() => props.setShowRecipeCreateModal(0)}
               fill="outline"
               color="medium"
             >
