@@ -1,5 +1,4 @@
-import { IonIcon, IonCard, IonImg, IonRow, IonCol, IonGrid } from '@ionic/react';
-import { star, starHalf, starOutline, time, megaphone, earth } from 'ionicons/icons';
+import { IonCard, IonImg, IonRow, IonCol, IonGrid } from '@ionic/react';
 import './VendorListItem.css';
 
 const VendorListItem: React.FC<{
@@ -10,8 +9,6 @@ const VendorListItem: React.FC<{
     latitude: number;
 }> = (props) => {
     const titleFontSize = "2.7vw";
-    const contentFontSize = "2.5vw";
-    const iconsStyling = { margin: "5px", width: "1.5em", height: "1.5em", fontSize: contentFontSize };
 
 	return (        
 		<IonCard>

@@ -6,7 +6,7 @@ import {
     IonTitle,
     IonToolbar,
   } from "@ionic/react";
-  import React, { useContext, useState } from "react";
+  import React, { useContext } from "react";
   import "./Login.css";
   import UserHandle from "../../components/Profile/UserHandle/UserHandle";
   import AppContext from "../../store/AppContext";

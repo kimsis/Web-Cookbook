@@ -1,4 +1,7 @@
-export default interface Recipe {
+import Displayable from "./Displayable.interface";
+
+export default interface Recipe extends Displayable
+ {
     id: number;
     title: string;
     sharedBy: {id: number, name: string};
@@ -15,4 +18,5 @@ export default interface Recipe {
     timeToCook: string;
     latitude: number;
     longitude: number;
+    isApproved: boolean;
 }

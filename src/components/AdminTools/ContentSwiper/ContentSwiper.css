@@ -1,0 +1,11 @@
+.addImage {
+    background-color: var(--ion-color-primary);
+}
+.swiper-container {
+    margin-left: 0 !important;
+}
+ion-row{
+    margin-top: 40px;
+    font-size: large;
+    font-weight: 700;
+}

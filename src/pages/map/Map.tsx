@@ -3,10 +3,7 @@ import GoogleMapReact, { Props } from "google-map-react";
 import "./Map.css";
 import {
   IonButton,
-  IonButtons,
   IonContent,
-  IonHeader,
-  IonMenuButton,
   IonModal,
   IonPage,
   IonTitle,
@@ -70,6 +67,7 @@ export const Marker = ({
     >
       {markerImagePath && (
         <img
+          alt="item image"
           src={markerImagePath}
           width="40px"
           height="40px"
@@ -130,7 +128,7 @@ const SimpleMap: React.FC<{}> = (props) => {
     return (
       <IonContent>
         <IonModal
-          isOpen={showVendorInfoModal == 0 ? false : true}
+          isOpen={showVendorInfoModal === 0 ? false : true}
           onDidDismiss={() => setShowVendorInfoModal(0)}
         >
           <VendorInfoModal
