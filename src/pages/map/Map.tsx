@@ -13,7 +13,7 @@ import axios from "axios";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import AppContext from "../../store/AppContext";
 import Vendor from "../../shared/interfaces/Vendor.interface";
-import VendorInfoModal from "../../components/Profile/Vendors/VendorInfoModal";
+import VendorInfoModal from "../../components/Vendors/VendorInfoModal";
 
 interface RecipeData {
   page: number;
