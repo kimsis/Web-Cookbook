@@ -1,0 +1,9 @@
+.vendor-list {
+  margin: auto;
+  max-width: 800px;
+}
+.vendor-image::part(image) {
+  overflow: hidden;
+  cursor: pointer;
+  object-fit: contain;
+}

@@ -1,11 +1,12 @@
 .addImage {
-    background-color: var(--ion-color-primary);
+  background-color: var(--ion-color-primary);
 }
 .swiper-container {
-    margin-left: 0 !important;
+  margin-left: 0 !important;
 }
-ion-row{
+/* ion-row{
     margin-top: 40px;
     font-size: large;
     font-weight: 700;
-}
+} */
+/* Setting the style this way updates all the ion-row used in the app */
