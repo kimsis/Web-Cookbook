@@ -4,7 +4,6 @@ import {
   IonGrid,
   IonRow,
   IonItem,
-  IonLabel,
   IonInput,
   IonCol,
   IonIcon,
@@ -15,26 +14,30 @@ import React, {
   Dispatch,
   SetStateAction,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from "react";
-import axios from "axios";
-import { cloudUploadOutline } from "ionicons/icons";
+import axios, { AxiosResponse } from "axios";
+import { cloudUploadOutline, trashBin } from "ionicons/icons";
 import { useForm } from "react-hook-form";
 import AppContext from "../../store/AppContext";
-import SimpleMap, { Marker } from "../../pages/map/Map";
-import GoogleMapReact, { Props } from "google-map-react";
+import { Marker } from "../../pages/map/Map";
+import GoogleMapReact from "google-map-react";
 import "./ModalCreateVendor.css";
+import Vendor from "../../shared/interfaces/Vendor.interface";
 
 const ModalCreateVendor: React.FC<{
   showVendorCreateModal: number;
   setShowVendorCreateModal: Dispatch<SetStateAction<number>>;
 }> = (props) => {
   const id = props.showVendorCreateModal;
+  const [vendor, setVendor] = useState<Vendor>();
   const [imagePath, setImagePath] = useState("");
   const markerImagePath =
     "https://icon-library.com/images/dot-icon/dot-icon-17.jpg"; //Image for the marker
   const [marker, setMarker] = useState({ lat: 0, lng: 0, markerImagePath });
+  const [deleteButton, setDeleteButton] = useState(<div></div>);
   const appContext = useContext(AppContext);
   const {
     register,
@@ -42,6 +45,22 @@ const ModalCreateVendor: React.FC<{
     formState: { errors },
   } = useForm();
   const fileInput = useRef<HTMLInputElement>(null);
+
+  const handleRef = () => {
+    fileInput.current?.click();
+  };
+
+  useEffect(() => {
+    if (id > 0) {
+      getData();
+      setDeleteButton(
+        <IonButton onClick={() => deleteVendor()} color="danger">
+          <IonIcon slot="start" icon={trashBin} />
+          Delete
+        </IonButton>
+      )
+    }
+  }, [])
 
   //Select the image from the file input
 
@@ -53,6 +72,7 @@ const ModalCreateVendor: React.FC<{
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "fan6fnua");
+
     axios
       .post("https://api.cloudinary.com/v1_1/dafrxyo42/image/upload", formData)
       .then((data) => {
@@ -63,24 +83,11 @@ const ModalCreateVendor: React.FC<{
       .catch((error) => {
         console.log(error);
       });
-  };
-  const handleRef = () => {
-    fileInput.current?.click();
-  };
+  }
 
-  //Submit POST request to API
-
-  const onSubmit = (data: any) => {
-    data = {
-      ...data,
-      imagePath: imagePath,
-      latitude: marker.lat,
-      longitude: marker.lng,
-      ingredients: [],
-    };
-
+  async function deleteVendor() {
     axios
-      .post(appContext.http + "Vendor", data, {
+      .delete(appContext.http + "Vendor/" + id, {
         headers: {
           "x-auth":
             appContext.user?.JWTToken == undefined
@@ -93,8 +100,82 @@ const ModalCreateVendor: React.FC<{
         props.setShowVendorCreateModal(0);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error + " Error deleting recipe");
       });
+  };
+
+  async function getData() {
+    await axios(appContext.http + "Vendor/" + id)
+      .then((response) => {
+        setData(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+        setError(error);
+      });
+  }
+
+  function setData(data: AxiosResponse) {
+    let vendor: Vendor = JSON.parse(JSON.stringify(data.data));
+    setVendor(vendor);
+    setImagePath(vendor.imagePath);
+    // Set the Map marker, using the recipe data
+    let lat = vendor.latitude;
+    let lng = vendor.longitude;
+    setMarker({ lat, lng, markerImagePath });
+    console.log(vendor);
+  }
+
+  function setError(error: any) {
+    console.log(error);
+  }
+
+  //Submit POST request to API
+
+  const onSubmit = (data: any) => {
+    data = {
+      ...data,
+      imagePath: imagePath,
+      latitude: marker.lat,
+      longitude: marker.lng,
+      ingredients: [],
+    };
+
+    if (id === -1) {
+      axios
+        .post(appContext.http + "Vendor", data, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken == undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          props.setShowVendorCreateModal(0);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      axios
+        .put(appContext.http + "Vendor/" + id, data, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken == undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          props.setShowVendorCreateModal(0);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const MapFC: React.FC<{}> = (props) => {
@@ -162,6 +243,7 @@ const ModalCreateVendor: React.FC<{
             <IonCol size="8">
               <IonItem>
                 <IonInput
+                  value={vendor?.name}
                   placeholder="Vendor name"
                   autocomplete="off"
                   required={true}
@@ -170,6 +252,7 @@ const ModalCreateVendor: React.FC<{
               </IonItem>
               <IonItem>
                 <IonTextarea
+                  value={vendor?.description}
                   rows={6}
                   placeholder="Add more information about the vendor"
                   {...register("description")}
@@ -184,7 +267,7 @@ const ModalCreateVendor: React.FC<{
         </IonGrid>
         <IonGrid className="ion-padding">
           <IonRow class="ion-justify-content-around">
-            <IonButton type="submit">Add vendor</IonButton>
+            <IonButton type="submit"> {id === -1 ? "Add " : "Modify "}vendor</IonButton>
             <IonButton
               onClick={() => props.setShowVendorCreateModal(0)}
               fill="outline"
@@ -192,6 +275,7 @@ const ModalCreateVendor: React.FC<{
             >
               Close
             </IonButton>
+            {deleteButton}
           </IonRow>
         </IonGrid>
       </form>

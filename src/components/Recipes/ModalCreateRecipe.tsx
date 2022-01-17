@@ -52,7 +52,7 @@ const ModalCreateRecipe: React.FC<{
     fileInput.current?.click();
   };
   const [recipe, setRecipe] = useState<Recipe>();
-  const [imagePath, setimagePath] = useState("");
+  const [imagePath, setImagePath] = useState("");
   const [deleteButton, setDeleteButton] = useState(<div></div>);
   const [marker, setMarker] = useState({ lat: 0, lng: 0, markerImagePath });
 
@@ -102,7 +102,7 @@ const ModalCreateRecipe: React.FC<{
   function setData(data: AxiosResponse) {
     let recipe: Recipe = JSON.parse(JSON.stringify(data.data));
     setRecipe(recipe);
-    setimagePath(recipe.imagePath);
+    setImagePath(recipe.imagePath);
     // Set the Map marker, using the recipe data
     let lat = recipe.latitude;
     let lng = recipe.longitude;
@@ -113,10 +113,10 @@ const ModalCreateRecipe: React.FC<{
   function setError(error: any) {
     console.log(error);
   }
-  
+
   const imageSelectedHandler = (file: any) => {
     const imageURL: any = URL.createObjectURL(file);
-    setimagePath(imageURL);
+    setImagePath(imageURL);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -124,7 +124,7 @@ const ModalCreateRecipe: React.FC<{
     axios
       .post("https://api.cloudinary.com/v1_1/dafrxyo42/image/upload", formData)
       .then((data) => {
-        setimagePath(data.data.url);
+        setImagePath(data.data.url);
       })
       .catch((error) => {
         console.log(error);
@@ -151,24 +151,49 @@ const ModalCreateRecipe: React.FC<{
       latitude: marker.lat,
       longitude: marker.lng,
     };
-    let approve = recipe?.isApproved? "" : "/" + id;
-    axios
-      .post(appContext.http + "Recipe" + approve, data, {
-        headers: {
-          "x-auth":
-            appContext.user?.JWTToken === undefined
-              ? ""
-              : appContext.user.JWTToken,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        notify("Recipe has been sent for approval!");
-        props.setShowRecipeCreateModal(0);
-      })
-      .catch((error) => {
-        console.log(error + " Reached maximum number of recipes");
-      });
+    if (id === -1 || (id > 0 && !recipe?.approved)) {
+      let approve = recipe?.approved === false ? "/" + id : "";
+      console.log(appContext.http + "Recipe" + approve);
+      axios
+        .post(appContext.http + "Recipe" + approve, data, {          
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken === undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          if (recipe?.approved) {
+            notify("Recipe has been added!");
+          } else {
+            notify("Recipe has been sent for approval!");
+          }
+          props.setShowRecipeCreateModal(0);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      axios
+        .put(appContext.http + "Recipe/" + id, data, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken === undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          notify("Recipe has been modified!");
+          props.setShowRecipeCreateModal(0);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const MapFC: React.FC<{}> = (props) => {
@@ -207,7 +232,7 @@ const ModalCreateRecipe: React.FC<{
 
   return (
     <IonContent className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
-      <h3>{id === -1 ? "Add new" : "Modify"} recipe</h3>
+      <h3>{id === -1 ? "Add new" : recipe?.approved === true? "Modify" : "Approve"} recipe</h3>
       {/* form */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* <img src={image} /> //Display Selected Image*/}
@@ -346,7 +371,8 @@ const ModalCreateRecipe: React.FC<{
         </IonGrid>
         <IonGrid className="ion-padding">
           <IonRow class="ion-justify-content-around">
-            <IonButton type="submit">Add Recipe</IonButton>
+            {console.log(recipe?.approved)}
+            <IonButton type="submit">{recipe?.approved === true ? "Modify " : id === -1 ? "Add " : "Approve "}recipe</IonButton>
             <IonButton
               onClick={() => props.setShowRecipeCreateModal(0)}
               fill="outline"

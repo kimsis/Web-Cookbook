@@ -20,6 +20,7 @@ import ModalCreateRecipe from "../../components/Recipes/ModalCreateRecipe";
 import Vendor from "../../shared/interfaces/Vendor.interface";
 import Ingredient from "../../shared/interfaces/Ingredient.interfdace";
 import ModalCreateVendor from "../../components/Vendors/ModalCreateVendor";
+import ModalIngredient from "../../components/Ingredients/ModalIngredient";
 
 const ManageContent: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
@@ -125,6 +126,15 @@ const ManageContent: React.FC<{}> = (props) => {
             setShowVendorCreateModal={setShowVendorModal}
           />
         </IonModal>
+      <IonModal
+        isOpen={showIngredientModal === 0? false : true}
+        onDidDismiss={() => setShowIngredientModal(0)}
+        >
+          <ModalIngredient
+            showIngredientModal={showIngredientModal}
+            setShowIngredientModal={setShowIngredientModal}
+          />
+        </IonModal>
       <IonContent>
         <ContentList
           addItems={false}
@@ -141,7 +151,7 @@ const ManageContent: React.FC<{}> = (props) => {
         <ContentList
           addItems={true}
           title="Create/Edit Vendors"
-          showModal={setShowRecipeModal}
+          showModal={setShowVendorModal}
           items={vendors}
         />
         <ContentList
