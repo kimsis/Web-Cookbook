@@ -59,13 +59,18 @@ const Vendors: React.FC<{}> = (props) => {
   let VendorList;
   if (vendors != null) {
     VendorList = vendors.map((vendor) => (
-      <div key={vendor.id} onClick={() => setShowVendorInfoModal(vendor.id)}>
+      <div
+        className="vendor-list"
+        key={vendor.id}
+        onClick={() => setShowVendorInfoModal(vendor.id)}
+      >
         <VendorListItem
           id={vendor.id}
           name={vendor.name}
           imagePath={vendor.imagePath}
           latitude={vendor.latitude}
           longitude={vendor.longitude}
+          description={vendor.description}
         />
       </div>
     ));
@@ -77,9 +82,9 @@ const Vendors: React.FC<{}> = (props) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
+          {/* <IonButtons slot="start">
             <IonMenuButton />
-          </IonButtons>
+          </IonButtons> */}
           <IonTitle>Explore Vendors</IonTitle>
         </IonToolbar>
       </IonHeader>

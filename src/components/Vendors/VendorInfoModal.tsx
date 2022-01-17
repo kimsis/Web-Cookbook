@@ -76,44 +76,19 @@ const VendorInfoModal: React.FC<{
           <IonCol size="5">
             <IonImg src={vendor?.imagePath}></IonImg>
           </IonCol>
-          <IonCol>
+          <IonCol style={{ padding: "10px" }}>
             <IonRow>
-              <IonCol>
-                <div>{vendor?.name}</div>
-              </IonCol>
+              <h2>{vendor?.name}</h2>
             </IonRow>
-            <IonItem color="none" lines="none">
-              <IonIcon icon={time} slot="start" style={iconsStyling} />
-            </IonItem>
-            <IonItem color="none" lines="none">
-              <IonIcon icon={megaphone} slot="start" style={iconsStyling} />
-            </IonItem>
-            <IonItem color="none" lines="none">
-              <IonIcon
-                icon={cellular}
-                color="warning"
-                slot="start"
-                style={iconsStyling}
-              />
-            </IonItem>
-            <IonItem color="none" lines="none">
-              <IonIcon icon={fastFood} slot="start" style={iconsStyling} />
-            </IonItem>
+            <IonRow>
+              <p>{vendor?.description}</p>
+            </IonRow>
           </IonCol>
         </IonRow>
-
         <IonRow>
           <IonCol>
-            <h1>More Details</h1>
-            <IonItem color="none" lines="none">
-              <IonIcon icon={earth} slot="start" style={iconsStyling} />
-            </IonItem>
-            <IonItem color="none" lines="none">
-              <IonIcon icon={egg} slot="start" style={iconsStyling} />
-            </IonItem>
-            <IonItem color="none" lines="none">
-              <IonIcon icon={timer} slot="start" style={iconsStyling} />
-            </IonItem>
+            <h1>Location</h1>
+            {/* To-do */}
           </IonCol>
         </IonRow>
 

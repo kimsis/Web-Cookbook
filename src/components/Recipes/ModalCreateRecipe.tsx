@@ -28,9 +28,9 @@ import { cloudUploadOutline, trashBin } from "ionicons/icons";
 import { useForm } from "react-hook-form";
 import "./ModalCreateRecipe.css";
 import AppContext from "../../store/AppContext";
-import { toast } from "react-toastify";
 import { Marker } from "../../pages/map/Map";
 import GoogleMapReact from "google-map-react";
+import { toast } from "react-toastify";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 
 const ModalCreateRecipe: React.FC<{
@@ -113,10 +113,11 @@ const ModalCreateRecipe: React.FC<{
   function setError(error: any) {
     console.log(error);
   }
-
-  function imageSelectedHandler(file: any) {
+  
+  const imageSelectedHandler = (file: any) => {
     const imageURL: any = URL.createObjectURL(file);
     setimagePath(imageURL);
+
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "fan6fnua");
@@ -292,7 +293,11 @@ const ModalCreateRecipe: React.FC<{
           </IonItem>
           <IonItem>
             <IonLabel position="stacked">Country of origin</IonLabel>
-            <IonInput value={recipe?.countryOfOrigin} autocomplete="off" {...register("countryOfOrigin")} />
+            <IonInput
+              value={recipe?.countryOfOrigin}
+              autocomplete="off"
+              {...register("countryOfOrigin")}
+            />
           </IonItem>
           <IonItem>
             <IonLabel position="stacked">Number of servings</IonLabel>
@@ -330,8 +335,8 @@ const ModalCreateRecipe: React.FC<{
           <h3>Instructions</h3>
           <IonItem>
             <IonTextarea
-              rows={6}
               value={recipe?.instructions}
+              rows={6}
               placeholder="Add instructions here..."
               {...register("instructions")}
             ></IonTextarea>

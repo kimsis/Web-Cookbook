@@ -97,14 +97,13 @@ const ManageContent: React.FC<{}> = (props) => {
     console.log(error);
   }
 
-
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
+          {/* <IonButtons slot="start">
             <IonMenuButton />
-          </IonButtons>
+          </IonButtons> */}
           <IonTitle> Manage Content </IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -127,10 +126,30 @@ const ManageContent: React.FC<{}> = (props) => {
           />
         </IonModal>
       <IonContent>
-        <ContentList addItems={false} title="Recipes Awaiting approval" showModal={setShowRecipeModal} items={pendingRecipes} />
-        <ContentList addItems={true} title="Create/Edit Recipes" showModal={setShowRecipeModal} items={recipes} />
-        <ContentList addItems={true} title="Create/Edit Vendors" showModal={setShowVendorModal} items={vendors} />
-        <ContentList addItems={true} title="Create/Edit Ingredients" showModal={setShowIngredientModal} items={ingredients} />
+        <ContentList
+          addItems={false}
+          title="Recipes Awaiting approval"
+          showModal={setShowRecipeModal}
+          items={pendingRecipes}
+        />
+        <ContentList
+          addItems={true}
+          title="Create/Edit Recipes"
+          showModal={setShowRecipeModal}
+          items={recipes}
+        />
+        <ContentList
+          addItems={true}
+          title="Create/Edit Vendors"
+          showModal={setShowRecipeModal}
+          items={vendors}
+        />
+        <ContentList
+        addItems={true}
+        title="Create/Edit Ingredients"
+        showModal={setShowIngredientModal}
+        items={ingredients}
+        />
       </IonContent>
     </IonPage>
   );

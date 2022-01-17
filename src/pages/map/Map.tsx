@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
-import GoogleMapReact from 'google-map-react';
-import './Map.css';
+import React, { Component, useContext, useEffect, useState } from "react";
+import GoogleMapReact, { Props } from "google-map-react";
+import "./Map.css";
 import {
   IonButton,
   IonContent,
@@ -49,11 +49,12 @@ export const Marker = ({
         textAlign: "center",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: "30%",
+        borderRadius: "35%",
       }}
     >
       {markerImagePath && (
         <img
+          alt="item image"
           src={markerImagePath}
           width="40px"
           height="40px"
@@ -73,7 +74,15 @@ export const Marker = ({
         transform: "translate(13%, -25%)",
       }}
     ></div>
-    <p>{text}</p>
+    <p
+      style={{
+        textAlign: "center",
+        fontSize: "1.2em",
+        fontWeight: "bold",
+      }}
+    >
+      {text}
+    </p>
   </div>
 );
 
@@ -111,7 +120,7 @@ const SimpleMap: React.FC<{}> = (props) => {
     return (
       <IonContent>
         <IonModal
-          isOpen={showVendorInfoModal == 0 ? false : true}
+          isOpen={showVendorInfoModal === 0 ? false : true}
           onDidDismiss={() => setShowVendorInfoModal(0)}
         >
           <VendorInfoModal

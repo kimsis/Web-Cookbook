@@ -20,14 +20,16 @@ import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
 /* Theme variables */
-import './theme/variables.css';
-import Recipes from './pages/recipes/Recipes';
-import Profile from './pages/profile/Profile';
-import { AppContextProvider } from './store/AppContext';
-import { FilterContextProvider } from './store/FiltersContext';
-import Login from './pages/login/Login';
-import Vendors from './pages/vendors/Vendors';
-import ManageContent from './pages/manageContent/ManageContent';
+import "./theme/variables.css";
+import Recipes from "./pages/recipes/Recipes";
+import Profile from "./pages/profile/Profile";
+import { AppContextProvider } from "./store/AppContext";
+import { FilterContextProvider } from "./store/FiltersContext";
+import Login from "./pages/login/Login";
+import Vendors from "./pages/vendors/Vendors";
+import ManageContent from "./pages/manageContent/ManageContent";
+import MobileNav from "./components/Menu/MobileNav";
+import { isPlatform } from "@ionic/react";
 
 const App: React.FC = () => {
   return (
@@ -35,17 +37,14 @@ const App: React.FC = () => {
       <FilterContextProvider>
         <IonApp>
           <IonReactRouter>
-            <IonSplitPane contentId="main">
+            <IonSplitPane contentId="main" when="lg">
               <Menu />
               <IonRouterOutlet id="main">
                 <Route path="/" exact={true}>
                   <Redirect to="/recipes" />
                 </Route>
-                <Route path="/profile" exact={true}>
-                  < Profile />
-                </Route>
                 <Route path="/login" exact={true}>
-                  < Login />
+                  <Login />
                 </Route>
                 <Route path="/recipes" exact={true}>
                   <Recipes />
@@ -54,13 +53,17 @@ const App: React.FC = () => {
                   <Vendors />
                 </Route>
                 <Route path="/manageContent" exact={true}>
-                  < ManageContent />
+                  <ManageContent />
                 </Route>
                 <Route path="/map" exact={true}>
                   <Map />
                 </Route>
+                <Route path="/profile" exact={true}>
+                  <Profile />
+                </Route>
               </IonRouterOutlet>
             </IonSplitPane>
+            {isPlatform("mobile") && <MobileNav />}
           </IonReactRouter>
         </IonApp>
       </FilterContextProvider>

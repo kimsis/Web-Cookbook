@@ -7,4 +7,5 @@ export default interface Vendor extends Displayable {
     longitude: number;
     latitude: number;
     ingredients: [];
+    description:string;
 }

@@ -13,22 +13,17 @@ import AppContext from "../../store/AppContext";
 import { useHistory } from "react-router";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import logo from "../../assets/logo.png";
 
 const Profile: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
   const history = useHistory();
-  
-  // let userString = localStorage.getItem("user");
-  // if(userString != null) {
-  //   let user:User = JSON.parse(userString);
-  //   if(user.expiry < new Date().getTime()){
-  //     appContext.user = null;
-  //     localStorage.clear();
-  //   } else {
-  //     appContext.user = user;
-  //   }
-  // }
-  
+
+  console.log(appContext.user?.expiry);
+  console.log(new Date().getTime());
+  console.log(appContext.user);
+  console.log(localStorage.getItem("user"));
+
   if (appContext.user == null) {
     history.replace("/login");
   }
@@ -37,10 +32,15 @@ const Profile: React.FC<{}> = (props) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton />
-          </IonButtons>
-          <IonTitle> Profile </IonTitle>
+          {/* <IonButtons slot="start">
+            <IonMenuButton>
+            </IonMenuButton>
+          </IonButtons> */}
+          {appContext.user ? (
+            <IonTitle> Profile </IonTitle>
+          ) : (
+            <IonTitle> Log in </IonTitle>
+          )}
         </IonToolbar>
       </IonHeader>
       <ToastContainer />
