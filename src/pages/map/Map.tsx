@@ -8,13 +8,13 @@ import {
   IonPage,
   IonTitle,
 } from "@ionic/react";
-import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
 import axios from "axios";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import AppContext from "../../store/AppContext";
 import Vendor from "../../shared/interfaces/Vendor.interface";
 import Data from '../../shared/interfaces/Data.interface';
-import VendorInfoModal from '../../components/Vendors/VendorInfoModal';
+import ModalRecipeInfo from "../../components/Recipes/ModalRecipeInfor";
+import ModalVendorInfo from "../../components/Vendors/ModalVendorInfo";
 
 export const Marker = ({
   lat,
@@ -107,7 +107,7 @@ const SimpleMap: React.FC<{}> = (props) => {
           isOpen={showRecipeInfoModal == 0 ? false : true}
           onDidDismiss={() => setShowRecipeInfoModal(0)}
         >
-          <RecipeInfoModal
+          <ModalRecipeInfo
             id={showRecipeInfoModal}
             setShowRecipeInfoModal={setShowRecipeInfoModal}
           />
@@ -123,7 +123,7 @@ const SimpleMap: React.FC<{}> = (props) => {
           isOpen={showVendorInfoModal === 0 ? false : true}
           onDidDismiss={() => setShowVendorInfoModal(0)}
         >
-          <VendorInfoModal
+          <ModalVendorInfo
             id={showVendorInfoModal}
             setShowVendorInfoModal={setShowVendorInfoModal}
           />

@@ -19,8 +19,8 @@ import Recipe from "../../shared/interfaces/Recipe.interface";
 import ModalRecipe from "../../components/Recipes/ModalRecipe";
 import Vendor from "../../shared/interfaces/Vendor.interface";
 import Ingredient from "../../shared/interfaces/Ingredient.interfdace";
-import ModalCreateVendor from "../../components/Vendors/ModalCreateVendor";
 import ModalIngredient from "../../components/Ingredients/ModalIngredient";
+import ModalVendor from "../../components/Vendors/ModalVendor";
 
 const ManageContent: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
@@ -121,7 +121,7 @@ const ManageContent: React.FC<{}> = (props) => {
         isOpen={showVendorModal === 0? false : true}
         onDidDismiss={() => setShowVendorModal(0)}
         >
-          <ModalCreateVendor
+          <ModalVendor
             showVendorCreateModal={showVendorModal}
             setShowVendorCreateModal={setShowVendorModal}
           />

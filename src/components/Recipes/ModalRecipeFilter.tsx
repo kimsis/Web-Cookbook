@@ -5,9 +5,9 @@ import {
 import React, { Dispatch, SetStateAction, useContext } from 'react';
 import Filter from '../../shared/interfaces/Filter.interface';
 import FilterContext from '../../store/FiltersContext';
-import './ModalFilterRecipe.css';
+import './ModalRecipeFilter.css';
 
-const ModalFilterRecipe: React.FC<{
+const ModalRecipeFilter: React.FC<{
 	showRecipeFilterModal: boolean;
 	setShowRecipeFilterModal: Dispatch<SetStateAction<boolean>>;
 }> = (props) => {
@@ -83,4 +83,4 @@ const ModalFilterRecipe: React.FC<{
 	);
 };
 
-export default ModalFilterRecipe;
+export default ModalRecipeFilter;

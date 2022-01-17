@@ -12,7 +12,7 @@ import {
   IonModal,
 } from "@ionic/react";
 import { useParams } from "react-router";
-import "./RecipeInfoModal.css";
+import "./ModalRecipeInfo.css";
 import {
   star,
   starHalf,
@@ -50,7 +50,7 @@ import { Icon } from "ionicons/dist/types/components/icon/icon";
 import QRModal from "./QRModal";
 import { Oval } from "react-loader-spinner";
 
-const RecipeInfoModal: React.FC<{
+const ModalRecipeInfo: React.FC<{
   id: number;
   setShowRecipeInfoModal: Dispatch<SetStateAction<number>>;
 }> = (props) => {
@@ -333,4 +333,4 @@ const RecipeInfoModal: React.FC<{
   );
 };
 
-export default RecipeInfoModal;
+export default ModalRecipeInfo;

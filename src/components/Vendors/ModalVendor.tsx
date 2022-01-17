@@ -24,10 +24,10 @@ import { useForm } from "react-hook-form";
 import AppContext from "../../store/AppContext";
 import { Marker } from "../../pages/map/Map";
 import GoogleMapReact from "google-map-react";
-import "./ModalCreateVendor.css";
+import "./ModalVendor.css";
 import Vendor from "../../shared/interfaces/Vendor.interface";
 
-const ModalCreateVendor: React.FC<{
+const ModalVendor: React.FC<{
   showVendorCreateModal: number;
   setShowVendorCreateModal: Dispatch<SetStateAction<number>>;
 }> = (props) => {
@@ -284,4 +284,4 @@ const ModalCreateVendor: React.FC<{
   );
 };
 
-export default ModalCreateVendor;
+export default ModalVendor;

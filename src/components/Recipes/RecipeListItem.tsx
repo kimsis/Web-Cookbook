@@ -5,7 +5,6 @@ import {
   IonCol,
   IonGrid,
   IonText,
-  IonButton,
   IonModal,
 } from "@ionic/react";
 import {
@@ -17,11 +16,9 @@ import {
   earth,
 } from "ionicons/icons";
 import "./RecipeListItem.css";
-import { trashBin } from "ionicons/icons";
-import axios from "axios";
 import AppContext from "../../store/AppContext";
 import { useContext, useState } from "react";
-import RecipeInfoModal from "./RecipeInfoModal";
+import ModalRecipeInfo from "./ModalRecipeInfor";
 
 const RecipeListItem: React.FC<{
   id: number;
@@ -49,7 +46,7 @@ const RecipeListItem: React.FC<{
         isOpen={showRecipeInfoModal ? true : false}
         onDidDismiss={() => setShowRecipeInfoModal(0)}
       >
-        <RecipeInfoModal
+        <ModalRecipeInfo
           id={props.id}
           setShowRecipeInfoModal={setShowRecipeInfoModal}
         />
