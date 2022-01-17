@@ -10,6 +10,8 @@ import {
   IonCol,
   IonChip,
   IonModal,
+  IonFab,
+  IonFabButton,
 } from "@ionic/react";
 import { useParams } from "react-router";
 import "./ModalRecipeInfo.css";
@@ -26,6 +28,7 @@ import {
   timer,
   qrCodeOutline,
   qrCode,
+  chevronBackCircleOutline,
 } from "ionicons/icons";
 import {
   Dispatch,
@@ -116,7 +119,15 @@ const ModalRecipeInfo: React.FC<{
         <QRModal id={props.id} setShowQRModal={setShowshowQRModal} />
       </IonModal>
       <IonGrid className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
-        <h1>{recipe?.title}</h1>
+        <IonFab>
+          <IonFabButton onClick={() => props.setShowRecipeInfoModal(0)}>
+            <IonIcon
+              style={{ fontSize: "32px" }}
+              icon={chevronBackCircleOutline}
+            />
+          </IonFabButton>
+        </IonFab>
+        <h1 style={{ marginLeft: "60px" }}>{recipe?.title}</h1>
         <IonRow>
           <IonCol size="5">
             <IonImg src={recipe?.imagePath}></IonImg>

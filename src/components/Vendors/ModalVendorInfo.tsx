@@ -7,8 +7,13 @@ import {
   IonRow,
   IonCol,
   IonChip,
+  IonFab,
+  IonFabButton,
 } from "@ionic/react";
-import "./ModalVendorInfo.css";
+import "./VendorInfoModal.css";
+import {
+  chevronBackCircleOutline,
+} from "ionicons/icons";
 import {
   Dispatch,
   SetStateAction,
@@ -54,7 +59,15 @@ const ModalVendorInfo: React.FC<{
   const iconsStyling = { margin: "0px", marginRight: "8px" };
   return (
     <IonContent>
-      <IonGrid style={{ padding: "10px", paddingTop: "50px" }}>
+      <IonFab style={{ margin: "10px" }}>
+        <IonFabButton onClick={() => props.setShowVendorInfoModal(0)}>
+          <IonIcon
+            style={{ fontSize: "32px" }}
+            icon={chevronBackCircleOutline}
+          />
+        </IonFabButton>
+      </IonFab>
+      <IonGrid style={{ padding: "10px", marginTop: "65px" }}>
         <IonRow>
           <IonCol size="5">
             <IonImg src={vendor?.imagePath}></IonImg>
