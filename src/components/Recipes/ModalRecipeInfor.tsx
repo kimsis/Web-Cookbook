@@ -258,50 +258,48 @@ const ModalRecipeInfo: React.FC<{
         </IonItem>
         <IonRow>
           <IonCol>
-            <IonItem>
-              {/* <h4>Details</h4> */}
-              <IonItem color="none" lines="none">
-                <IonIcon
-                  icon={earth}
-                  slot="start"
-                  style={{
-                    fontSize: 24,
-                    marginRight: "5px",
-                    color: "#F2AB27",
-                  }}
-                />
-                <p>
-                  <b>Country of origin</b> {recipe?.countryOfOrigin}
-                </p>
-              </IonItem>
-              <IonItem color="none" lines="none">
-                <IonIcon
-                  icon={egg}
-                  slot="start"
-                  style={{
-                    fontSize: 24,
-                    marginRight: "5px",
-                    color: "#F2AB27",
-                  }}
-                />
-                <p>
-                  <b>Serving size</b> {recipe?.numberOfServings} meals
-                </p>
-              </IonItem>
-              <IonItem color="none" lines="none">
-                <IonIcon
-                  icon={timer}
-                  slot="start"
-                  style={{
-                    fontSize: 24,
-                    marginRight: "5px",
-                    color: "#F2AB27",
-                  }}
-                />
-                <p>
-                  <b>Preparation time</b> {recipe?.preparationTimeTicks} minutes
-                </p>
-              </IonItem>
+            {/* <h4>Details</h4> */}
+            <IonItem color="none" lines="none">
+              <IonIcon
+                icon={earth}
+                slot="start"
+                style={{
+                  fontSize: 24,
+                  marginRight: "5px",
+                  color: "#F2AB27",
+                }}
+              />
+              <p>
+                <b>Country of origin</b> {recipe?.countryOfOrigin}
+              </p>
+            </IonItem>
+            <IonItem color="none" lines="none">
+              <IonIcon
+                icon={egg}
+                slot="start"
+                style={{
+                  fontSize: 24,
+                  marginRight: "5px",
+                  color: "#F2AB27",
+                }}
+              />
+              <p>
+                <b>Serving size</b> {recipe?.numberOfServings} meals
+              </p>
+            </IonItem>
+            <IonItem color="none" lines="none">
+              <IonIcon
+                icon={timer}
+                slot="start"
+                style={{
+                  fontSize: 24,
+                  marginRight: "5px",
+                  color: "#F2AB27",
+                }}
+              />
+              <p>
+                <b>Preparation time</b> {recipe?.preparationTimeTicks} minutes
+              </p>
             </IonItem>
           </IonCol>
         </IonRow>

@@ -30,6 +30,7 @@ import Vendors from "./pages/vendors/Vendors";
 import ManageContent from "./pages/manageContent/ManageContent";
 import MobileNav from "./components/Menu/MobileNav";
 import { isPlatform } from "@ionic/react";
+import Home from "./pages/landing/Home";
 
 const App: React.FC = () => {
   return (
@@ -41,10 +42,13 @@ const App: React.FC = () => {
               <Menu />
               <IonRouterOutlet id="main">
                 <Route path="/" exact={true}>
-                  <Redirect to="/recipes" />
+                  <Redirect to="/home" />
                 </Route>
                 <Route path="/login" exact={true}>
                   <Login />
+                </Route>
+                <Route path="/home" exact={true}>
+                  <Home />
                 </Route>
                 <Route path="/recipes" exact={true}>
                   <Recipes />
