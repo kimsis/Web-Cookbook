@@ -60,7 +60,7 @@ export const Marker = ({
         textAlign: "center",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: "30%",
+        borderRadius: "35%",
       }}
     >
       {markerImagePath && (
@@ -85,7 +85,15 @@ export const Marker = ({
         transform: "translate(13%, -25%)",
       }}
     ></div>
-    <p>{text}</p>
+    <p
+      style={{
+        textAlign: "center",
+        fontSize: "1.2em",
+        fontWeight: "bold",
+      }}
+    >
+      {text}
+    </p>
   </div>
 );
 

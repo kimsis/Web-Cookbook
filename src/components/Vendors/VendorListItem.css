@@ -1,0 +1,4 @@
+.vendor-image::part(image) {
+  width: 150px;
+  margin: auto;
+}

@@ -10,31 +10,33 @@ const VendorListItem: React.FC<{
   description: string;
 }> = (props) => {
   return (
-    <IonGrid>
-      <IonRow>
-        <IonCol size="4">
-          <IonRow>
-            <IonImg
-              className="vendor-image"
-              src={props.imagePath}
-              style={{ width: "100%" }}
-            />
-          </IonRow>
-        </IonCol>
-        <IonCol>
-          <IonRow>
-            <IonCol size="8">
-              <IonRow>
-                <h2>{props.name}</h2>
-              </IonRow>
-              <IonRow>
-                <p>{props.description}</p>
-              </IonRow>
-            </IonCol>
-          </IonRow>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
+    <IonCard>
+      <IonGrid>
+        <IonRow>
+          <IonCol sizeLg="3" sizeSm="3" sizeMd="4">
+            <IonRow>
+              <IonImg
+                className="vendor-image"
+                src={props.imagePath}
+                style={{ width: "100%" }}
+              />
+            </IonRow>
+          </IonCol>
+          <IonCol>
+            <IonRow>
+              <IonCol sizeLg="9" sizeSm="9" sizeMd="8">
+                <IonRow>
+                  <h2>{props.name}</h2>
+                </IonRow>
+                <IonRow>
+                  <p>{props.description}</p>
+                </IonRow>
+              </IonCol>
+            </IonRow>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </IonCard>
   );
 };
 

@@ -21,6 +21,8 @@ import ModalCreateRecipe from "../Recipes/ModalCreateRecipe";
 import RecipeListItem from "../Recipes/RecipeListItem";
 import "./ProfileComponent.css";
 import { pencil } from "ionicons/icons";
+import { toast } from "react-toastify";
+
 const ProfileComponent: React.FC<{}> = () => {
   const [recipeList, setRecipeList] = useState<Recipe[] | null>();
   const [favouritesList, setFavouritesList] = useState<Recipe[] | null>();
@@ -127,6 +129,9 @@ const ProfileComponent: React.FC<{}> = () => {
     localStorage.clear();
     history.replace("/Login");
   }
+  const notify = () => {
+    toast("Your profile has been updated");
+  };
   const imageSelectedHandler = (file: any) => {
     const imageURL: any = URL.createObjectURL(file);
     setimagePath(imageURL);
@@ -158,6 +163,7 @@ const ProfileComponent: React.FC<{}> = () => {
     data = {
       ...data,
       profilePicUrl: imagePath,
+      name: appContext.user?.fullName,
     };
     axios
       .put(appContext.http + "User/" + appContext.user?.id, data, {
@@ -170,6 +176,7 @@ const ProfileComponent: React.FC<{}> = () => {
       })
       .then((response) => {
         console.log(response);
+        notify();
         setEdit(false);
       })
       .catch((error) => {
