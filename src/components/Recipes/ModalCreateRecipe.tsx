@@ -303,9 +303,11 @@ const ModalCreateRecipe: React.FC<{
               cancelText="Cancel"
               okText="Add"
             >
-              <IonSelectOption value={0}>Beginner</IonSelectOption>
+              <IonSelectOption value={0}>Easy</IonSelectOption>
               <IonSelectOption value={1}>Intermediate</IonSelectOption>
               <IonSelectOption value={2}>Advanced</IonSelectOption>
+              <IonSelectOption value={3}>Challenging</IonSelectOption>
+              <IonSelectOption value={4}>Expert</IonSelectOption>
             </IonSelect>
           </IonItem>
           <IonItem>
@@ -343,9 +345,14 @@ const ModalCreateRecipe: React.FC<{
               cancelText="Cancel"
               okText="Add"
             >
-              <IonSelectOption value="tomato">Tomato</IonSelectOption>
+              <IonSelectOption value="tomato">Flour</IonSelectOption>
               <IonSelectOption value="egg">Egg</IonSelectOption>
+              <IonSelectOption value="egg">Tomata</IonSelectOption>
+              <IonSelectOption value="egg">Rice</IonSelectOption>
+              <IonSelectOption value="egg">Chicken</IonSelectOption>
+              <IonSelectOption value="egg">Potato</IonSelectOption>
               <IonSelectOption value="butter">Butter</IonSelectOption>
+              <IonSelectOption value="butter">Oil</IonSelectOption>
             </IonSelect>
           </IonItem>
           <IonItemDivider />

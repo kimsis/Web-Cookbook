@@ -87,11 +87,15 @@ const RecipeInfoModal: React.FC<{
   const difficulty = (diff: any) => {
     switch (diff) {
       case 0:
-        return "Begginer";
+        return "Easy";
       case 1:
         return "Intermeddiate";
       case 2:
         return "Advanced";
+      case 3:
+        return "Challenging";
+      case 4:
+        return "Expert";
       default:
     }
   };
