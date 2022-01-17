@@ -12,7 +12,6 @@ import {
   IonSearchbar,
 } from "@ionic/react";
 import React, { useContext, useEffect, useState } from "react";
-import ModalFilterRecipe from "../../components/Recipes/ModalFilterRecipe";
 import RecipeListItem from "../../components/Recipes/RecipeListItem";
 // import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
 import axios, { AxiosResponse } from "axios";
@@ -21,7 +20,8 @@ import Data from "../../shared/interfaces/Data.interface";
 import "./Recipes.css";
 import AppContext from "../../store/AppContext";
 import FilterContext from "../../store/FiltersContext";
-import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
+import ModalRecipeInfo from "../../components/Recipes/ModalRecipeInfor";
+import ModalRecipeFilter from "../../components/Recipes/ModalRecipeFilter";
 
 const Recipes: React.FC<{}> = (props) => {
   useEffect(() => {
@@ -114,7 +114,7 @@ const Recipes: React.FC<{}> = (props) => {
           isOpen={showRecipeFilterModal}
           onDidDismiss={() => FilterModalDismiss()}
         >
-          <ModalFilterRecipe
+          <ModalRecipeFilter
             showRecipeFilterModal={showRecipeFilterModal}
             setShowRecipeFilterModal={setShowRecipeFilterModal}
           />
@@ -123,7 +123,7 @@ const Recipes: React.FC<{}> = (props) => {
           isOpen={showRecipeInfoModal === 0 ? false : true}
           onDidDismiss={() => setShowRecipeInfoModal(0)}
         >
-          <RecipeInfoModal
+          <ModalRecipeInfo
             id={showRecipeInfoModal}
             setShowRecipeInfoModal={setShowRecipeInfoModal}
           />

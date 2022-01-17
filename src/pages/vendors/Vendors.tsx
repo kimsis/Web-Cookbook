@@ -11,14 +11,13 @@ import {
   IonModal,
 } from "@ionic/react";
 import React, { useContext, useEffect, useState } from "react";
-import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
 import axios, { AxiosResponse } from "axios";
 import "./Vendors.css";
 import AppContext from "../../store/AppContext";
 import Vendor from "../../shared/interfaces/Vendor.interface";
 import VendorListItem from "../../components/Vendors/VendorListItem";
-import ModalCreateVendor from "../../components/Vendors/ModalCreateVendor";
-import VendorInfoModal from "../../components/Vendors/VendorInfoModal";
+import ModalCreateVendor from "../../components/Vendors/ModalVendor";
+import ModalVendorInfo from "../../components/Vendors/ModalVendorInfo";
 
 interface Data {
   page: number;
@@ -103,20 +102,11 @@ const Vendors: React.FC<{}> = (props) => {
           isOpen={showVendorInfoModal == 0 ? false : true}
           onDidDismiss={() => setShowVendorInfoModal(0)}
         >
-          <VendorInfoModal
+          <ModalVendorInfo
             id={showVendorInfoModal}
             setShowVendorInfoModal={setShowVendorInfoModal}
           />
         </IonModal>
-        {/* <IonModal
-          isOpen={showRecipeInfoModal == 0 ? false : true}
-          onDidDismiss={() => setShowRecipeInfoModal(0)}
-        >
-          <RecipeInfoModal
-            id={showRecipeInfoModal}
-            setShowRecipeInfoModal={setShowRecipeInfoModal}
-          />
-        </IonModal> */}
         <IonList id="menu-list">{VendorList}</IonList>
       </IonContent>
     </IonPage>

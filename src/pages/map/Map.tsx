@@ -8,13 +8,13 @@ import {
   IonPage,
   IonTitle,
 } from "@ionic/react";
-import RecipeInfoModal from "../../components/Recipes/RecipeInfoModal";
 import axios from "axios";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import AppContext from "../../store/AppContext";
 import Vendor from "../../shared/interfaces/Vendor.interface";
 import Data from '../../shared/interfaces/Data.interface';
-import VendorInfoModal from '../../components/Vendors/VendorInfoModal';
+import ModalRecipeInfo from "../../components/Recipes/ModalRecipeInfor";
+import ModalVendorInfo from "../../components/Vendors/ModalVendorInfo";
 
 export const Marker = ({
   lat,
@@ -107,7 +107,7 @@ const SimpleMap: React.FC<{}> = (props) => {
           isOpen={showRecipeInfoModal == 0 ? false : true}
           onDidDismiss={() => setShowRecipeInfoModal(0)}
         >
-          <RecipeInfoModal
+          <ModalRecipeInfo
             id={showRecipeInfoModal}
             setShowRecipeInfoModal={setShowRecipeInfoModal}
           />
@@ -123,7 +123,7 @@ const SimpleMap: React.FC<{}> = (props) => {
           isOpen={showVendorInfoModal === 0 ? false : true}
           onDidDismiss={() => setShowVendorInfoModal(0)}
         >
-          <VendorInfoModal
+          <ModalVendorInfo
             id={showVendorInfoModal}
             setShowVendorInfoModal={setShowVendorInfoModal}
           />
@@ -138,7 +138,6 @@ const SimpleMap: React.FC<{}> = (props) => {
     await axios(appContext.http + "Recipe/PagedList")
       .then((response) => {
         let recipesArray:Data = JSON.parse(JSON.stringify(response.data));
-        console.log(recipesArray.items);
         setRecipes(recipesArray.items);
       })
       .catch((error) => {
@@ -151,7 +150,6 @@ const SimpleMap: React.FC<{}> = (props) => {
     await axios(appContext.http + "Vendor/PagedList")
       .then((response) => {
         let vendorsArray:Data = JSON.parse(JSON.stringify(response.data));
-        console.log(vendorsArray.items);
         setVendors(vendorsArray.items);
       })
       .catch((error) => {

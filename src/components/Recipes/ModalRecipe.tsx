@@ -33,14 +33,14 @@ import {
   chevronBackCircleOutline,
 } from "ionicons/icons";
 import { useForm } from "react-hook-form";
-import "./ModalCreateRecipe.css";
+import "./ModalRecipe.css";
 import AppContext from "../../store/AppContext";
 import { Marker } from "../../pages/map/Map";
 import GoogleMapReact from "google-map-react";
 import { toast } from "react-toastify";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 
-const ModalCreateRecipe: React.FC<{
+const ModalRecipe: React.FC<{
   showRecipeCreateModal: number;
   setShowRecipeCreateModal: Dispatch<SetStateAction<number>>;
 }> = (props) => {
@@ -58,7 +58,7 @@ const ModalCreateRecipe: React.FC<{
     fileInput.current?.click();
   };
   const [recipe, setRecipe] = useState<Recipe>();
-  const [imagePath, setimagePath] = useState("");
+  const [imagePath, setImagePath] = useState("");
   const [deleteButton, setDeleteButton] = useState(<div></div>);
   const [marker, setMarker] = useState({ lat: 0, lng: 0, markerImagePath });
 
@@ -86,7 +86,6 @@ const ModalCreateRecipe: React.FC<{
         },
       })
       .then((response) => {
-        console.log(response);
         props.setShowRecipeCreateModal(0);
       })
       .catch((error) => {
@@ -108,12 +107,11 @@ const ModalCreateRecipe: React.FC<{
   function setData(data: AxiosResponse) {
     let recipe: Recipe = JSON.parse(JSON.stringify(data.data));
     setRecipe(recipe);
-    setimagePath(recipe.imagePath);
+    setImagePath(recipe.imagePath);
     // Set the Map marker, using the recipe data
     let lat = recipe.latitude;
     let lng = recipe.longitude;
     setMarker({ lat, lng, markerImagePath });
-    console.log(recipe);
   }
 
   function setError(error: any) {
@@ -122,7 +120,7 @@ const ModalCreateRecipe: React.FC<{
 
   const imageSelectedHandler = (file: any) => {
     const imageURL: any = URL.createObjectURL(file);
-    setimagePath(imageURL);
+    setImagePath(imageURL);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -130,7 +128,7 @@ const ModalCreateRecipe: React.FC<{
     axios
       .post("https://api.cloudinary.com/v1_1/dafrxyo42/image/upload", formData)
       .then((data) => {
-        setimagePath(data.data.url);
+        setImagePath(data.data.url);
       })
       .catch((error) => {
         console.log(error);
@@ -144,8 +142,6 @@ const ModalCreateRecipe: React.FC<{
 
   //Submit POST request to API
   const onSubmit = (data: any) => {
-    console.log(appContext.user);
-    console.log(imagePath);
     data = {
       ...data,
       difficulty: parseInt(data.difficulty),
@@ -157,24 +153,46 @@ const ModalCreateRecipe: React.FC<{
       latitude: marker.lat,
       longitude: marker.lng,
     };
-    let approve = recipe?.isApproved ? "" : "/" + id;
-    axios
-      .post(appContext.http + "Recipe" + approve, data, {
-        headers: {
-          "x-auth":
-            appContext.user?.JWTToken === undefined
-              ? ""
-              : appContext.user.JWTToken,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        notify("Recipe has been sent for approval!");
-        props.setShowRecipeCreateModal(0);
-      })
-      .catch((error) => {
-        console.log(error + " Reached maximum number of recipes");
-      });
+    if (id === -1 || (id > 0 && !recipe?.approved)) {
+      let approve = recipe?.approved === false ? "/" + id : "";
+      axios
+        .post(appContext.http + "Recipe" + approve, data, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken === undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
+        .then((response) => {
+          if (recipe?.approved) {
+            notify("Recipe has been added!");
+          } else {
+            notify("Recipe has been sent for approval!");
+          }
+          props.setShowRecipeCreateModal(0);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      axios
+        .put(appContext.http + "Recipe/" + id, data, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken === undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
+        .then((response) => {
+          notify("Recipe has been modified!");
+          props.setShowRecipeCreateModal(0);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const MapFC: React.FC<{}> = (props) => {
@@ -188,7 +206,6 @@ const ModalCreateRecipe: React.FC<{
 
     function _onClick(obj: any) {
       setMarker({ ...obj, markerImagePath });
-      console.log(obj);
     }
     return (
       <IonContent style={{ height: "40vh" }}>
@@ -223,7 +240,7 @@ const ModalCreateRecipe: React.FC<{
       </IonFab>
 
       <h3 style={{ marginLeft: "60px" }}>
-        {id === -1 ? "Add new" : "Modify"} recipe
+        {id === -1 ? "Add new" : recipe?.approved === true ? "Modify" : "Approve"} recipe
       </h3>
       {/* form */}
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -370,7 +387,7 @@ const ModalCreateRecipe: React.FC<{
         </IonGrid>
         <IonGrid className="ion-padding">
           <IonRow class="ion-justify-content-around">
-            <IonButton type="submit">Add Recipe</IonButton>
+            <IonButton type="submit">{recipe?.approved === true ? "Modify " : id === -1 ? "Add " : "Approve "}recipe</IonButton>
             <IonButton
               onClick={() => props.setShowRecipeCreateModal(0)}
               fill="outline"
@@ -387,4 +404,4 @@ const ModalCreateRecipe: React.FC<{
   );
 };
 
-export default ModalCreateRecipe;
+export default ModalRecipe;

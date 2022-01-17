@@ -16,10 +16,11 @@ import ContentList from "../../components/AdminTools/ContentSwiper/ContentSwiper
 import axios, { AxiosResponse } from "axios";
 import Data from "../../shared/interfaces/Data.interface";
 import Recipe from "../../shared/interfaces/Recipe.interface";
-import ModalCreateRecipe from "../../components/Recipes/ModalCreateRecipe";
+import ModalRecipe from "../../components/Recipes/ModalRecipe";
 import Vendor from "../../shared/interfaces/Vendor.interface";
 import Ingredient from "../../shared/interfaces/Ingredient.interfdace";
-import ModalCreateVendor from "../../components/Vendors/ModalCreateVendor";
+import ModalIngredient from "../../components/Ingredients/ModalIngredient";
+import ModalVendor from "../../components/Vendors/ModalVendor";
 
 const ManageContent: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
@@ -32,7 +33,6 @@ const ManageContent: React.FC<{}> = (props) => {
   if (appContext.user == null) {
     history.replace("/login");
   } else if (!appContext.user.isAdmin) {
-    console.log(appContext.user);
     history.replace("/profile");
   }
 
@@ -111,7 +111,7 @@ const ManageContent: React.FC<{}> = (props) => {
         isOpen={showRecipeModal === 0 ? false : true}
         onDidDismiss={() => setShowRecipeModal(0)}
       >
-        <ModalCreateRecipe
+        <ModalRecipe
           showRecipeCreateModal={showRecipeModal}
           setShowRecipeCreateModal={setShowRecipeModal}
         />
@@ -120,9 +120,18 @@ const ManageContent: React.FC<{}> = (props) => {
         isOpen={showVendorModal === 0? false : true}
         onDidDismiss={() => setShowVendorModal(0)}
         >
-          <ModalCreateVendor
+          <ModalVendor
             showVendorCreateModal={showVendorModal}
             setShowVendorCreateModal={setShowVendorModal}
+          />
+        </IonModal>
+      <IonModal
+        isOpen={showIngredientModal === 0? false : true}
+        onDidDismiss={() => setShowIngredientModal(0)}
+        >
+          <ModalIngredient
+            showIngredientModal={showIngredientModal}
+            setShowIngredientModal={setShowIngredientModal}
           />
         </IonModal>
       <IonContent>
@@ -141,7 +150,7 @@ const ManageContent: React.FC<{}> = (props) => {
         <ContentList
           addItems={true}
           title="Create/Edit Vendors"
-          showModal={setShowRecipeModal}
+          showModal={setShowVendorModal}
           items={vendors}
         />
         <ContentList

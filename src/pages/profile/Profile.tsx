@@ -19,11 +19,6 @@ const Profile: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
   const history = useHistory();
 
-  console.log(appContext.user?.expiry);
-  console.log(new Date().getTime());
-  console.log(appContext.user);
-  console.log(localStorage.getItem("user"));
-
   if (appContext.user == null) {
     history.replace("/login");
   }

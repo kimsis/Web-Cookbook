@@ -1,7 +1,5 @@
 import {
   IonContent,
-  IonItem,
-  IonIcon,
   IonLabel,
   IonButton,
   IonImg,
@@ -11,20 +9,10 @@ import {
   IonChip,
   IonFab,
   IonFabButton,
+  IonIcon,
 } from "@ionic/react";
-import { useParams } from "react-router";
-import "./VendorInfoModal.css";
+import "./ModalVendorInfo.css";
 import {
-  star,
-  starHalf,
-  starOutline,
-  time,
-  megaphone,
-  cellular,
-  fastFood,
-  earth,
-  egg,
-  timer,
   chevronBackCircleOutline,
 } from "ionicons/icons";
 import {
@@ -38,7 +26,7 @@ import Vendor from "../../shared/interfaces/Vendor.interface";
 import axios, { AxiosResponse } from "axios";
 import AppContext from "../../store/AppContext";
 
-const VendorInfoModal: React.FC<{
+const ModalVendorInfo: React.FC<{
   id: number;
   setShowVendorInfoModal: Dispatch<SetStateAction<number>>;
 }> = (props) => {
@@ -61,10 +49,8 @@ const VendorInfoModal: React.FC<{
   }
 
   function setData(data: AxiosResponse) {
-    console.log(data);
     let vendorTest: Vendor = JSON.parse(JSON.stringify(data.data));
     setVendor(vendorTest);
-    console.log(vendorTest);
   }
 
   function setError(error: any) {
@@ -139,4 +125,4 @@ const VendorInfoModal: React.FC<{
   );
 };
 
-export default VendorInfoModal;
+export default ModalVendorInfo;
