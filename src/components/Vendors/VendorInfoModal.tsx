@@ -31,9 +31,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import Vendor from "../../../shared/interfaces/Vendor.interface";
+import Vendor from "../../shared/interfaces/Vendor.interface";
 import axios, { AxiosResponse } from "axios";
-import AppContext from "../../../store/AppContext";
+import AppContext from "../../store/AppContext";
 
 const VendorInfoModal: React.FC<{
   id: number;
@@ -68,8 +68,6 @@ const VendorInfoModal: React.FC<{
     console.log(error);
   }
 
-  const { name } = useParams<{ name: string }>();
-  const starsArray = new Array(5).fill(0);
   const iconsStyling = { margin: "0px", marginRight: "8px" };
   return (
     <IonContent>

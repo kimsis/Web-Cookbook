@@ -33,36 +33,16 @@ const RecipeListItem: React.FC<{
   imagePath: string;
   timeToCook: number;
 }> = (props) => {
-  const [none, setNone] = useState(false);
   const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
   const recipeId = props.id; // pass id to info modal
   const starsArray = new Array(5).fill(0);
   const appContext = useContext(AppContext);
 
-  const deleteRecipe = () => {
-    axios
-      .delete(appContext.http + "Recipe/" + props.id, {
-        headers: {
-          "x-auth":
-            appContext.user?.JWTToken == undefined
-              ? ""
-              : appContext.user.JWTToken,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        setNone(true);
-      })
-      .catch((error) => {
-        console.log(error + " Error deleting recipe");
-      });
-  };
   return (
     <IonGrid
       style={{
         justifyContent: "center",
         margin: "20px 0px",
-        display: none ? "none" : "",
       }}
     >
       <IonModal
@@ -75,6 +55,36 @@ const RecipeListItem: React.FC<{
         />
       </IonModal>
       <IonRow>
+        <IonText className="ion-align-self-center">
+          <h2>{props.title}</h2>
+        </IonText>
+        <IonCol className="ion-align-self-center ion-text-right">
+          {starsArray.map((x, i) => {
+            if (i + 1 <= props.rating) {
+              return (
+                <IonIcon
+                  icon={star}
+                  style={{ fontSize: 22, color: "#F2AB27" }}
+                ></IonIcon>
+              );
+            } else if (i + 1 > props.rating && i < props.rating) {
+              return (
+                <IonIcon
+                  icon={starHalf}
+                  style={{ fontSize: 22, color: "#F2AB27" }}
+                ></IonIcon>
+              );
+            }
+            return (
+              <IonIcon
+                icon={starOutline}
+                style={{ fontSize: 24, color: "#F2AB27" }}
+              ></IonIcon>
+            );
+          })}
+        </IonCol>
+      </IonRow>
+      <IonRow>
         <IonCol size="4" style={{ display: "flex" }}>
           <IonRow>
             <IonImg
@@ -86,36 +96,6 @@ const RecipeListItem: React.FC<{
         </IonCol>
         <IonCol>
           <IonCol>
-            <IonRow>
-              <IonText>
-                <h2>{props.title}</h2>
-              </IonText>
-              <IonCol className="ion-align-self-center ion-text-right">
-                {starsArray.map((x, i) => {
-                  if (i + 1 <= props.rating) {
-                    return (
-                      <IonIcon
-                        icon={star}
-                        style={{ fontSize: 22, color: "#F2AB27" }}
-                      ></IonIcon>
-                    );
-                  } else if (i + 1 > props.rating && i < props.rating) {
-                    return (
-                      <IonIcon
-                        icon={starHalf}
-                        style={{ fontSize: 22, color: "#F2AB27" }}
-                      ></IonIcon>
-                    );
-                  }
-                  return (
-                    <IonIcon
-                      icon={starOutline}
-                      style={{ fontSize: 24, color: "#F2AB27" }}
-                    ></IonIcon>
-                  );
-                })}
-              </IonCol>
-            </IonRow>
             <IonRow>
               <div className="recipe-info">
                 <IonIcon
@@ -160,20 +140,6 @@ const RecipeListItem: React.FC<{
                 />
                 <b>{props.type} cuisine </b>
               </div>
-            </IonRow>
-          </IonCol>
-          <IonCol>
-            <IonRow className="ion-justify-content-end ion-self-align-end">
-              <IonButton onClick={() => deleteRecipe()} color="danger">
-                <IonIcon slot="start" icon={trashBin} />
-                Delete
-              </IonButton>
-              <IonButton
-                onClick={() => setShowRecipeInfoModal(recipeId)}
-                color="primary"
-              >
-                View more
-              </IonButton>
             </IonRow>
           </IonCol>
         </IonCol>

@@ -6,7 +6,7 @@ export default interface User extends Displayable {
     fullName: string;
     email: string;
     JWTToken: string;
-    type: boolean;
+    isAdmin: boolean;
     recipes: Recipe[];
     favourites: Recipe[];
     expiry: number;

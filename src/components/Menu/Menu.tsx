@@ -91,7 +91,7 @@ const Menu: React.FC = () => {
 									pathname={location.pathname}
 								/>
 							);
-						} else if (appContext.user != null && appContext.user.type) {
+						} else if (appContext.user != null && appContext.user.isAdmin) {
 							return (
 								<MenuItem
 									key={index}

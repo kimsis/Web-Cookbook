@@ -18,7 +18,7 @@ import AppContext from "../../store/AppContext";
 import Vendor from "../../shared/interfaces/Vendor.interface";
 import VendorListItem from "../../components/Vendors/VendorListItem";
 import ModalCreateVendor from "../../components/Vendors/ModalCreateVendor";
-import VendorInfoModal from "../../components/Profile/Vendors/VendorInfoModal";
+import VendorInfoModal from "../../components/Vendors/VendorInfoModal";
 
 interface Data {
   page: number;
@@ -30,7 +30,7 @@ const Vendors: React.FC<{}> = (props) => {
   useEffect(() => {
     getData();
   }, []);
-  const [showVendorCreateModal, setShowVendorCreateModal] = useState(false);
+  const [showVendorCreateModal, setShowVendorCreateModal] = useState(0);
   const [showVendorInfoModal, setShowVendorInfoModal] = useState(0);
   const [vendors, setVendors] = useState<Vendor[] | null>();
   const appContext = useContext(AppContext);
@@ -85,12 +85,12 @@ const Vendors: React.FC<{}> = (props) => {
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonButton onClick={() => setShowVendorCreateModal(true)}>
+        <IonButton onClick={() => setShowVendorCreateModal(-1)}>
           + Add Vendor
         </IonButton>
         <IonModal
-          isOpen={showVendorCreateModal}
-          onDidDismiss={() => setShowVendorCreateModal(false)}
+          isOpen={showVendorCreateModal === 0 ? false : true}
+          onDidDismiss={() => setShowVendorCreateModal(0)}
         >
           <ModalCreateVendor
             showVendorCreateModal={showVendorCreateModal}

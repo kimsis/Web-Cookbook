@@ -24,7 +24,7 @@ import React, {
   useState,
 } from "react";
 import axios, { AxiosResponse } from "axios";
-import { cloudUploadOutline } from "ionicons/icons";
+import { cloudUploadOutline, trashBin } from "ionicons/icons";
 import { useForm } from "react-hook-form";
 import "./ModalCreateRecipe.css";
 import AppContext from "../../store/AppContext";
@@ -37,29 +37,56 @@ const ModalCreateRecipe: React.FC<{
   showRecipeCreateModal: number;
   setShowRecipeCreateModal: Dispatch<SetStateAction<number>>;
 }> = (props) => {
-  const id = props.showRecipeCreateModal;
-  const [imagePath, setimagePath] = useState("");
+
   const markerImagePath =
     "https://icon-library.com/images/dot-icon/dot-icon-17.jpg"; //Image for the marker
-  const [marker, setMarker] = useState({ lat: 0, lng: 0, markerImagePath });
+  const id = props.showRecipeCreateModal;
   const appContext = useContext(AppContext);
+  const fileInput = useRef<HTMLInputElement>(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const fileInput = useRef<HTMLInputElement>(null);
-  const [recipe, setRecipe] = useState<Recipe>();
-
   const handleRef = () => {
     fileInput.current?.click();
   };
+  const [recipe, setRecipe] = useState<Recipe>();
+  const [imagePath, setimagePath] = useState("");
+  const [deleteButton, setDeleteButton] = useState(<div></div>);
+  const [marker, setMarker] = useState({ lat: 0, lng: 0, markerImagePath });
 
   // If the modal is opened with an id > 0 it's purpose is to edit an existing recipe
   useEffect(() => {
-    if (id > 0)
+    if (id > 0) {
       getData();
+      setDeleteButton(
+        <IonButton onClick={() => deleteRecipe()} color="danger">
+          <IonIcon slot="start" icon={trashBin} />
+          Delete
+        </IonButton>
+      )
+    }
   }, [])
+
+  async function deleteRecipe() {
+    axios
+      .delete(appContext.http + "Recipe/" + id, {
+        headers: {
+          "x-auth":
+            appContext.user?.JWTToken == undefined
+              ? ""
+              : appContext.user.JWTToken,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        props.setShowRecipeCreateModal(0);
+      })
+      .catch((error) => {
+        console.log(error + " Error deleting recipe");
+      });
+  };
 
   async function getData() {
     await axios(appContext.http + "Recipe/" + id)
@@ -80,17 +107,14 @@ const ModalCreateRecipe: React.FC<{
     let lat = recipe.latitude;
     let lng = recipe.longitude;
     setMarker({ lat, lng, markerImagePath });
+    console.log(recipe);
   }
 
   function setError(error: any) {
     console.log(error);
   }
 
-  //Select the image from the file input
-  function notify() {
-    toast("Your recipe have been added!");
-  }
-  const imageSelectedHandler = (file: any) => {
+  function imageSelectedHandler(file: any) {
     const imageURL: any = URL.createObjectURL(file);
     setimagePath(imageURL);
     const formData = new FormData();
@@ -106,8 +130,12 @@ const ModalCreateRecipe: React.FC<{
       });
   };
 
-  //Submit POST request to API
+  //Select the image from the file input
+  function notify(message: string) {
+    toast(message);
+  }
 
+  //Submit POST request to API
   const onSubmit = (data: any) => {
     console.log(appContext.user);
     console.log(imagePath);
@@ -122,9 +150,9 @@ const ModalCreateRecipe: React.FC<{
       latitude: marker.lat,
       longitude: marker.lng,
     };
-
+    let approve = recipe?.isApproved? "" : "/" + id;
     axios
-      .post(appContext.http + "Recipe", data, {
+      .post(appContext.http + "Recipe" + approve, data, {
         headers: {
           "x-auth":
             appContext.user?.JWTToken === undefined
@@ -134,6 +162,7 @@ const ModalCreateRecipe: React.FC<{
       })
       .then((response) => {
         console.log(response);
+        notify("Recipe has been sent for approval!");
         props.setShowRecipeCreateModal(0);
       })
       .catch((error) => {
@@ -177,7 +206,7 @@ const ModalCreateRecipe: React.FC<{
 
   return (
     <IonContent className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
-      <h3>Add new recipe</h3>
+      <h3>{id === -1 ? "Add new" : "Modify"} recipe</h3>
       {/* form */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* <img src={image} /> //Display Selected Image*/}
@@ -320,6 +349,7 @@ const ModalCreateRecipe: React.FC<{
             >
               Close
             </IonButton>
+            {deleteButton}
           </IonRow>
         </IonGrid>
       </form>

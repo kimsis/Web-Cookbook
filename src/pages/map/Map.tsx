@@ -13,19 +13,8 @@ import axios from "axios";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import AppContext from "../../store/AppContext";
 import Vendor from "../../shared/interfaces/Vendor.interface";
-import VendorInfoModal from "../../components/Profile/Vendors/VendorInfoModal";
-
-interface RecipeData {
-  page: number;
-  size: number;
-  items: Recipe[];
-}
-
-interface VendorData {
-  page: number;
-  size: number;
-  items: Vendor[];
-}
+import Data from '../../shared/interfaces/Data.interface';
+import VendorInfoModal from '../../components/Vendors/VendorInfoModal';
 
 export const Marker = ({
   lat,
@@ -97,9 +86,6 @@ const SimpleMap: React.FC<{}> = (props) => {
   const [selectedMarkerType, setMarkerType] = useState<JSX.Element[]>([]);
   const [color, setSelected] = useState(true);
 
-  let recipesArray: RecipeData;
-  let vendorsArray: VendorData;
-
   useEffect(() => {
     getRecipes();
     getVendors();
@@ -142,7 +128,7 @@ const SimpleMap: React.FC<{}> = (props) => {
   async function getRecipes() {
     await axios(appContext.http + "Recipe/PagedList")
       .then((response) => {
-        recipesArray = JSON.parse(JSON.stringify(response.data));
+        let recipesArray:Data = JSON.parse(JSON.stringify(response.data));
         console.log(recipesArray.items);
         setRecipes(recipesArray.items);
       })
@@ -155,7 +141,7 @@ const SimpleMap: React.FC<{}> = (props) => {
   async function getVendors() {
     await axios(appContext.http + "Vendor/PagedList")
       .then((response) => {
-        vendorsArray = JSON.parse(JSON.stringify(response.data));
+        let vendorsArray:Data = JSON.parse(JSON.stringify(response.data));
         console.log(vendorsArray.items);
         setVendors(vendorsArray.items);
       })

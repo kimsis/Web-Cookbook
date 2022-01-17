@@ -36,7 +36,7 @@ const LoginComponent: React.FC<{}> = () => {
             email: data.email,
             id: response.data.id,
             fullName: response.data.name,
-            type: response.data.isAdmin,
+            isAdmin: response.data.isAdmin,
             recipes: [],
             favourites: [],
             // Getting the time of Login and adding an expiry of 24h, the duration of the token

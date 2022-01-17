@@ -27,12 +27,11 @@ import GoogleMapReact, { Props } from "google-map-react";
 import "./ModalCreateVendor.css";
 
 const ModalCreateVendor: React.FC<{
-  showVendorCreateModal: boolean;
-  setShowVendorCreateModal: Dispatch<SetStateAction<boolean>>;
+  showVendorCreateModal: number;
+  setShowVendorCreateModal: Dispatch<SetStateAction<number>>;
 }> = (props) => {
-  const [image, setImage] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [imagePath, setimagePath] = useState("");
+  const id = props.showVendorCreateModal;
+  const [imagePath, setImagePath] = useState("");
   const markerImagePath =
     "https://icon-library.com/images/dot-icon/dot-icon-17.jpg"; //Image for the marker
   const [marker, setMarker] = useState({ lat: 0, lng: 0, markerImagePath });
@@ -47,9 +46,8 @@ const ModalCreateVendor: React.FC<{
   //Select the image from the file input
 
   const imageSelectedHandler = (file: any) => {
-    const imageURL: any = URL.createObjectURL(file);
-    setImage(file);
-    setImageUrl(imageURL);
+    const imagePath: any = URL.createObjectURL(file);
+    setImagePath(imagePath);
     console.log(file);
 
     const formData = new FormData();
@@ -59,13 +57,12 @@ const ModalCreateVendor: React.FC<{
       .post("https://api.cloudinary.com/v1_1/dafrxyo42/image/upload", formData)
       .then((data) => {
         console.log(data);
-        setimagePath(data.data.url);
+        setImagePath(data.data.url);
         console.log(imagePath);
       })
       .catch((error) => {
         console.log(error);
       });
-    setImage("");
   };
   const handleRef = () => {
     fileInput.current?.click();
@@ -93,7 +90,7 @@ const ModalCreateVendor: React.FC<{
       })
       .then((response) => {
         console.log(response);
-        props.setShowVendorCreateModal(false);
+        props.setShowVendorCreateModal(0);
       })
       .catch((error) => {
         console.log(error);
@@ -134,7 +131,7 @@ const ModalCreateVendor: React.FC<{
 
   return (
     <IonContent className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
-      <h3>Add new vendor</h3>
+      <h3>{id === -1 ? "Add new" : "Modify"} vendor</h3>
       {/* form */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <IonGrid>
@@ -155,8 +152,8 @@ const ModalCreateVendor: React.FC<{
                 />
               </IonButton>
               {/* Check if an image file is uploaded */}
-              {imageUrl ? (
-                <IonImg src={imageUrl}></IonImg>
+              {imagePath ? (
+                <IonImg src={imagePath}></IonImg>
               ) : (
                 <p className="ion-padding">Select picture of the vendor</p>
               )}
@@ -189,7 +186,7 @@ const ModalCreateVendor: React.FC<{
           <IonRow class="ion-justify-content-around">
             <IonButton type="submit">Add vendor</IonButton>
             <IonButton
-              onClick={() => props.setShowVendorCreateModal(false)}
+              onClick={() => props.setShowVendorCreateModal(0)}
               fill="outline"
               color="medium"
             >
