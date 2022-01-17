@@ -79,7 +79,7 @@ const Recipes: React.FC<{}> = (props) => {
       <div
         className="recipe-list"
         key={recipe.id}
-      // onClick={() => setShowRecipeInfoModal(recipe.id)}
+        // onClick={() => setShowRecipeInfoModal(recipe.id)}
       >
         <RecipeListItem
           key={recipe.id}
@@ -102,9 +102,9 @@ const Recipes: React.FC<{}> = (props) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
+          {/* <IonButtons slot="start">
             <IonMenuButton />
-          </IonButtons>
+          </IonButtons> */}
           <IonTitle>Explore Recipes</IonTitle>
         </IonToolbar>
       </IonHeader>

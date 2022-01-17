@@ -32,11 +32,10 @@ const Profile: React.FC<{}> = (props) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
+          {/* <IonButtons slot="start">
             <IonMenuButton>
-              <img src={logo}></img>
             </IonMenuButton>
-          </IonButtons>
+          </IonButtons> */}
           {appContext.user ? (
             <IonTitle> Profile </IonTitle>
           ) : (

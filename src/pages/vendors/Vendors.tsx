@@ -82,9 +82,9 @@ const Vendors: React.FC<{}> = (props) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
+          {/* <IonButtons slot="start">
             <IonMenuButton />
-          </IonButtons>
+          </IonButtons> */}
           <IonTitle>Explore Vendors</IonTitle>
         </IonToolbar>
       </IonHeader>
