@@ -26,14 +26,14 @@ import React, {
 import axios, { AxiosResponse } from "axios";
 import { cloudUploadOutline, trashBin } from "ionicons/icons";
 import { useForm } from "react-hook-form";
-import "./ModalCreateRecipe.css";
+import "./ModalRecipe.css";
 import AppContext from "../../store/AppContext";
 import { Marker } from "../../pages/map/Map";
 import GoogleMapReact from "google-map-react";
 import { toast } from "react-toastify";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 
-const ModalCreateRecipe: React.FC<{
+const ModalRecipe: React.FC<{
   showRecipeCreateModal: number;
   setShowRecipeCreateModal: Dispatch<SetStateAction<number>>;
 }> = (props) => {
@@ -389,4 +389,4 @@ const ModalCreateRecipe: React.FC<{
   );
 };
 
-export default ModalCreateRecipe;
+export default ModalRecipe;

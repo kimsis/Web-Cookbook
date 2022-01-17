@@ -16,7 +16,7 @@ import ContentList from "../../components/AdminTools/ContentSwiper/ContentSwiper
 import axios, { AxiosResponse } from "axios";
 import Data from "../../shared/interfaces/Data.interface";
 import Recipe from "../../shared/interfaces/Recipe.interface";
-import ModalCreateRecipe from "../../components/Recipes/ModalCreateRecipe";
+import ModalRecipe from "../../components/Recipes/ModalRecipe";
 import Vendor from "../../shared/interfaces/Vendor.interface";
 import Ingredient from "../../shared/interfaces/Ingredient.interfdace";
 import ModalCreateVendor from "../../components/Vendors/ModalCreateVendor";
@@ -112,7 +112,7 @@ const ManageContent: React.FC<{}> = (props) => {
         isOpen={showRecipeModal === 0 ? false : true}
         onDidDismiss={() => setShowRecipeModal(0)}
       >
-        <ModalCreateRecipe
+        <ModalRecipe
           showRecipeCreateModal={showRecipeModal}
           setShowRecipeCreateModal={setShowRecipeModal}
         />

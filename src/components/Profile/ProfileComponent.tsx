@@ -17,7 +17,7 @@ import Data from "../../shared/interfaces/Data.interface";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import Profile from "../../shared/interfaces/Profile.interface";
 import AppContext from "../../store/AppContext";
-import ModalCreateRecipe from "../Recipes/ModalCreateRecipe";
+import ModalRecipe from "../Recipes/ModalRecipe";
 import RecipeListItem from "../Recipes/RecipeListItem";
 import "./ProfileComponent.css";
 import { pencil } from "ionicons/icons";
@@ -189,7 +189,7 @@ const ProfileComponent: React.FC<{}> = () => {
         isOpen={showRecipeCreateModal === 0 ? false : true}
         onDidDismiss={() => setShowRecipeCreateModal(0)}
       >
-        <ModalCreateRecipe
+        <ModalRecipe
           showRecipeCreateModal={showRecipeCreateModal}
           setShowRecipeCreateModal={setShowRecipeCreateModal}
         />
