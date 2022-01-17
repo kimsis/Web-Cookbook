@@ -63,7 +63,7 @@ const ManageContent: React.FC<{}> = (props) => {
         console.error("Error fetching data: ", error);
         setError(error);
       });
-    await axios(appContext.http + "Ingredients/PagedList")
+    await axios(appContext.http + "Ingredient/PagedList")
       .then((response) => {
         setData(response, setIngredients);
       })
