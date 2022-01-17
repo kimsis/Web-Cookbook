@@ -90,9 +90,6 @@ const Vendors: React.FC<{}> = (props) => {
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonButton onClick={() => setShowVendorCreateModal(-1)}>
-          + Add Vendor
-        </IonButton>
         <IonModal
           isOpen={showVendorCreateModal === 0 ? false : true}
           onDidDismiss={() => setShowVendorCreateModal(0)}
