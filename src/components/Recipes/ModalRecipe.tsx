@@ -80,7 +80,6 @@ const ModalRecipe: React.FC<{
         },
       })
       .then((response) => {
-        console.log(response);
         props.setShowRecipeCreateModal(0);
       })
       .catch((error) => {
@@ -107,7 +106,6 @@ const ModalRecipe: React.FC<{
     let lat = recipe.latitude;
     let lng = recipe.longitude;
     setMarker({ lat, lng, markerImagePath });
-    console.log(recipe);
   }
 
   function setError(error: any) {
@@ -138,8 +136,6 @@ const ModalRecipe: React.FC<{
 
   //Submit POST request to API
   const onSubmit = (data: any) => {
-    console.log(appContext.user);
-    console.log(imagePath);
     data = {
       ...data,
       difficulty: parseInt(data.difficulty),
@@ -153,7 +149,6 @@ const ModalRecipe: React.FC<{
     };
     if (id === -1 || (id > 0 && !recipe?.approved)) {
       let approve = recipe?.approved === false ? "/" + id : "";
-      console.log(appContext.http + "Recipe" + approve);
       axios
         .post(appContext.http + "Recipe" + approve, data, {          
           headers: {
@@ -164,7 +159,6 @@ const ModalRecipe: React.FC<{
           },
         })
         .then((response) => {
-          console.log(response);
           if (recipe?.approved) {
             notify("Recipe has been added!");
           } else {
@@ -186,7 +180,6 @@ const ModalRecipe: React.FC<{
           },
         })
         .then((response) => {
-          console.log(response);
           notify("Recipe has been modified!");
           props.setShowRecipeCreateModal(0);
         })
@@ -207,7 +200,6 @@ const ModalRecipe: React.FC<{
 
     function _onClick(obj: any) {
       setMarker({ ...obj, markerImagePath });
-      console.log(obj);
     }
     return (
       <IonContent style={{ height: "40vh" }}>
@@ -371,7 +363,6 @@ const ModalRecipe: React.FC<{
         </IonGrid>
         <IonGrid className="ion-padding">
           <IonRow class="ion-justify-content-around">
-            {console.log(recipe?.approved)}
             <IonButton type="submit">{recipe?.approved === true ? "Modify " : id === -1 ? "Add " : "Approve "}recipe</IonButton>
             <IonButton
               onClick={() => props.setShowRecipeCreateModal(0)}

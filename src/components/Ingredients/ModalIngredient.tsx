@@ -61,7 +61,6 @@ const ModalIngredient: React.FC<{
   const imageSelectedHandler = (file: any) => {
     const imagePath: any = URL.createObjectURL(file);
     setImagePath(imagePath);
-    console.log(file);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -70,9 +69,7 @@ const ModalIngredient: React.FC<{
     axios
       .post("https://api.cloudinary.com/v1_1/dafrxyo42/image/upload", formData)
       .then((data) => {
-        console.log(data);
         setImagePath(data.data.url);
-        console.log(imagePath);
       })
       .catch((error) => {
         console.log(error);
@@ -90,7 +87,6 @@ const ModalIngredient: React.FC<{
         },
       })
       .then((response) => {
-        console.log(response);
         props.setShowIngredientModal(0);
       })
       .catch((error) => {
@@ -139,7 +135,6 @@ const ModalIngredient: React.FC<{
           },
         })
         .then((response) => {
-          console.log(response);
           props.setShowIngredientModal(0);
         })
         .catch((error) => {
@@ -156,7 +151,6 @@ const ModalIngredient: React.FC<{
           },
         })
         .then((response) => {
-          console.log(response);
           props.setShowIngredientModal(0);
         })
         .catch((error) => {

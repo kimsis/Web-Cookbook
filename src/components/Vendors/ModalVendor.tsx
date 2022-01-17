@@ -67,7 +67,6 @@ const ModalVendor: React.FC<{
   const imageSelectedHandler = (file: any) => {
     const imagePath: any = URL.createObjectURL(file);
     setImagePath(imagePath);
-    console.log(file);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -76,9 +75,7 @@ const ModalVendor: React.FC<{
     axios
       .post("https://api.cloudinary.com/v1_1/dafrxyo42/image/upload", formData)
       .then((data) => {
-        console.log(data);
         setImagePath(data.data.url);
-        console.log(imagePath);
       })
       .catch((error) => {
         console.log(error);
@@ -96,7 +93,6 @@ const ModalVendor: React.FC<{
         },
       })
       .then((response) => {
-        console.log(response);
         props.setShowVendorCreateModal(0);
       })
       .catch((error) => {
@@ -123,7 +119,6 @@ const ModalVendor: React.FC<{
     let lat = vendor.latitude;
     let lng = vendor.longitude;
     setMarker({ lat, lng, markerImagePath });
-    console.log(vendor);
   }
 
   function setError(error: any) {
@@ -152,7 +147,6 @@ const ModalVendor: React.FC<{
           },
         })
         .then((response) => {
-          console.log(response);
           props.setShowVendorCreateModal(0);
         })
         .catch((error) => {
@@ -169,7 +163,6 @@ const ModalVendor: React.FC<{
           },
         })
         .then((response) => {
-          console.log(response);
           props.setShowVendorCreateModal(0);
         })
         .catch((error) => {

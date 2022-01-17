@@ -43,7 +43,6 @@ const LoginComponent: React.FC<{}> = () => {
             expiry: (new Date().getTime() + 86400000),
             imagePath: "",
           };
-          console.log(appContext.user);
           
           localStorage.setItem("user", JSON.stringify(appContext.user));
           history.replace("/profile");

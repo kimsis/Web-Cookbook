@@ -48,7 +48,6 @@ const RegisterComponent: React.FC<{}> = () => {
     axios
       .post(appContext.http + "authentication/register", data)
       .then(function (response) {
-        console.log(response);
       })
       .catch(function (error) {
         console.log(error);

@@ -33,7 +33,6 @@ const ManageContent: React.FC<{}> = (props) => {
   if (appContext.user == null) {
     history.replace("/login");
   } else if (!appContext.user.isAdmin) {
-    console.log(appContext.user);
     history.replace("/profile");
   }
 

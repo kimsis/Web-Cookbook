@@ -138,7 +138,6 @@ const SimpleMap: React.FC<{}> = (props) => {
     await axios(appContext.http + "Recipe/PagedList")
       .then((response) => {
         let recipesArray:Data = JSON.parse(JSON.stringify(response.data));
-        console.log(recipesArray.items);
         setRecipes(recipesArray.items);
       })
       .catch((error) => {
@@ -151,7 +150,6 @@ const SimpleMap: React.FC<{}> = (props) => {
     await axios(appContext.http + "Vendor/PagedList")
       .then((response) => {
         let vendorsArray:Data = JSON.parse(JSON.stringify(response.data));
-        console.log(vendorsArray.items);
         setVendors(vendorsArray.items);
       })
       .catch((error) => {

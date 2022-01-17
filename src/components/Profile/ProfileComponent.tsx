@@ -72,7 +72,6 @@ const ProfileComponent: React.FC<{}> = () => {
   ): Recipe[] {
     let recipesArray: Data = JSON.parse(JSON.stringify(data.data));
     setRecipes(recipesArray.items);
-    console.log(recipeList);
 
     return recipesArray.items;
   }
@@ -175,7 +174,6 @@ const ProfileComponent: React.FC<{}> = () => {
         },
       })
       .then((response) => {
-        console.log(response);
         notify();
         setEdit(false);
       })

@@ -43,10 +43,8 @@ const ModalVendorInfo: React.FC<{
   }
 
   function setData(data: AxiosResponse) {
-    console.log(data);
     let vendorTest: Vendor = JSON.parse(JSON.stringify(data.data));
     setVendor(vendorTest);
-    console.log(vendorTest);
   }
 
   function setError(error: any) {
