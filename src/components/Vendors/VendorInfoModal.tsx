@@ -9,6 +9,8 @@ import {
   IonRow,
   IonCol,
   IonChip,
+  IonFab,
+  IonFabButton,
 } from "@ionic/react";
 import { useParams } from "react-router";
 import "./VendorInfoModal.css";
@@ -23,6 +25,7 @@ import {
   earth,
   egg,
   timer,
+  chevronBackCircleOutline,
 } from "ionicons/icons";
 import {
   Dispatch,
@@ -71,7 +74,15 @@ const VendorInfoModal: React.FC<{
   const iconsStyling = { margin: "0px", marginRight: "8px" };
   return (
     <IonContent>
-      <IonGrid style={{ padding: "10px", paddingTop: "50px" }}>
+      <IonFab style={{ margin: "10px" }}>
+        <IonFabButton onClick={() => props.setShowVendorInfoModal(0)}>
+          <IonIcon
+            style={{ fontSize: "32px" }}
+            icon={chevronBackCircleOutline}
+          />
+        </IonFabButton>
+      </IonFab>
+      <IonGrid style={{ padding: "10px", marginTop: "65px" }}>
         <IonRow>
           <IonCol size="5">
             <IonImg src={vendor?.imagePath}></IonImg>

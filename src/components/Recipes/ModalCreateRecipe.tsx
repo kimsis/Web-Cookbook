@@ -14,6 +14,9 @@ import {
   IonTextarea,
   IonImg,
   IonToast,
+  IonChip,
+  IonFab,
+  IonFabButton,
 } from "@ionic/react";
 import React, {
   Dispatch,
@@ -24,7 +27,11 @@ import React, {
   useState,
 } from "react";
 import axios, { AxiosResponse } from "axios";
-import { cloudUploadOutline, trashBin } from "ionicons/icons";
+import {
+  cloudUploadOutline,
+  trashBin,
+  chevronBackCircleOutline,
+} from "ionicons/icons";
 import { useForm } from "react-hook-form";
 import "./ModalCreateRecipe.css";
 import AppContext from "../../store/AppContext";
@@ -37,7 +44,6 @@ const ModalCreateRecipe: React.FC<{
   showRecipeCreateModal: number;
   setShowRecipeCreateModal: Dispatch<SetStateAction<number>>;
 }> = (props) => {
-
   const markerImagePath =
     "https://icon-library.com/images/dot-icon/dot-icon-17.jpg"; //Image for the marker
   const id = props.showRecipeCreateModal;
@@ -65,9 +71,9 @@ const ModalCreateRecipe: React.FC<{
           <IonIcon slot="start" icon={trashBin} />
           Delete
         </IonButton>
-      )
+      );
     }
-  }, [])
+  }, []);
 
   async function deleteRecipe() {
     axios
@@ -86,7 +92,7 @@ const ModalCreateRecipe: React.FC<{
       .catch((error) => {
         console.log(error + " Error deleting recipe");
       });
-  };
+  }
 
   async function getData() {
     await axios(appContext.http + "Recipe/" + id)
@@ -113,7 +119,7 @@ const ModalCreateRecipe: React.FC<{
   function setError(error: any) {
     console.log(error);
   }
-  
+
   const imageSelectedHandler = (file: any) => {
     const imageURL: any = URL.createObjectURL(file);
     setimagePath(imageURL);
@@ -151,7 +157,7 @@ const ModalCreateRecipe: React.FC<{
       latitude: marker.lat,
       longitude: marker.lng,
     };
-    let approve = recipe?.isApproved? "" : "/" + id;
+    let approve = recipe?.isApproved ? "" : "/" + id;
     axios
       .post(appContext.http + "Recipe" + approve, data, {
         headers: {
@@ -207,7 +213,18 @@ const ModalCreateRecipe: React.FC<{
 
   return (
     <IonContent className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
-      <h3>{id === -1 ? "Add new" : "Modify"} recipe</h3>
+      <IonFab>
+        <IonFabButton onClick={() => props.setShowRecipeCreateModal(0)}>
+          <IonIcon
+            style={{ fontSize: "32px" }}
+            icon={chevronBackCircleOutline}
+          />
+        </IonFabButton>
+      </IonFab>
+
+      <h3 style={{ marginLeft: "60px" }}>
+        {id === -1 ? "Add new" : "Modify"} recipe
+      </h3>
       {/* form */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* <img src={image} /> //Display Selected Image*/}
