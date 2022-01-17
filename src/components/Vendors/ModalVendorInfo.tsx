@@ -9,8 +9,9 @@ import {
   IonChip,
   IonFab,
   IonFabButton,
+  IonIcon,
 } from "@ionic/react";
-import "./VendorInfoModal.css";
+import "./ModalVendorInfo.css";
 import {
   chevronBackCircleOutline,
 } from "ionicons/icons";
