@@ -5,3 +5,12 @@
   margin: auto;
   max-width: 800px;
 }
+.modal-wrapper {
+  width: 700px !important;
+}
+@media screen and (min-width: 768px) {
+  .modal-wrapper {
+    min-height: 830px !important;
+    height: auto;
+  }
+}

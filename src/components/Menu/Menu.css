@@ -1,5 +1,7 @@
-ion-menu ion-content, ion-menu ion-content ion-list, ion-menu ion-content ion-list ion-item {
-  --background: var(--ion-color-primary) ;
+ion-menu ion-content,
+ion-menu ion-content ion-list,
+ion-menu ion-content ion-list ion-item {
+  --background: var(--ion-color-primary);
   background-color: var(--ion-color-primary) !important;
 }
 
@@ -24,7 +26,7 @@ ion-menu ion-list-header ion-item {
   font-size: 32px;
 }
 
-ion-menu ion-content ion-list ion-list-header ion-item{
+ion-menu ion-content ion-list ion-list-header ion-item {
   --inner-border-width: 0 0 0 0;
 }
 
@@ -69,4 +71,8 @@ ion-menu.ios ion-item {
 
 ion-menu.ios ion-item ion-icon {
   font-size: 24px;
+}
+.split-pane-visible > .split-pane-side {
+  min-width: 400px !important;
+  max-width: 400px !important;
 }

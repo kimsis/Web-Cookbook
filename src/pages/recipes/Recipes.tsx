@@ -109,7 +109,7 @@ const Recipes: React.FC<{}> = (props) => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
+      <IonContent fullscreen className="modal">
         <IonModal
           isOpen={showRecipeFilterModal}
           onDidDismiss={() => FilterModalDismiss()}
