@@ -1,4 +1,5 @@
 import Displayable from "./Displayable.interface";
+import Ingredient from "./Ingredient.interface";
 
 export default interface Recipe extends Displayable
  {
@@ -13,7 +14,7 @@ export default interface Recipe extends Displayable
     preparationTimeTicks: number;
     rating: number;
     imagePath: string;
-    ingredients: string[];
+    ingredients: Ingredient[];
     unlistedIngredients: string[];
     cookingTimeTicks: number;
     latitude: number;

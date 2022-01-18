@@ -42,12 +42,12 @@ import Recipe from "../../shared/interfaces/Recipe.interface";
 import Ingredient from "../../shared/interfaces/Ingredient.interface";
 
 const ModalRecipe: React.FC<{
-  showRecipeCreateModal: number;
-  setShowRecipeCreateModal: Dispatch<SetStateAction<number>>;
+  showRecipeModal: number;
+  setShowRecipeModal: Dispatch<SetStateAction<number>>;
 }> = (props) => {
   const markerImagePath =
     "https://icon-library.com/images/dot-icon/dot-icon-17.jpg"; //Image for the marker
-  const id = props.showRecipeCreateModal;
+  const id = props.showRecipeModal;
   const appContext = useContext(AppContext);
   const fileInput = useRef<HTMLInputElement>(null);
   const {
@@ -89,7 +89,7 @@ const ModalRecipe: React.FC<{
         },
       })
       .then((response) => {
-        props.setShowRecipeCreateModal(0);
+        props.setShowRecipeModal(0);
       })
       .catch((error) => {
         console.log(error + " Error deleting recipe");
@@ -184,7 +184,7 @@ const ModalRecipe: React.FC<{
           } else {
             notify("Recipe has been sent for approval!");
           }
-          props.setShowRecipeCreateModal(0);
+          props.setShowRecipeModal(0);
         })
         .catch((error) => {
           console.log(error);
@@ -203,7 +203,7 @@ const ModalRecipe: React.FC<{
         })
         .then((response) => {
           notify("Recipe has been modified!");
-          props.setShowRecipeCreateModal(0);
+          props.setShowRecipeModal(0);
         })
         .catch((error) => {
           console.log(error);
@@ -256,7 +256,7 @@ const ModalRecipe: React.FC<{
   return (
     <IonContent className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
       <IonFab>
-        <IonFabButton onClick={() => props.setShowRecipeCreateModal(0)}>
+        <IonFabButton onClick={() => props.setShowRecipeModal(0)}>
           <IonIcon
             style={{ fontSize: "32px" }}
             icon={chevronBackCircleOutline}
@@ -407,7 +407,7 @@ const ModalRecipe: React.FC<{
           <IonRow class="ion-justify-content-around">
             <IonButton type="submit">{recipe?.approved === true ? "Modify " : id === -1 ? "Add " : "Approve "}recipe</IonButton>
             <IonButton
-              onClick={() => props.setShowRecipeCreateModal(0)}
+              onClick={() => props.setShowRecipeModal(0)}
               fill="outline"
               color="medium"
             >

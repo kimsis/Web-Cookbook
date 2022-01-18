@@ -29,6 +29,7 @@ const RecipeListItem: React.FC<{
   rating: number;
   imagePath: string;
   timeToCook: number;
+  onDismissCallback: () => void;
 }> = (props) => {
   const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
   const recipeId = props.id; // pass id to info modal
@@ -44,7 +45,7 @@ const RecipeListItem: React.FC<{
     >
       <IonModal
         isOpen={showRecipeInfoModal ? true : false}
-        onDidDismiss={() => setShowRecipeInfoModal(0)}
+        onDidDismiss={() => {setShowRecipeInfoModal(0); props.onDismissCallback()}}
       >
         <ModalRecipeInfo
           id={props.id}

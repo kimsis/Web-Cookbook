@@ -83,7 +83,6 @@ const ModalRecipeInfo: React.FC<{
     } else {
       setFavourite(false);
     }
-    console.log(favourite);
   }
 
   function notify(message: string) {
@@ -105,19 +104,19 @@ const ModalRecipeInfo: React.FC<{
         .then((response) => {
           notify("Recipe has been favoured");
         })
-    // } else {
-    //   axios
-    //     .delete(appContext.http + "Recipe/Favourite" + props.id, null, {
-    //       headers: {
-    //         "x-auth":
-    //           appContext.user?.JWTToken === undefined
-    //             ? ""
-    //             : appContext.user.JWTToken,
-    //       },
-    //     })
-    //     .then((response) => {
-    //        notify("Recipe has been unfavoured");
-    //     })
+    } else {
+      axios
+        .delete(appContext.http + "Recipe/Favourite?id=" + props.id, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken === undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
+        .then((response) => {
+           notify("Recipe has been unfavoured");
+        })
     }
   }
 
@@ -358,9 +357,9 @@ const ModalRecipeInfo: React.FC<{
         <IonRow>
           <IonCol>
             <h1>Ingredients</h1>
-            {recipe?.unlistedIngredients.map((x) => (
-              <IonChip color="primary">
-                <IonLabel>{x}</IonLabel>
+            {recipe?.ingredients.map((ingredient) => (
+              <IonChip color="primary" key={ingredient.id}>
+                <IonLabel>{ingredient.name}</IonLabel>
               </IonChip>
             ))}
           </IonCol>
