@@ -54,6 +54,7 @@ import { Icon } from "ionicons/dist/types/components/icon/icon";
 import QRModal from "./QRModal";
 import { Oval } from "react-loader-spinner";
 import { Rating } from "react-simple-star-rating";
+import { toast } from "react-toastify";
 
 const ModalRecipeInfo: React.FC<{
   id: number;
@@ -87,7 +88,10 @@ const ModalRecipeInfo: React.FC<{
     } else {
       setFavourite(false);
     }
-    console.log(favourite);
+  }
+
+  function notify(message: string) {
+    toast(message);
   }
 
   function postRating(rate: number) {
@@ -121,19 +125,22 @@ const ModalRecipeInfo: React.FC<{
                 : appContext.user.JWTToken,
           },
         })
-        .then((response) => {});
-      // } else {
-      //   axios
-      //     .delete(appContext.http + "Recipe/Favourite" + props.id, null, {
-      //       headers: {
-      //         "x-auth":
-      //           appContext.user?.JWTToken === undefined
-      //             ? ""
-      //             : appContext.user.JWTToken,
-      //       },
-      //     })
-      //     .then((response) => {
-      //     })
+        .then((response) => {
+          notify("Recipe has been favoured");
+        });
+    } else {
+      axios
+        .delete(appContext.http + "Recipe/Favourite?id=" + props.id, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken === undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
+        .then((response) => {
+          notify("Recipe has been unfavoured");
+        });
     }
   }
 
@@ -192,7 +199,7 @@ const ModalRecipeInfo: React.FC<{
         </IonFab>
         <h1 style={{ marginLeft: "60px" }}>{recipe?.title}</h1>
         <IonRow>
-          <IonCol size="5">
+          <IonCol>
             <IonImg src={recipe?.imagePath}></IonImg>
           </IonCol>
           <IonCol>
@@ -204,16 +211,9 @@ const ModalRecipeInfo: React.FC<{
                 <Rating
                   onClick={postRating}
                   ratingValue={rating}
-                  allowHalfIcon={true} /* Available Props */
+                  allowHalfIcon={true}
+                  size={30} /* Available Props */
                 />
-              </IonCol>
-              <IonCol>
-                <IonIcon
-                  icon={heart}
-                  style={{ fontSize: 22 }}
-                  class={favourite ? "fav hydrated" : "hydrated"}
-                  onClick={() => toggleFavourite(!favourite)}
-                ></IonIcon>
               </IonCol>
             </IonRow>
             <IonItem color="none" lines="none">
@@ -276,6 +276,12 @@ const ModalRecipeInfo: React.FC<{
           </IonCol>
         </IonRow>
         <IonItem>
+          <IonIcon
+            icon={heart}
+            style={{ fontSize: 30 }}
+            class={favourite ? "fav hydrated" : "hydrated"}
+            onClick={() => toggleFavourite(!favourite)}
+          ></IonIcon>
           <IonLabel>Share the meal!</IonLabel>
           <FacebookShareButton
             url={"http://www.partirecept.com"}
@@ -353,9 +359,9 @@ const ModalRecipeInfo: React.FC<{
         <IonRow>
           <IonCol>
             <h1>Ingredients</h1>
-            {recipe?.unlistedIngredients.map((x) => (
-              <IonChip color="primary">
-                <IonLabel>{x}</IonLabel>
+            {recipe?.ingredients.map((ingredient) => (
+              <IonChip color="primary" key={ingredient.id}>
+                <IonLabel>{ingredient.name}</IonLabel>
               </IonChip>
             ))}
           </IonCol>

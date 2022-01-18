@@ -36,7 +36,7 @@ const ModalVendorInfo: React.FC<{
 
   const [vendor, setVendor] = useState<Vendor>();
   const appContext = useContext(AppContext);
-
+  let ingredientsList;
   async function getData() {
     await axios(appContext.http + "Vendor/" + props.id)
       .then((response) => {
@@ -51,6 +51,17 @@ const ModalVendorInfo: React.FC<{
   function setData(data: AxiosResponse) {
     let vendorTest: Vendor = JSON.parse(JSON.stringify(data.data));
     setVendor(vendorTest);
+  }
+
+  if(vendor != null && vendor.ingredients !== null && vendor.ingredients.length > 0) {
+    console.log(vendor.ingredients);
+    ingredientsList = vendor?.ingredients.map((ingredient) => (
+      <IonChip>
+        <IonLabel key={ingredient.id}>{ingredient.name}</IonLabel>
+      </IonChip>
+    ))
+  } else {
+    ingredientsList = <div> No ingredients found for this vendor </div>;
   }
 
   function setError(error: any) {
@@ -92,11 +103,7 @@ const ModalVendorInfo: React.FC<{
         <IonRow>
           <IonCol>
             <h1>Ingredients</h1>
-            {vendor?.ingredients.map((x) => (
-              <IonChip>
-                <IonLabel>{x}</IonLabel>
-              </IonChip>
-            ))}
+            {ingredientsList}
           </IonCol>
         </IonRow>
 

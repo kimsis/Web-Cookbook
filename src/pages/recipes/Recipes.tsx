@@ -22,6 +22,7 @@ import AppContext from "../../store/AppContext";
 import FilterContext from "../../store/FiltersContext";
 import ModalRecipeInfo from "../../components/Recipes/ModalRecipeInfo";
 import ModalRecipeFilter from "../../components/Recipes/ModalRecipeFilter";
+import RecipeList from "../../components/Recipes/RecipeList";
 
 const Recipes: React.FC<{}> = (props) => {
   useEffect(() => {
@@ -30,7 +31,7 @@ const Recipes: React.FC<{}> = (props) => {
 
   const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
   const [showRecipeFilterModal, setShowRecipeFilterModal] = useState(false);
-  const [recipes, setRecipes] = useState<Recipe[] | null>();
+  const [recipes, setRecipes] = useState<Recipe[] | null>(null);
   const [searchText, setSearchText] = useState("");
   const appContext = useContext(AppContext);
   const filterContext = useContext(FilterContext);
@@ -71,31 +72,6 @@ const Recipes: React.FC<{}> = (props) => {
   function SearchText(value: string) {
     setSearchText(value);
     SearchFiltered();
-  }
-
-  let RecipeList;
-  if (recipes != null && recipes.length > 0) {
-    RecipeList = recipes.map((recipe, key) => (
-      <div
-        className="recipe-list"
-        key={recipe.id}
-        // onClick={() => setShowRecipeInfoModal(recipe.id)}
-      >
-        <RecipeListItem
-          key={recipe.id}
-          id={recipe.id}
-          title={recipe.title}
-          sharedBy={recipe.sharedBy}
-          countryOfOrigin={recipe.countryOfOrigin}
-          type={recipe.type}
-          rating={recipe.rating}
-          imagePath={recipe.imagePath}
-          timeToCook={recipe.preparationTimeTicks}
-        />
-      </div>
-    ));
-  } else {
-    RecipeList = <div> No recipes found! </div>;
   }
 
   return (
@@ -144,7 +120,7 @@ const Recipes: React.FC<{}> = (props) => {
         >
           +Filter
         </IonButton>
-        <IonList id="menu-list">{RecipeList}</IonList>
+        <RecipeList recipes={recipes} message="No recipes found" onDismissCallback={() => {getData()}}/>
       </IonContent>
     </IonPage>
   );

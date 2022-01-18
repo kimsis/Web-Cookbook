@@ -20,6 +20,7 @@ import AppContext from "../../store/AppContext";
 import { useContext, useState } from "react";
 import ModalRecipeInfo from "./ModalRecipeInfo";
 import { Rating } from "react-simple-star-rating";
+import axios from "axios";
 
 const RecipeListItem: React.FC<{
   id: number;
@@ -30,10 +31,32 @@ const RecipeListItem: React.FC<{
   rating: number;
   imagePath: string;
   timeToCook: number;
+  onDismissCallback: () => void;
 }> = (props) => {
   const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
   const recipeId = props.id; // pass id to info modal
   const appContext = useContext(AppContext);
+
+  const [rating, setRating] = useState(0);
+
+  function postRating(rate: number) {
+    setRating(rate);
+    let data: any = {
+      rating: rate,
+      recipeId: recipeId,
+      userId: appContext.user?.id,
+    };
+    axios
+      .post(appContext.http + "Recipe/Rate", data, {
+        headers: {
+          "x-auth":
+            appContext.user?.JWTToken === undefined
+              ? ""
+              : appContext.user.JWTToken,
+        },
+      })
+      .then((response) => {});
+  }
 
   return (
     <IonGrid
@@ -44,7 +67,10 @@ const RecipeListItem: React.FC<{
     >
       <IonModal
         isOpen={showRecipeInfoModal ? true : false}
-        onDidDismiss={() => setShowRecipeInfoModal(0)}
+        onDidDismiss={() => {
+          setShowRecipeInfoModal(0);
+          props.onDismissCallback();
+        }}
       >
         <ModalRecipeInfo
           id={props.id}
@@ -57,8 +83,10 @@ const RecipeListItem: React.FC<{
         </IonText>
         <IonCol className="ion-align-self-center ion-text-right">
           <Rating
+            onClick={postRating}
             ratingValue={props.rating}
-            allowHalfIcon={true} /* Available Props */
+            allowHalfIcon={true}
+            size={25} /* Available Props */
           />
         </IonCol>
       </IonRow>

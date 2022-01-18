@@ -51,7 +51,7 @@ const ManageContent: React.FC<{}> = (props) => {
     getData("Ingredient/PagedList", setIngredients);
   }, []);
 
-  async function getData(endpoint : String, setter : Dispatch<any>) {
+  async function getData(endpoint : String, setter : Dispatch<any[]>) {
     await axios(appContext.http! + endpoint, {
     headers: {
       "x-auth":
@@ -93,8 +93,8 @@ const ManageContent: React.FC<{}> = (props) => {
         onDidDismiss={() => {setShowRecipeModal(0); getData("Recipe/PagedList", setRecipes); getData("Recipe/PagedListPending", setPendingRecipes)}}
       >
         <ModalRecipe
-          showRecipeCreateModal={showRecipeModal}
-          setShowRecipeCreateModal={setShowRecipeModal}
+          showRecipeModal={showRecipeModal}
+          setShowRecipeModal={setShowRecipeModal}
         />
       </IonModal>
       <IonModal

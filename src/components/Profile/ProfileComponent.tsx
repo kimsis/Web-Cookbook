@@ -18,10 +18,9 @@ import Recipe from "../../shared/interfaces/Recipe.interface";
 import Profile from "../../shared/interfaces/Profile.interface";
 import AppContext from "../../store/AppContext";
 import ModalRecipe from "../Recipes/ModalRecipe";
-import RecipeListItem from "../Recipes/RecipeListItem";
 import "./ProfileComponent.css";
-import { pencil } from "ionicons/icons";
 import { toast } from "react-toastify";
+import RecipeList from "../Recipes/RecipeList";
 
 const ProfileComponent: React.FC<{}> = () => {
   const [recipes, setRecipe] = useState<Recipe[] | null>(null);
@@ -29,16 +28,12 @@ const ProfileComponent: React.FC<{}> = () => {
   const [imagePath, setimagePath] = useState("");
   const [userData, setUserData] = useState<Profile | null>();
   const [edit, setEdit] = useState(false);
-  
-  const [showRecipeCreateModal, setShowRecipeCreateModal] = useState(0);
+
+  const [showRecipeCreateModal, setShowRecipeModal] = useState(0);
   const appContext = useContext(AppContext);
   const history = useHistory();
-  let RecipeList;
-  let FavouritesList;
   appContext.user!.recipes = recipes;
   appContext.user!.favourites = favourites;
-  console.log(appContext.user!.recipes);
-  console.log(appContext.user!.favourites);
   useEffect(() => {
     axios
       .get(appContext.http + "User/" + appContext.user?.id, {
@@ -51,14 +46,12 @@ const ProfileComponent: React.FC<{}> = () => {
       })
       .then((response) => {
         setUserData(response.data);
+        getData("Recipe/PagedListByUser?UserId=" + appContext.user!.id, setRecipe);
+        getData("Recipe/Favourite?UserId=" + appContext.user!.id, setFavourites);
       });
-    if (appContext.user?.id !== undefined) {
-      getData("Recipe/PagedListByUser?UserId=" + appContext.user.id, setRecipe);
-      getData("Recipe/Favourite?UserId=" + appContext.user.id, setFavourites);
-    }
   }, []);
 
-  async function getData(endpoint: string, setter: Dispatch<any>) {
+  async function getData(endpoint: string, setter: Dispatch<any[]>) {
     await axios
       .get(appContext.http + endpoint, {
         headers: {
@@ -69,7 +62,7 @@ const ProfileComponent: React.FC<{}> = () => {
         },
       })
       .then((response) => {
-          setData(response, setter);
+        setData(response, setter);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -79,54 +72,14 @@ const ProfileComponent: React.FC<{}> = () => {
 
   function setData(
     data: AxiosResponse,
-    setter: Dispatch<any>,
+    setter: Dispatch<any[]>,
   ) {
     let itemsArray: Data = JSON.parse(JSON.stringify(data.data));
-    let recipesArray : Recipe[] = itemsArray.items;
-    setter(recipesArray);
-    return itemsArray.items;
+    setter(itemsArray.items);
   }
 
   function setError(error: any) {
     console.log(error);
-  }
-
-  if (recipes != null && recipes.length > 0) {
-    RecipeList = recipes.map((recipe) => (
-      <div key={recipe.id}>
-        <RecipeListItem
-          id={recipe.id}
-          title={recipe.title}
-          sharedBy={recipe.sharedBy}
-          countryOfOrigin={recipe.countryOfOrigin}
-          type={recipe.type}
-          rating={recipe.rating}
-          imagePath={recipe.imagePath}
-          timeToCook={recipe.preparationTimeTicks}
-        />
-      </div>
-    ));
-  } else {
-    RecipeList = <div> No recipes created! </div>;
-  }
-
-  if (favourites != null && favourites.length > 0) {
-    FavouritesList = favourites.map((recipe) => (
-      <div key={recipe.id}>
-        <RecipeListItem
-          id={recipe.id}
-          title={recipe.title}
-          sharedBy={recipe.sharedBy}
-          countryOfOrigin={recipe.countryOfOrigin}
-          type={recipe.type}
-          rating={recipe.rating}
-          imagePath={recipe.imagePath}
-          timeToCook={recipe.preparationTimeTicks}
-        />
-      </div>
-    ));
-  } else {
-    FavouritesList = <div> No recipes created! </div>;
   }
 
   function Logout() {
@@ -180,22 +133,25 @@ const ProfileComponent: React.FC<{}> = () => {
         },
       })
       .then((response) => {
-        notify();
         setEdit(false);
       })
       .catch((error) => {
         console.log(error + " Reached maximum number of recipes");
       });
   };
+
   return (
     <IonContent fullscreen className="profile-info">
       <IonModal
         isOpen={showRecipeCreateModal === 0 ? false : true}
-        onDidDismiss={() => setShowRecipeCreateModal(0)}
+        onDidDismiss={() => {
+          getData("Recipe/PagedListByUser?UserId=" + appContext.user!.id, setRecipe);
+          getData("Recipe/Favourite?UserId=" + appContext.user!.id, setFavourites);
+        }}
       >
         <ModalRecipe
-          showRecipeCreateModal={showRecipeCreateModal}
-          setShowRecipeCreateModal={setShowRecipeCreateModal}
+          showRecipeModal={showRecipeCreateModal}
+          setShowRecipeModal={setShowRecipeModal}
         />
       </IonModal>
       <IonItem>
@@ -258,12 +214,12 @@ const ProfileComponent: React.FC<{}> = () => {
           <IonRow className="ion-align-items-center">
             <p>My Recipes</p>
             <IonRow class="ion-justify-content-center">
-              <IonButton onClick={() => setShowRecipeCreateModal(-1)}>
+              <IonButton onClick={() => setShowRecipeModal(-1)}>
                 + Add Recipe
               </IonButton>
             </IonRow>
           </IonRow>
-          {RecipeList}
+          <RecipeList recipes={recipes} message="No recipes created yet" onDismissCallback={() =>{getData("Recipe/PagedListByUser?UserId=" + appContext.user!.id, setRecipe); getData("Recipe/Favourite?UserId=" + appContext.user!.id, setFavourites)}}/>
         </IonCol>
       </IonItem>
       <IonItem>
@@ -271,7 +227,7 @@ const ProfileComponent: React.FC<{}> = () => {
           <IonRow>
             <p>My Favourites </p>
           </IonRow>
-          {FavouritesList}
+          <RecipeList recipes={favourites} message="No favoured recipes yet" onDismissCallback={() =>{getData("Recipe/PagedListByUser?UserId=" + appContext.user!.id, setRecipe); getData("Recipe/Favourite?UserId=" + appContext.user!.id, setFavourites)}}/>
         </IonCol>
       </IonItem>
     </IonContent>
