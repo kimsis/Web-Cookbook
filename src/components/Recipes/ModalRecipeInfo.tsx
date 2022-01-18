@@ -13,7 +13,7 @@ import {
   IonFab,
   IonFabButton,
 } from "@ionic/react";
-import { useParams } from "react-router";
+import { Redirect, useHistory, useLocation, useParams } from "react-router";
 import "./ModalRecipeInfo.css";
 import {
   star,
@@ -55,6 +55,7 @@ import QRModal from "./QRModal";
 import { Oval } from "react-loader-spinner";
 import { Rating } from "react-simple-star-rating";
 import { toast } from "react-toastify";
+import SimpleMap from "../../pages/map/Map";
 
 const ModalRecipeInfo: React.FC<{
   id: number;
@@ -69,9 +70,11 @@ const ModalRecipeInfo: React.FC<{
   const appContext = useContext(AppContext);
   const [favourite, setFavourite] = useState<Boolean>(false);
   const [rating, setRating] = useState(0);
+  const history = useHistory();
 
   async function getData() {
-    await axios(appContext.http + "Recipe/" + props.id)
+    await axios
+      .get(appContext.http + "Recipe/" + props.id)
       .then((response) => {
         setData(response);
         setIsLoading(false);
@@ -360,7 +363,13 @@ const ModalRecipeInfo: React.FC<{
           <IonCol>
             <h1>Ingredients</h1>
             {recipe?.ingredients.map((ingredient) => (
-              <IonChip color="primary" key={ingredient.id}>
+              <IonChip
+                onClick={() => {
+                  history.replace("/map&id=" + ingredient.id);
+                }}
+                color="primary"
+                key={ingredient.id}
+              >
                 <IonLabel>{ingredient.name}</IonLabel>
               </IonChip>
             ))}
