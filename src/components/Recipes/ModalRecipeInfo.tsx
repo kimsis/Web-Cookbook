@@ -93,14 +93,14 @@ const ModalRecipeInfo: React.FC<{
     setFavourite(fav);
     if (fav) {
       axios
-      .post(appContext.http + "Recipe/Favourite/" + props.id, null, {
-        headers: {
-          "x-auth":
-            appContext.user?.JWTToken === undefined
-              ? ""
-              : appContext.user.JWTToken,
-        },
-      })
+        .post(appContext.http + "Recipe/Favourite/" + props.id, null, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken === undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
         .then((response) => {
           notify("Recipe has been favoured");
         })
@@ -115,7 +115,7 @@ const ModalRecipeInfo: React.FC<{
           },
         })
         .then((response) => {
-           notify("Recipe has been unfavoured");
+          notify("Recipe has been unfavoured");
         })
     }
   }
