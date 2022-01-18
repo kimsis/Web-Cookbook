@@ -1,4 +1,5 @@
 import Displayable from "./Displayable.interface";
+import Ingredient from "./Ingredient.interface";
 
 export default interface Vendor extends Displayable {
     id: number;
@@ -6,6 +7,6 @@ export default interface Vendor extends Displayable {
     imagePath: string;
     longitude: number;
     latitude: number;
-    ingredients: [];
+    ingredients: {id:number, name:string,}[];
     description:string;
 }

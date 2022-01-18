@@ -53,6 +53,7 @@ import {
 import { Icon } from "ionicons/dist/types/components/icon/icon";
 import QRModal from "./QRModal";
 import { Oval } from "react-loader-spinner";
+import { toast } from "react-toastify";
 
 const ModalRecipeInfo: React.FC<{
   id: number;
@@ -66,8 +67,6 @@ const ModalRecipeInfo: React.FC<{
   const [isLoading, setIsLoading] = useState(true);
   const appContext = useContext(AppContext);
   const [favourite, setFavourite] = useState<Boolean>(false);
-
-
 
   async function getData() {
     await axios(appContext.http + "Recipe/" + props.id)
@@ -87,6 +86,10 @@ const ModalRecipeInfo: React.FC<{
     console.log(favourite);
   }
 
+  function notify(message: string) {
+    toast(message);
+  }
+
   function toggleFavourite(fav: boolean) {
     setFavourite(fav);
     if (fav) {
@@ -100,6 +103,7 @@ const ModalRecipeInfo: React.FC<{
         },
       })
         .then((response) => {
+          notify("Recipe has been favoured");
         })
     // } else {
     //   axios
@@ -112,6 +116,7 @@ const ModalRecipeInfo: React.FC<{
     //       },
     //     })
     //     .then((response) => {
+    //        notify("Recipe has been unfavoured");
     //     })
     }
   }

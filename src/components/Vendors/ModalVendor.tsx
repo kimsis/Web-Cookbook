@@ -58,7 +58,7 @@ const ModalVendor: React.FC<{
           <IonIcon slot="start" icon={trashBin} />
           Delete
         </IonButton>
-      )
+      );
     }
   }, [])
 

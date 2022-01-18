@@ -52,11 +52,15 @@ const ProfileComponent: React.FC<{}> = () => {
       .then((response) => {
         setUserData(response.data);
       });
+      getRecipesData();
+  }, []);
+
+  function getRecipesData() {
     if (appContext.user?.id !== undefined) {
       getData("Recipe/PagedListByUser?UserId=" + appContext.user.id, setRecipe);
       getData("Recipe/Favourite?UserId=" + appContext.user.id, setFavourites);
     }
-  }, []);
+  }
 
   async function getData(endpoint: string, setter: Dispatch<any>) {
     await axios
@@ -191,7 +195,7 @@ const ProfileComponent: React.FC<{}> = () => {
     <IonContent fullscreen className="profile-info">
       <IonModal
         isOpen={showRecipeCreateModal === 0 ? false : true}
-        onDidDismiss={() => setShowRecipeCreateModal(0)}
+        onDidDismiss={() => {setShowRecipeCreateModal(0); getRecipesData(); }}
       >
         <ModalRecipe
           showRecipeCreateModal={showRecipeCreateModal}

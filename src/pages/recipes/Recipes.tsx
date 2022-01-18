@@ -30,7 +30,7 @@ const Recipes: React.FC<{}> = (props) => {
 
   const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
   const [showRecipeFilterModal, setShowRecipeFilterModal] = useState(false);
-  const [recipes, setRecipes] = useState<Recipe[] | null>();
+  const [recipes, setRecipes] = useState<Recipe[]>();
   const [searchText, setSearchText] = useState("");
   const appContext = useContext(AppContext);
   const filterContext = useContext(FilterContext);
