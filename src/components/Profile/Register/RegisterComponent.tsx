@@ -13,6 +13,7 @@ import "./RegisterComponent.css";
 import { useContext } from "react";
 import axios from "axios";
 import AppContext from "../../../store/AppContext";
+import { toast } from "react-toastify";
 
 const RegisterComponent: React.FC<{}> = () => {
   const {
@@ -48,8 +49,10 @@ const RegisterComponent: React.FC<{}> = () => {
     axios
       .post(appContext.http + "authentication/register", data)
       .then(function (response) {
+        toast("Registration successful!");
       })
       .catch(function (error) {
+        toast("Registration unsuccessful!");
         console.log(error);
       });
   }

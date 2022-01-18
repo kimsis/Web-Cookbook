@@ -10,13 +10,12 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import React, { useContext } from "react";
-import "./Login.css";
-import UserHandle from "../../components/Profile/UserHandle/UserHandle";
+import "./Register.css";
 import AppContext from "../../store/AppContext";
 import { useHistory } from "react-router";
-import LoginComponent from "../../components/Profile/Login/LoginComponent";
+import RegisterComponent from "../../components/Profile/Register/RegisterComponent";
 
-const Login: React.FC<{}> = (props) => {
+const Register: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
   const history = useHistory();
 
@@ -28,7 +27,7 @@ const Login: React.FC<{}> = (props) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle> Login </IonTitle>
+          <IonTitle> Register </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent
@@ -36,14 +35,14 @@ const Login: React.FC<{}> = (props) => {
         class="ion-padding ion-align-items-end"
         style={{ alignSelf: "center" }}
       >
-        <LoginComponent />
+        <RegisterComponent />
         <IonRow class="ion-justify-content-center">
           <IonButton
             className="button"
             fill="outline"
-            onClick={() => history.replace("/register")}
+            onClick={() => history.replace("/login")}
           >
-            Login
+            Not registered?
           </IonButton>
         </IonRow>
       </IonContent>
@@ -51,4 +50,4 @@ const Login: React.FC<{}> = (props) => {
   );
 };
 
-export default Login;
+export default Register;

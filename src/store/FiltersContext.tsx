@@ -8,14 +8,15 @@ let dummyCountryOfOrigin: string[] = [
   "Indian",
 ];
 let dummyDishType: string[] = [
-  "Breakfast",
-  "Brunch",
-  "Lunch",
-  "Snack",
-  "Dinner",
+  "Appetizer",
   "Dessert",
+  "Drink",
+  "Snack",
+  "Salad",
+  "Soup",
+  "Main",
 ];
-let dummyPreparationTime: number[] = [5, 10, 15, 20, 30, 60, 120, 180];
+let dummyPreparationTime: number[] = [5, 15, 30, 45, 60];
 let dummyDifficulty: string[] = [
   "Easy",
   "Intermediate",

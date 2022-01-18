@@ -40,6 +40,7 @@ import GoogleMapReact from "google-map-react";
 import { toast } from "react-toastify";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import Ingredient from "../../shared/interfaces/Ingredient.interface";
+import IngredientList from "../Ingredients/IngredientList";
 
 const ModalRecipe: React.FC<{
   showRecipeModal: number;
@@ -63,6 +64,7 @@ const ModalRecipe: React.FC<{
   const [imagePath, setImagePath] = useState("");
   const [deleteButton, setDeleteButton] = useState(<div></div>);
   const [marker, setMarker] = useState({ lat: 0, lng: 0, markerImagePath });
+  const [recipeIngredients, setRecipeIngredients] = useState("");
 
   // If the modal is opened with an id > 0 it's purpose is to edit an existing recipe
   useEffect(() => {
@@ -119,12 +121,22 @@ const ModalRecipe: React.FC<{
   }
 
   function setData(data: AxiosResponse) {
-    let recipe: Recipe = JSON.parse(JSON.stringify(data.data));
-    setRecipe(recipe);
-    setImagePath(recipe.imagePath);
+    let recipeData: Recipe = JSON.parse(JSON.stringify(data.data));
+    console.log(recipeData);
+    let text:string = "[";
+      recipeData?.ingredients.map((ingredient, key, ingredients) => {
+        text += ingredient.id;
+        if(key != ingredients!.length - 1) {
+          text += ",";
+        }
+      });
+      text += "]";
+    setRecipeIngredients(text)
+    setRecipe(recipeData);
+    setImagePath(recipeData.imagePath);
     // Set the Map marker, using the recipe data
-    let lat = recipe.latitude;
-    let lng = recipe.longitude;
+    let lat = recipeData.latitude;
+    let lng = recipeData.longitude;
     setMarker({ lat, lng, markerImagePath });
   }
 
@@ -244,17 +256,6 @@ const ModalRecipe: React.FC<{
     );
   };
 
-  let ingredientList;
-  if (ingredients != null && ingredients.length > 0) {
-    ingredientList = ingredients.map((ingredient, key) => (
-      <IonSelectOption key={key} value={ingredient.id}>
-        {ingredient.name}
-      </IonSelectOption>
-    ));
-  } else {
-    ingredientList = <IonSelectOption> No ingredients found! </IonSelectOption>;
-  }
-
   return (
     <IonContent className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
       <IonFab>
@@ -327,16 +328,20 @@ const ModalRecipe: React.FC<{
               </IonItem> */}
 
               <IonItem>
-                <IonLabel position="stacked">Cuisine type</IonLabel>
+                <IonLabel position="stacked">Dish type</IonLabel>
                 <IonSelect
                   value={recipe?.type}
                   {...register("type")}
                   cancelText="Cancel"
                   okText="Add"
                 >
-                  <IonSelectOption value="Turkish">Turkish</IonSelectOption>
-                  <IonSelectOption value="Mexican">Mexican</IonSelectOption>
-                  <IonSelectOption value="Italian">Italian</IonSelectOption>
+                  <IonSelectOption value="Appetizer">Appetizer</IonSelectOption>
+                  <IonSelectOption value="Dessert">Dessert</IonSelectOption>
+                  <IonSelectOption value="Drink">Drink</IonSelectOption>
+                  <IonSelectOption value="Snack">Snack</IonSelectOption>
+                  <IonSelectOption value="Salad">Salad</IonSelectOption>
+                  <IonSelectOption value="Soup">Soup</IonSelectOption>
+                  <IonSelectOption value="Main">Main</IonSelectOption>
                 </IonSelect>
               </IonItem>
             </IonCol>
@@ -388,13 +393,14 @@ const ModalRecipe: React.FC<{
           <IonItem>
             <IonLabel position="stacked">Ingredients</IonLabel>
             <IonSelect
-              value={recipe?.ingredients}
+              value={recipeIngredients}
               multiple={true}
               {...register("ingredients")}
               cancelText="Cancel"
               okText="Add"
             >
-              {ingredientList}
+              {console.log(recipeIngredients)}
+              <IngredientList ingredients={ingredients} />
             </IonSelect>
           </IonItem>
           <IonItemDivider />

@@ -107,13 +107,6 @@ const ModalVendorInfo: React.FC<{
         </IonRow>
         <IonRow>
           <IonCol>
-            <h1>Location</h1>
-            {/* To-do */}
-          </IonCol>
-        </IonRow>
-
-        <IonRow>
-          <IonCol>
             <h1>Ingredients</h1>
             {ingredientsList}
           </IonCol>

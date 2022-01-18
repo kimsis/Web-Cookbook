@@ -31,6 +31,7 @@ import ManageContent from "./pages/manageContent/ManageContent";
 import MobileNav from "./components/Menu/MobileNav";
 import { isPlatform } from "@ionic/react";
 import Home from "./pages/landing/Home";
+import Register from "./pages/register/Register";
 
 const App: React.FC = () => {
   return (
@@ -46,6 +47,9 @@ const App: React.FC = () => {
                 </Route>
                 <Route path="/login" exact={true}>
                   <Login />
+                </Route>
+                <Route path="/register" exact={true}>
+                  <Register />
                 </Route>
                 <Route path="/home" exact={true}>
                   <Home />
