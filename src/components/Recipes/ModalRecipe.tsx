@@ -191,7 +191,7 @@ const ModalRecipe: React.FC<{
         });
     } else {
       console.log(data);
-      
+
       axios
         .put(appContext.http + "Recipe/" + id, data, {
           headers: {
@@ -247,7 +247,9 @@ const ModalRecipe: React.FC<{
   let ingredientList;
   if (ingredients != null && ingredients.length > 0) {
     ingredientList = ingredients.map((ingredient, key) => (
-      <IonSelectOption key={key} value={ingredient.id}>{ingredient.name}</IonSelectOption>
+      <IonSelectOption key={key} value={ingredient.id}>
+        {ingredient.name}
+      </IonSelectOption>
     ));
   } else {
     ingredientList = <IonSelectOption> No ingredients found! </IonSelectOption>;
@@ -256,7 +258,7 @@ const ModalRecipe: React.FC<{
   return (
     <IonContent className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
       <IonFab>
-        <IonFabButton onClick={() => props.setShowRecipeModal(0)}>
+        <IonFabButton size="small" onClick={() => props.setShowRecipeModal(0)}>
           <IonIcon
             style={{ fontSize: "32px" }}
             icon={chevronBackCircleOutline}
@@ -265,7 +267,12 @@ const ModalRecipe: React.FC<{
       </IonFab>
 
       <h3 style={{ marginLeft: "60px" }}>
-        {id === -1 ? "Add new" : recipe?.approved === true ? "Modify" : "Approve"} recipe
+        {id === -1
+          ? "Add new"
+          : recipe?.approved === true
+          ? "Modify"
+          : "Approve"}{" "}
+        recipe
       </h3>
       {/* form */}
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -405,7 +412,14 @@ const ModalRecipe: React.FC<{
         </IonGrid>
         <IonGrid className="ion-padding">
           <IonRow class="ion-justify-content-around">
-            <IonButton type="submit">{recipe?.approved === true ? "Modify " : id === -1 ? "Add " : "Approve "}recipe</IonButton>
+            <IonButton type="submit">
+              {recipe?.approved === true
+                ? "Modify "
+                : id === -1
+                ? "Add "
+                : "Approve "}
+              recipe
+            </IonButton>
             <IonButton
               onClick={() => props.setShowRecipeModal(0)}
               fill="outline"

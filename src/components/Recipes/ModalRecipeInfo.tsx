@@ -190,7 +190,10 @@ const ModalRecipeInfo: React.FC<{
       </IonModal>
       <IonGrid className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
         <IonFab>
-          <IonFabButton onClick={() => props.setShowRecipeInfoModal(0)}>
+          <IonFabButton
+            size="small"
+            onClick={() => props.setShowRecipeInfoModal(0)}
+          >
             <IonIcon
               style={{ fontSize: "32px" }}
               icon={chevronBackCircleOutline}

@@ -12,9 +12,7 @@ import {
   IonIcon,
 } from "@ionic/react";
 import "./ModalVendorInfo.css";
-import {
-  chevronBackCircleOutline,
-} from "ionicons/icons";
+import { chevronBackCircleOutline } from "ionicons/icons";
 import {
   Dispatch,
   SetStateAction,
@@ -53,13 +51,17 @@ const ModalVendorInfo: React.FC<{
     setVendor(vendorTest);
   }
 
-  if(vendor != null && vendor.ingredients !== null && vendor.ingredients.length > 0) {
+  if (
+    vendor != null &&
+    vendor.ingredients !== null &&
+    vendor.ingredients.length > 0
+  ) {
     console.log(vendor.ingredients);
     ingredientsList = vendor?.ingredients.map((ingredient) => (
       <IonChip>
         <IonLabel key={ingredient.id}>{ingredient.name}</IonLabel>
       </IonChip>
-    ))
+    ));
   } else {
     ingredientsList = <div> No ingredients found for this vendor </div>;
   }
@@ -72,7 +74,10 @@ const ModalVendorInfo: React.FC<{
   return (
     <IonContent>
       <IonFab style={{ margin: "10px" }}>
-        <IonFabButton onClick={() => props.setShowVendorInfoModal(0)}>
+        <IonFabButton
+          size="small"
+          onClick={() => props.setShowVendorInfoModal(0)}
+        >
           <IonIcon
             style={{ fontSize: "32px" }}
             icon={chevronBackCircleOutline}

@@ -10,6 +10,7 @@ import {
   IonList,
   IonModal,
   IonSearchbar,
+  IonIcon,
 } from "@ionic/react";
 import React, { useContext, useEffect, useState } from "react";
 import RecipeListItem from "../../components/Recipes/RecipeListItem";
@@ -23,6 +24,7 @@ import FilterContext from "../../store/FiltersContext";
 import ModalRecipeInfo from "../../components/Recipes/ModalRecipeInfo";
 import ModalRecipeFilter from "../../components/Recipes/ModalRecipeFilter";
 import RecipeList from "../../components/Recipes/RecipeList";
+import QRReader from "../../components/QR/QRReader";
 
 const Recipes: React.FC<{}> = (props) => {
   useEffect(() => {
@@ -114,13 +116,22 @@ const Recipes: React.FC<{}> = (props) => {
         <IonButton class="filter" onClick={(e) => getData()}>
           All
         </IonButton>
+
         <IonButton
           class="filter"
           onClick={() => setShowRecipeFilterModal(true)}
         >
           +Filter
         </IonButton>
-        <RecipeList recipes={recipes} message="No recipes found" onDismissCallback={() => {getData()}}/>
+        <QRReader></QRReader>
+
+        <RecipeList
+          recipes={recipes}
+          message="No recipes found"
+          onDismissCallback={() => {
+            getData();
+          }}
+        />
       </IonContent>
     </IonPage>
   );

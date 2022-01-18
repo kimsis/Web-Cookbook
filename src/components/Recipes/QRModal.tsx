@@ -9,7 +9,7 @@ const QRModal: React.FC<{
   return (
     <IonGrid style={{ margin: 0 }}>
       <IonFab>
-        <IonFabButton onClick={() => props.setShowQRModal(0)}>
+        <IonFabButton size="small" onClick={() => props.setShowQRModal(0)}>
           <IonIcon
             style={{ fontSize: "32px" }}
             icon={chevronBackCircleOutline}
@@ -18,7 +18,7 @@ const QRModal: React.FC<{
       </IonFab>
       <IonImg
         src={
-          "https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=http://www.partirecept.com/" +
+          "https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=" +
           props.id
         }
       ></IonImg>
