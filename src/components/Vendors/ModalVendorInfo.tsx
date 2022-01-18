@@ -23,6 +23,7 @@ import {
 import Vendor from "../../shared/interfaces/Vendor.interface";
 import axios, { AxiosResponse } from "axios";
 import AppContext from "../../store/AppContext";
+import { useHistory } from "react-router";
 
 const ModalVendorInfo: React.FC<{
   id: number;
@@ -34,6 +35,8 @@ const ModalVendorInfo: React.FC<{
 
   const [vendor, setVendor] = useState<Vendor>();
   const appContext = useContext(AppContext);
+  const history = useHistory();
+
   let ingredientsList;
   async function getData() {
     await axios(appContext.http + "Vendor/" + props.id)
@@ -58,7 +61,11 @@ const ModalVendorInfo: React.FC<{
   ) {
     console.log(vendor.ingredients);
     ingredientsList = vendor?.ingredients.map((ingredient) => (
-      <IonChip>
+      <IonChip
+        onClick={() => {
+          history.replace("/map&id=" + ingredient.id);
+        }}
+      >
         <IonLabel key={ingredient.id}>{ingredient.name}</IonLabel>
       </IonChip>
     ));
