@@ -107,8 +107,6 @@ const ModalRecipe: React.FC<{
     await axios(appContext.http + "Ingredient/PagedList")
       .then((response) => {
         setIngredients(JSON.parse(JSON.stringify(response.data.items)));
-        console.log(ingredients);
-        
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -159,8 +157,9 @@ const ModalRecipe: React.FC<{
       difficulty: parseInt(data.difficulty),
       numberOfServings: parseInt(data.numberOfServings),
       preparationTimeTicks: parseInt(data.preparationTimeTicks),
+      cookingTimeTicks: parseInt(data.cookingTimeTicks),
       sharedBy: appContext.user?.id,
-      ingredients: [],
+      ingredients: data.ingredients,
       imagePath: imagePath,
       latitude: marker.lat,
       longitude: marker.lng,
@@ -240,6 +239,15 @@ const ModalRecipe: React.FC<{
     );
   };
 
+  let ingredientList;
+  if (ingredients != null && ingredients.length > 0) {
+    ingredientList = ingredients.map((ingredient, key) => (
+      <IonSelectOption key={key} value={ingredient.id}>{ingredient.name}</IonSelectOption>
+    ));
+  } else {
+    ingredientList = <IonSelectOption> No vendors found! </IonSelectOption>;
+  }
+
   return (
     <IonContent className="ion-padding-top ion-padding-bottom ion-padding-horizontal">
       <IonFab>
@@ -296,8 +304,8 @@ const ModalRecipe: React.FC<{
                 <IonItem>
                   <IonLabel position="stacked">Time to cook</IonLabel>
                   <IonInput
-                    value={recipe?.timeToCook}
-                    {...register("preparationTimeTicks")}
+                    value={recipe?.cookingTimeTicks}
+                    {...register("cookingTimeTicks")}
                   />
                 </IonItem>
               }
@@ -368,20 +376,13 @@ const ModalRecipe: React.FC<{
           <IonItem>
             <IonLabel position="stacked">Ingredients</IonLabel>
             <IonSelect
-              value={recipe?.unlistedIngredients}
+              value={recipe?.ingredients}
               multiple={true}
-              {...register("unlistedIngredients")}
+              {...register("ingredients")}
               cancelText="Cancel"
               okText="Add"
             >
-              <IonSelectOption value="tomato">Flour</IonSelectOption>
-              <IonSelectOption value="egg">Egg</IonSelectOption>
-              <IonSelectOption value="egg">Tomata</IonSelectOption>
-              <IonSelectOption value="egg">Rice</IonSelectOption>
-              <IonSelectOption value="egg">Chicken</IonSelectOption>
-              <IonSelectOption value="egg">Potato</IonSelectOption>
-              <IonSelectOption value="butter">Butter</IonSelectOption>
-              <IonSelectOption value="butter">Oil</IonSelectOption>
+              {ingredientList}
             </IonSelect>
           </IonItem>
           <IonItemDivider />

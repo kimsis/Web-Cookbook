@@ -15,7 +15,7 @@ export default interface Recipe extends Displayable
     imagePath: string;
     ingredients: string[];
     unlistedIngredients: string[];
-    timeToCook: string;
+    cookingTimeTicks: number;
     latitude: number;
     longitude: number;
     approved: boolean;
