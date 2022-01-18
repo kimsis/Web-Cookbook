@@ -16,9 +16,6 @@ import {
 import { Redirect, useHistory, useLocation, useParams } from "react-router";
 import "./ModalRecipeInfo.css";
 import {
-  star,
-  starHalf,
-  starOutline,
   time,
   megaphone,
   cellular,
@@ -26,7 +23,6 @@ import {
   earth,
   egg,
   timer,
-  qrCodeOutline,
   qrCode,
   chevronBackCircleOutline,
   heart,
@@ -44,13 +40,9 @@ import AppContext from "../../store/AppContext";
 import {
   FacebookShareButton,
   FacebookIcon,
-  InstapaperShareButton,
-  InstapaperIcon,
-  FacebookMessengerShareButton,
   PinterestShareButton,
   PinterestIcon,
 } from "react-share";
-import { Icon } from "ionicons/dist/types/components/icon/icon";
 import QRModal from "./QRModal";
 import { Oval } from "react-loader-spinner";
 import { Rating } from "react-simple-star-rating";

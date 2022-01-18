@@ -21,21 +21,14 @@ const Profile: React.FC<{}> = (props) => {
 
   if (appContext.user == null) {
     history.replace("/login");
+    return <div></div>;
   }
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          {/* <IonButtons slot="start">
-            <IonMenuButton>
-            </IonMenuButton>
-          </IonButtons> */}
-          {appContext.user ? (
             <IonTitle> Profile </IonTitle>
-          ) : (
-            <IonTitle> Log in </IonTitle>
-          )}
         </IonToolbar>
       </IonHeader>
       <ToastContainer />
