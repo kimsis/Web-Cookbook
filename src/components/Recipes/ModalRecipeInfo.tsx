@@ -53,6 +53,7 @@ import {
 import { Icon } from "ionicons/dist/types/components/icon/icon";
 import QRModal from "./QRModal";
 import { Oval } from "react-loader-spinner";
+import { Rating } from "react-simple-star-rating";
 
 const ModalRecipeInfo: React.FC<{
   id: number;
@@ -66,8 +67,7 @@ const ModalRecipeInfo: React.FC<{
   const [isLoading, setIsLoading] = useState(true);
   const appContext = useContext(AppContext);
   const [favourite, setFavourite] = useState<Boolean>(false);
-
-
+  const [rating, setRating] = useState(0);
 
   async function getData() {
     await axios(appContext.http + "Recipe/" + props.id)
@@ -79,7 +79,10 @@ const ModalRecipeInfo: React.FC<{
         console.error("Error fetching data: ", error);
         setError(error);
       });
-    if (appContext.user?.favourites !== null && appContext.user?.favourites.find(r => r.id === props.id) != null) {
+    if (
+      appContext.user?.favourites !== null &&
+      appContext.user?.favourites.find((r) => r.id === props.id) != null
+    ) {
       setFavourite(true);
     } else {
       setFavourite(false);
@@ -87,11 +90,15 @@ const ModalRecipeInfo: React.FC<{
     console.log(favourite);
   }
 
-  function toggleFavourite(fav: boolean) {
-    setFavourite(fav);
-    if (fav) {
-      axios
-      .post(appContext.http + "Recipe/Favourite/" + props.id, null, {
+  function postRating(rate: number) {
+    setRating(rate);
+    let data: any = {
+      rating: rate,
+      recipeId: recipe?.id,
+      userId: appContext.user?.id,
+    };
+    axios
+      .post(appContext.http + "Recipe/Rate", data, {
         headers: {
           "x-auth":
             appContext.user?.JWTToken === undefined
@@ -99,20 +106,34 @@ const ModalRecipeInfo: React.FC<{
               : appContext.user.JWTToken,
         },
       })
-        .then((response) => {
+      .then((response) => {});
+  }
+
+  function toggleFavourite(fav: boolean) {
+    setFavourite(fav);
+    if (fav) {
+      axios
+        .post(appContext.http + "Recipe/Favourite/" + props.id, null, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken === undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
         })
-    // } else {
-    //   axios
-    //     .delete(appContext.http + "Recipe/Favourite" + props.id, null, {
-    //       headers: {
-    //         "x-auth":
-    //           appContext.user?.JWTToken === undefined
-    //             ? ""
-    //             : appContext.user.JWTToken,
-    //       },
-    //     })
-    //     .then((response) => {
-    //     })
+        .then((response) => {});
+      // } else {
+      //   axios
+      //     .delete(appContext.http + "Recipe/Favourite" + props.id, null, {
+      //       headers: {
+      //         "x-auth":
+      //           appContext.user?.JWTToken === undefined
+      //             ? ""
+      //             : appContext.user.JWTToken,
+      //       },
+      //     })
+      //     .then((response) => {
+      //     })
     }
   }
 
@@ -147,7 +168,6 @@ const ModalRecipeInfo: React.FC<{
   }
 
   const { name } = useParams<{ name: string }>();
-  const starsArray = new Array(5).fill(0);
   const iconsStyling = { margin: "0px", marginRight: "8px" };
   return isLoading ? (
     <div style={{ margin: "auto" }}>
@@ -181,39 +201,19 @@ const ModalRecipeInfo: React.FC<{
                 sizeMd="10"
                 className="ion-align-self-center ion-float-right ion-justify-content-center"
               >
-                {starsArray.map((x, i) => {
-                  if (i + 1 <= (recipe?.rating ? recipe.rating : 0)) {
-                    return (
-                      <IonIcon
-                        icon={star}
-                        style={{ fontSize: 22, color: "#F2AB27" }}
-                      ></IonIcon>
-                    );
-                  } else if (
-                    i + 1 > (recipe?.rating ? recipe.rating : 0) &&
-                    i < (recipe?.rating ? recipe.rating : 0)
-                  ) {
-                    return (
-                      <IonIcon
-                        icon={starHalf}
-                        style={{ fontSize: 22, color: "#F2AB27" }}
-                      ></IonIcon>
-                    );
-                  }
-                  return (
-                    <IonIcon
-                      icon={starOutline}
-                      style={{ fontSize: 22, color: "#F2AB27" }}
-                    ></IonIcon>
-                  );
-                })}
+                <Rating
+                  onClick={postRating}
+                  ratingValue={rating}
+                  allowHalfIcon={true} /* Available Props */
+                />
               </IonCol>
               <IonCol>
                 <IonIcon
                   icon={heart}
                   style={{ fontSize: 22 }}
                   class={favourite ? "fav hydrated" : "hydrated"}
-                  onClick={() => toggleFavourite(!favourite)}></IonIcon>
+                  onClick={() => toggleFavourite(!favourite)}
+                ></IonIcon>
               </IonCol>
             </IonRow>
             <IonItem color="none" lines="none">

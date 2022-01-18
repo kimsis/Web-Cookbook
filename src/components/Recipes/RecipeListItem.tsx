@@ -19,6 +19,7 @@ import "./RecipeListItem.css";
 import AppContext from "../../store/AppContext";
 import { useContext, useState } from "react";
 import ModalRecipeInfo from "./ModalRecipeInfo";
+import { Rating } from "react-simple-star-rating";
 
 const RecipeListItem: React.FC<{
   id: number;
@@ -32,7 +33,6 @@ const RecipeListItem: React.FC<{
 }> = (props) => {
   const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
   const recipeId = props.id; // pass id to info modal
-  const starsArray = new Array(5).fill(0);
   const appContext = useContext(AppContext);
 
   return (
@@ -56,29 +56,10 @@ const RecipeListItem: React.FC<{
           <h2>{props.title}</h2>
         </IonText>
         <IonCol className="ion-align-self-center ion-text-right">
-          {starsArray.map((x, i) => {
-            if (i + 1 <= props.rating) {
-              return (
-                <IonIcon
-                  icon={star}
-                  style={{ fontSize: 22, color: "#F2AB27" }}
-                ></IonIcon>
-              );
-            } else if (i + 1 > props.rating && i < props.rating) {
-              return (
-                <IonIcon
-                  icon={starHalf}
-                  style={{ fontSize: 22, color: "#F2AB27" }}
-                ></IonIcon>
-              );
-            }
-            return (
-              <IonIcon
-                icon={starOutline}
-                style={{ fontSize: 24, color: "#F2AB27" }}
-              ></IonIcon>
-            );
-          })}
+          <Rating
+            ratingValue={props.rating}
+            allowHalfIcon={true} /* Available Props */
+          />
         </IonCol>
       </IonRow>
       <IonRow>
