@@ -116,15 +116,13 @@ const Recipes: React.FC<{}> = (props) => {
         <IonButton class="filter" onClick={(e) => getData()}>
           All
         </IonButton>
-
+        <QRReader></QRReader>
         <IonButton
           class="filter"
           onClick={() => setShowRecipeFilterModal(true)}
         >
           +Filter
         </IonButton>
-        <QRReader></QRReader>
-
         <RecipeList
           recipes={recipes}
           message="No recipes found"

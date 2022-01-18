@@ -16,8 +16,8 @@ const QRReader: React.FC<{}> = () => {
         <QRReaderModal cameraOpen={isOpen}></QRReaderModal>
       </IonModal>
 
-      <IonButton shape="round" onClick={() => setIsOpen(true)}>
-        <IonIcon icon={qrCode}></IonIcon>
+      <IonButton shape="round" color="danger" onClick={() => setIsOpen(true)}>
+        <IonIcon style={{ paddingRight: "5px" }} icon={qrCode}></IonIcon>Scan
       </IonButton>
     </>
   );

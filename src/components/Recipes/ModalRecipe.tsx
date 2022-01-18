@@ -327,16 +327,20 @@ const ModalRecipe: React.FC<{
               </IonItem> */}
 
               <IonItem>
-                <IonLabel position="stacked">Cuisine type</IonLabel>
+                <IonLabel position="stacked">Dish type</IonLabel>
                 <IonSelect
                   value={recipe?.type}
                   {...register("type")}
                   cancelText="Cancel"
                   okText="Add"
                 >
-                  <IonSelectOption value="Turkish">Turkish</IonSelectOption>
-                  <IonSelectOption value="Mexican">Mexican</IonSelectOption>
-                  <IonSelectOption value="Italian">Italian</IonSelectOption>
+                  <IonSelectOption value="Appetizer">Appetizer</IonSelectOption>
+                  <IonSelectOption value="Dessert">Dessert</IonSelectOption>
+                  <IonSelectOption value="Drink">Drink</IonSelectOption>
+                  <IonSelectOption value="Snack">Snack</IonSelectOption>
+                  <IonSelectOption value="Salad">Salad</IonSelectOption>
+                  <IonSelectOption value="Soup">Soup</IonSelectOption>
+                  <IonSelectOption value="Main">Main</IonSelectOption>
                 </IonSelect>
               </IonItem>
             </IonCol>
