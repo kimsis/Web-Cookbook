@@ -28,7 +28,7 @@ const ModalRecipeFilter: React.FC<{
 	);
 
 	let DifficultiesList = filterContext.difficulty.map((difficulty) =>
-		<IonButton class='filterItem' onClick={() => addFilter('difficulty', difficulty)}> {difficulty}</IonButton>
+		<IonButton class='filterItem' onClick={() => {addFilter('difficulty', difficulty)}}> {difficulty}</IonButton>
 	);
 
 	// Add the filter to the array of selected filters

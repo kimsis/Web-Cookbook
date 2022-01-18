@@ -29,6 +29,7 @@ import {
   qrCodeOutline,
   qrCode,
   chevronBackCircleOutline,
+  heart,
 } from "ionicons/icons";
 import {
   Dispatch,
@@ -64,6 +65,9 @@ const ModalRecipeInfo: React.FC<{
   const [recipe, setRecipe] = useState<Recipe>();
   const [isLoading, setIsLoading] = useState(true);
   const appContext = useContext(AppContext);
+  const [favourite, setFavourite] = useState<Boolean>(false);
+
+
 
   async function getData() {
     await axios(appContext.http + "Recipe/" + props.id)
@@ -75,6 +79,41 @@ const ModalRecipeInfo: React.FC<{
         console.error("Error fetching data: ", error);
         setError(error);
       });
+    if (appContext.user?.favourites !== null && appContext.user?.favourites.find(r => r.id === props.id) != null) {
+      setFavourite(true);
+    } else {
+      setFavourite(false);
+    }
+    console.log(favourite);
+  }
+
+  function toggleFavourite(fav: boolean) {
+    setFavourite(fav);
+    if (fav) {
+      axios
+        .post(appContext.http + "Recipe/Favourite" + props.id, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken === undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
+        .then((response) => {
+        })
+    } else {
+      axios
+        .delete(appContext.http + "Recipe/Favourite" + props.id, {
+          headers: {
+            "x-auth":
+              appContext.user?.JWTToken === undefined
+                ? ""
+                : appContext.user.JWTToken,
+          },
+        })
+        .then((response) => {
+        })
+    }
   }
 
   function setData(data: AxiosResponse) {
@@ -135,7 +174,7 @@ const ModalRecipeInfo: React.FC<{
           <IonCol>
             <IonRow>
               <IonCol
-                sizeMd="12"
+                sizeMd="10"
                 className="ion-align-self-center ion-float-right ion-justify-content-center"
               >
                 {starsArray.map((x, i) => {
@@ -164,6 +203,13 @@ const ModalRecipeInfo: React.FC<{
                     ></IonIcon>
                   );
                 })}
+              </IonCol>
+              <IonCol>
+                <IonIcon
+                  icon={heart}
+                  style={{ fontSize: 22 }}
+                  class={favourite ? "fav hydrated" : "hydrated"}
+                  onClick={() => toggleFavourite(!favourite)}></IonIcon>
               </IonCol>
             </IonRow>
             <IonItem color="none" lines="none">

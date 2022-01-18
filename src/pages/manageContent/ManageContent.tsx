@@ -7,8 +7,9 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  useIonViewWillEnter,
 } from "@ionic/react";
-import React, { Dispatch, useContext, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import "./ManageContent.css";
 import AppContext from "../../store/AppContext";
 import { useHistory } from "react-router";
@@ -18,9 +19,10 @@ import Data from "../../shared/interfaces/Data.interface";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import ModalRecipe from "../../components/Recipes/ModalRecipe";
 import Vendor from "../../shared/interfaces/Vendor.interface";
-import Ingredient from "../../shared/interfaces/Ingredient.interfdace";
+import Ingredient from "../../shared/interfaces/Ingredient.interface";
 import ModalIngredient from "../../components/Ingredients/ModalIngredient";
 import ModalVendor from "../../components/Vendors/ModalVendor";
+import Displayable from "../../shared/interfaces/Displayable.interface";
 
 const ManageContent: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
@@ -43,54 +45,33 @@ const ManageContent: React.FC<{}> = (props) => {
 
   let dataArray: Data;
   useEffect(() => {
-    getData();
+    getData("Recipe/PagedListPending", setPendingRecipes);
+    getData("Recipe/PagedList", setRecipes);
+    getData("Vendor/PagedList", setVendors);
+    getData("Ingredient/PagedList", setIngredients);
   }, []);
 
-  async function getData() {
-    await axios(appContext.http + "Recipe/PagedList")
-      .then((response) => {
-        setData(response, setRecipes);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-        setError(error);
-      });
-    await axios(appContext.http + "Vendor/PagedList")
-      .then((response) => {
-        setData(response, setVendors);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-        setError(error);
-      });
-    await axios(appContext.http + "Ingredient/PagedList")
-      .then((response) => {
-        setData(response, setIngredients);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-        setError(error);
-      });
-    await axios(appContext.http + "Recipe/PagedListPending", {
-      headers: {
-        "x-auth":
-          appContext.user?.JWTToken === undefined
-            ? ""
-            : appContext.user.JWTToken,
-      },
+  async function getData(endpoint : String, setter : Dispatch<any>) {
+    await axios(appContext.http! + endpoint, {
+    headers: {
+      "x-auth":
+        appContext.user?.JWTToken === undefined
+          ? ""
+          : appContext.user.JWTToken,
+    },
+  })
+    .then((response) => {
+      setData(response, setter);
     })
-      .then((response) => {
-        setData(response, setPendingRecipes);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-        setError(error);
-      });
+    .catch((error) => {
+      console.error("Error fetching data: ", error);
+      setError(error);
+    });
   }
 
-  function setData(data: AxiosResponse, setData: Dispatch<any[]>) {
+  function setData(data: AxiosResponse, setter: Dispatch<any[]>) {
     dataArray = JSON.parse(JSON.stringify(data.data));
-    setData(dataArray.items);
+    setter(dataArray.items);
   }
   
   function setError(error: any) {
@@ -109,7 +90,7 @@ const ManageContent: React.FC<{}> = (props) => {
       </IonHeader>
       <IonModal
         isOpen={showRecipeModal === 0 ? false : true}
-        onDidDismiss={() => setShowRecipeModal(0)}
+        onDidDismiss={() => {setShowRecipeModal(0); getData("Recipe/PagedList", setRecipes); getData("Recipe/PagedListPending", setPendingRecipes)}}
       >
         <ModalRecipe
           showRecipeCreateModal={showRecipeModal}
@@ -118,7 +99,7 @@ const ManageContent: React.FC<{}> = (props) => {
       </IonModal>
       <IonModal
         isOpen={showVendorModal === 0? false : true}
-        onDidDismiss={() => setShowVendorModal(0)}
+        onDidDismiss={() => {setShowVendorModal(0); getData("Vendor/PagedList", setVendors)}}
         >
           <ModalVendor
             showVendorCreateModal={showVendorModal}
@@ -127,7 +108,7 @@ const ManageContent: React.FC<{}> = (props) => {
         </IonModal>
       <IonModal
         isOpen={showIngredientModal === 0? false : true}
-        onDidDismiss={() => setShowIngredientModal(0)}
+        onDidDismiss={() => {setShowIngredientModal(0); getData("Ingredient/PagedList", setIngredients)}}
         >
           <ModalIngredient
             showIngredientModal={showIngredientModal}

@@ -7,8 +7,8 @@ export default interface User extends Displayable {
     email: string;
     JWTToken: string;
     isAdmin: boolean;
-    recipes: Recipe[];
-    favourites: Recipe[];
+    recipes: Recipe[] | null;
+    favourites: Recipe[] | null;
     expiry: number;
     imagePath: string;
 }

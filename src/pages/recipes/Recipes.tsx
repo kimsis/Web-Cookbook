@@ -20,7 +20,7 @@ import Data from "../../shared/interfaces/Data.interface";
 import "./Recipes.css";
 import AppContext from "../../store/AppContext";
 import FilterContext from "../../store/FiltersContext";
-import ModalRecipeInfo from "../../components/Recipes/ModalRecipeInfor";
+import ModalRecipeInfo from "../../components/Recipes/ModalRecipeInfo";
 import ModalRecipeFilter from "../../components/Recipes/ModalRecipeFilter";
 
 const Recipes: React.FC<{}> = (props) => {

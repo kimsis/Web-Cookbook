@@ -24,11 +24,21 @@ import { pencil } from "ionicons/icons";
 import { toast } from "react-toastify";
 
 const ProfileComponent: React.FC<{}> = () => {
-  const [recipeList, setRecipeList] = useState<Recipe[] | null>();
-  const [favouritesList, setFavouritesList] = useState<Recipe[] | null>();
+  const [recipes, setRecipe] = useState<Recipe[] | null>(null);
+  const [favourites, setFavourites] = useState<Recipe[] | null>(null);
   const [imagePath, setimagePath] = useState("");
   const [userData, setUserData] = useState<Profile | null>();
   const [edit, setEdit] = useState(false);
+  
+  const [showRecipeCreateModal, setShowRecipeCreateModal] = useState(0);
+  const appContext = useContext(AppContext);
+  const history = useHistory();
+  let RecipeList;
+  let FavouritesList;
+  appContext.user!.recipes = recipes;
+  appContext.user!.favourites = favourites;
+  console.log(appContext.user!.recipes);
+  console.log(appContext.user!.favourites);
   useEffect(() => {
     axios
       .get(appContext.http + "User/" + appContext.user?.id, {
@@ -43,22 +53,23 @@ const ProfileComponent: React.FC<{}> = () => {
         setUserData(response.data);
       });
     if (appContext.user?.id !== undefined) {
-      getData();
+      getData("Recipe/PagedListByUser?UserId=" + appContext.user.id, setRecipe);
+      getData("Recipe/Favourite?UserId=" + appContext.user.id, setFavourites);
     }
   }, []);
 
-  async function getData(id: number = appContext.user?.id || 0) {
-    await axios(appContext.http + "Recipe/" + id)
-      .then((response) => {
-        appContext.user!.recipes = setData(response, setRecipeList);
+  async function getData(endpoint: string, setter: Dispatch<any>) {
+    await axios
+      .get(appContext.http + endpoint, {
+        headers: {
+          "x-auth":
+            appContext.user?.JWTToken == undefined
+              ? ""
+              : appContext.user.JWTToken,
+        },
       })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-        setError(error);
-      });
-    await axios(appContext.http + "Favourites/" + id)
       .then((response) => {
-        appContext.user!.favourites = setData(response, setFavouritesList);
+          setData(response, setter);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -68,24 +79,20 @@ const ProfileComponent: React.FC<{}> = () => {
 
   function setData(
     data: AxiosResponse,
-    setRecipes: Dispatch<Recipe[]>
-  ): Recipe[] {
-    let recipesArray: Data = JSON.parse(JSON.stringify(data.data));
-    setRecipes(recipesArray.items);
-
-    return recipesArray.items;
+    setter: Dispatch<any>,
+  ) {
+    let itemsArray: Data = JSON.parse(JSON.stringify(data.data));
+    let recipesArray : Recipe[] = itemsArray.items;
+    setter(recipesArray);
+    return itemsArray.items;
   }
 
   function setError(error: any) {
     console.log(error);
   }
 
-  const [showRecipeCreateModal, setShowRecipeCreateModal] = useState(0);
-  const appContext = useContext(AppContext);
-  const history = useHistory();
-  let RecipeList;
-  if (appContext.user?.recipes != null) {
-    RecipeList = appContext.user.recipes.map((recipe) => (
+  if (recipes != null && recipes.length > 0) {
+    RecipeList = recipes.map((recipe) => (
       <div key={recipe.id}>
         <RecipeListItem
           id={recipe.id}
@@ -103,9 +110,8 @@ const ProfileComponent: React.FC<{}> = () => {
     RecipeList = <div> No recipes created! </div>;
   }
 
-  let FavouritesList;
-  if (appContext.user?.favourites != null) {
-    FavouritesList = appContext.user.recipes.map((recipe) => (
+  if (favourites != null && favourites.length > 0) {
+    FavouritesList = favourites.map((recipe) => (
       <div key={recipe.id}>
         <RecipeListItem
           id={recipe.id}
@@ -120,7 +126,7 @@ const ProfileComponent: React.FC<{}> = () => {
       </div>
     ));
   } else {
-    RecipeList = <div> No recipes created! </div>;
+    FavouritesList = <div> No recipes created! </div>;
   }
 
   function Logout() {
@@ -147,7 +153,7 @@ const ProfileComponent: React.FC<{}> = () => {
         console.log(error);
       });
   };
-  const editPicture = () => {};
+  const editPicture = () => { };
   const handleRef = () => {
     fileInput.current?.click();
   };

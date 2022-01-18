@@ -18,7 +18,7 @@ import {
 import "./RecipeListItem.css";
 import AppContext from "../../store/AppContext";
 import { useContext, useState } from "react";
-import ModalRecipeInfo from "./ModalRecipeInfor";
+import ModalRecipeInfo from "./ModalRecipeInfo";
 
 const RecipeListItem: React.FC<{
   id: number;

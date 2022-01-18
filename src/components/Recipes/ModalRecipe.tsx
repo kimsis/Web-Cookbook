@@ -39,6 +39,7 @@ import { Marker } from "../../pages/map/Map";
 import GoogleMapReact from "google-map-react";
 import { toast } from "react-toastify";
 import Recipe from "../../shared/interfaces/Recipe.interface";
+import Ingredient from "../../shared/interfaces/Ingredient.interface";
 
 const ModalRecipe: React.FC<{
   showRecipeCreateModal: number;
@@ -57,6 +58,7 @@ const ModalRecipe: React.FC<{
   const handleRef = () => {
     fileInput.current?.click();
   };
+  const [ingredients, setIngredients] = useState<Ingredient[]>();
   const [recipe, setRecipe] = useState<Recipe>();
   const [imagePath, setImagePath] = useState("");
   const [deleteButton, setDeleteButton] = useState(<div></div>);
@@ -97,6 +99,16 @@ const ModalRecipe: React.FC<{
     await axios(appContext.http + "Recipe/" + id)
       .then((response) => {
         setData(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+        setError(error);
+      });
+    await axios(appContext.http + "Ingredient/PagedList")
+      .then((response) => {
+        setIngredients(JSON.parse(JSON.stringify(response.data.items)));
+        console.log(ingredients);
+        
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);

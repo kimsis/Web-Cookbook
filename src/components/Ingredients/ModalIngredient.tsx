@@ -8,9 +8,13 @@ import {
   IonCol,
   IonIcon,
   IonImg,
+  IonLabel,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
 import React, {
   Dispatch,
+  ReactElement,
   SetStateAction,
   useContext,
   useEffect,
@@ -22,7 +26,10 @@ import { cloudUploadOutline, trashBin } from "ionicons/icons";
 import { useForm } from "react-hook-form";
 import AppContext from "../../store/AppContext";
 import "./ModalIngredient.css";
-import Ingredient from "../../shared/interfaces/Ingredient.interfdace";
+import Ingredient from "../../shared/interfaces/Ingredient.interface";
+import Vendor from "../../shared/interfaces/Vendor.interface";
+import Data from "../../shared/interfaces/Data.interface";
+import { toast } from "react-toastify";
 
 const ModalIngredient: React.FC<{
   showIngredientModal: number;
@@ -30,6 +37,7 @@ const ModalIngredient: React.FC<{
 }> = (props) => {
   const id = props.showIngredientModal;
   const [ingredient, setIngredient] = useState<Ingredient>();
+  const [vendors, setVendors] = useState<Vendor[]>();
   const [imagePath, setImagePath] = useState("");
   const [deleteButton, setDeleteButton] = useState(<div></div>);
   const appContext = useContext(AppContext);
@@ -45,6 +53,7 @@ const ModalIngredient: React.FC<{
   };
 
   useEffect(() => {
+    getDataVendors();
     if (id > 0) {
       getData();
       setDeleteButton(
@@ -105,10 +114,35 @@ const ModalIngredient: React.FC<{
       });
   }
 
+  async function getDataVendors() {
+    await axios(appContext.http + "Vendor/PagedList")
+      .then((response) => {
+        setDataVendors(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+        setError(error);
+      });
+  }
+
   function setData(data: AxiosResponse) {
     let ingredient: Ingredient = JSON.parse(JSON.stringify(data.data));
     setIngredient(ingredient);
     setImagePath(ingredient.imagePath);
+  }
+
+  function setDataVendors(data: AxiosResponse) {
+    let vendors: Data = JSON.parse(JSON.stringify(data.data))
+    setVendors(vendors.items);
+  }
+
+  let vendorList;
+  if (vendors != null && vendors.length > 0) {
+    vendorList = vendors.map((vendor, key) => (
+      <IonSelectOption key={key} value={vendor.id}>{vendor.name}</IonSelectOption>
+    ));
+  } else {
+    vendorList = <IonSelectOption> No vendors found! </IonSelectOption>;
   }
 
   function setError(error: any) {
@@ -120,10 +154,8 @@ const ModalIngredient: React.FC<{
   const onSubmit = (data: any) => {
     data = {
       ...data,
-      name: ingredient?.name,
       imagePath: imagePath,
     };
-
     if (id === -1) {
       axios
         .post(appContext.http + "Ingredient", data, {
@@ -198,6 +230,18 @@ const ModalIngredient: React.FC<{
                   required={true}
                   {...register("name")}
                 />
+              </IonItem>
+              <IonItem>
+                <IonLabel position="stacked">Vendors</IonLabel>
+                <IonSelect
+                  value={vendors}
+                  multiple={true}
+                  {...register("vendors")}
+                  cancelText="Cancel"
+                  okText="Add"
+                >
+                  {vendorList}
+                </IonSelect>
               </IonItem>
             </IonCol>
           </IonRow>

@@ -20,8 +20,6 @@ const ContentSwiper: React.FC<{
     items: Displayable[] | null;
 }> = (props) => {
 
-    const [items, setItems] = useState<Displayable[] | null>();
-
     let slideWidth = "100px";
     let slideHeight = "100px";
     function getItems(): JSX.Element | JSX.Element[] {
@@ -29,7 +27,7 @@ const ContentSwiper: React.FC<{
         let itemsDOM;
         if (props.items != null && props.items.length > 0) {
             itemsDOM = props.items.map((item, key) => (
-                <SwiperSlide onClick={() => props.showModal(item.id)} style={{ height: slideHeight, width: slideWidth, alignItems: "center", display: "flex" }}>
+                <SwiperSlide key={key} onClick={() => props.showModal(item.id)} style={{ height: slideHeight, width: slideWidth, alignItems: "center", display: "flex" }}>
                     <IonImg alt="item thumbnail" src={item.imagePath} />
                 </SwiperSlide>
             ));
@@ -44,7 +42,7 @@ const ContentSwiper: React.FC<{
         let newItemDOM;
         if (props.addItems) {
             newItemDOM = (
-                <SwiperSlide onClick={() => props.showModal(-1)} style={{ height: slideHeight, width: slideWidth}}>
+                <SwiperSlide key={0} onClick={() => props.showModal(-1)} style={{ height: slideHeight, width: slideWidth}}>
                     <IonImg alt="add recipe" src="assets/img/image_add.svg" class="addImage" />
                 </SwiperSlide>
             )
@@ -56,10 +54,10 @@ const ContentSwiper: React.FC<{
 
     return (
         <IonGrid style={{ justifyContent: "center", margin: "auto", width: "75%" }}>
-            <IonRow>
+            <IonRow className="ion-row">
                 {props.title}
             </IonRow>
-            <IonRow>
+            <IonRow className="ion-row">
                 <Swiper
                     slidesPerView={"auto"}
                     spaceBetween={20}

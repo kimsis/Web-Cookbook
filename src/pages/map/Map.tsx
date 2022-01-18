@@ -13,7 +13,7 @@ import Recipe from "../../shared/interfaces/Recipe.interface";
 import AppContext from "../../store/AppContext";
 import Vendor from "../../shared/interfaces/Vendor.interface";
 import Data from '../../shared/interfaces/Data.interface';
-import ModalRecipeInfo from "../../components/Recipes/ModalRecipeInfor";
+import ModalRecipeInfo from "../../components/Recipes/ModalRecipeInfo";
 import ModalVendorInfo from "../../components/Vendors/ModalVendorInfo";
 
 export const Marker = ({
