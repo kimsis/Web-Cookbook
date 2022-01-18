@@ -12,9 +12,11 @@ import axios from "axios";
 import Recipe from "../../shared/interfaces/Recipe.interface";
 import AppContext from "../../store/AppContext";
 import Vendor from "../../shared/interfaces/Vendor.interface";
-import Data from '../../shared/interfaces/Data.interface';
+import Data from "../../shared/interfaces/Data.interface";
 import ModalRecipeInfo from "../../components/Recipes/ModalRecipeInfo";
 import ModalVendorInfo from "../../components/Vendors/ModalVendorInfo";
+import Ingredient from "../../shared/interfaces/Ingredient.interface";
+import { RouteComponentProps, useLocation } from "react-router";
 
 export const Marker = ({
   lat,
@@ -94,11 +96,16 @@ const SimpleMap: React.FC<{}> = (props) => {
   const [vendors, setVendors] = useState<Vendor[] | null>();
   const [selectedMarkerType, setMarkerType] = useState<JSX.Element[]>([]);
   const [color, setSelected] = useState(true);
+  const [ingredientId, setIngredientId] = useState<number>(0);
+  const location = useLocation();
 
   useEffect(() => {
+    const params = new URLSearchParams(location.pathname);
+    let id = params.get("id") ? params.get("id") : "0";
+    setIngredientId(Number.parseInt(id!));
     getRecipes();
-    getVendors();
-  }, []);
+    getVendors(ingredientId);
+  }, [location]);
 
   const NovFC: React.FC<{ id: number }> = (props) => {
     return (
@@ -137,7 +144,7 @@ const SimpleMap: React.FC<{}> = (props) => {
   async function getRecipes() {
     await axios(appContext.http + "Recipe/PagedList")
       .then((response) => {
-        let recipesArray:Data = JSON.parse(JSON.stringify(response.data));
+        let recipesArray: Data = JSON.parse(JSON.stringify(response.data));
         setRecipes(recipesArray.items);
       })
       .catch((error) => {
@@ -146,16 +153,31 @@ const SimpleMap: React.FC<{}> = (props) => {
       });
   }
 
-  async function getVendors() {
-    await axios(appContext.http + "Vendor/PagedList")
-      .then((response) => {
-        let vendorsArray:Data = JSON.parse(JSON.stringify(response.data));
-        setVendors(vendorsArray.items);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-        setError(error);
-      });
+  async function getVendors(id: number) {
+    if (id == 0) {
+      await axios(appContext.http + "Vendor/PagedList")
+        .then((response) => {
+          let vendorsArray: Data = JSON.parse(JSON.stringify(response.data));
+          setVendors(vendorsArray.items);
+        })
+        .catch((error) => {
+          console.error("Error fetching data: ", error);
+          setError(error);
+        });
+    } else {
+      axios
+        .get(appContext.http + "Ingredient/" + ingredientId)
+        .then((response) => {
+          let ingredient: Ingredient = JSON.parse(
+            JSON.stringify(response.data)
+          );
+          setVendors(ingredient.vendors);
+        })
+        .catch((error) => {
+          console.error("Error fetching data: ", error);
+          setError(error);
+        });
+    }
   }
 
   function setError(error: any) {
@@ -233,12 +255,22 @@ const SimpleMap: React.FC<{}> = (props) => {
   }, [vendors]);
 
   useEffect(() => {
-    if (recipeMarkerList.length > 0) {
-      selectMarkerType(recipeMarkerList);
-      setSelected(true);
+    if (ingredientId == 0) {
+      if (recipeMarkerList.length > 0) {
+        selectMarkerType(recipeMarkerList);
+        setSelected(true);
+      } else {
+        selectMarkerType(vendorMarkerList);
+        setSelected(false);
+      }
     } else {
-      selectMarkerType(vendorMarkerList);
-      setSelected(false);
+      if (vendorMarkerList.length > 0) {
+        selectMarkerType(vendorMarkerList);
+        setSelected(false);
+      } else {
+        selectMarkerType(recipeMarkerList);
+        setSelected(true);
+      }
     }
   }, [recipeMarkerList]);
 
@@ -280,12 +312,6 @@ const SimpleMap: React.FC<{}> = (props) => {
           defaultZoom={zoom}
         >
           {selectedMarkerType}
-          {/* <Marker lat={51.45079} lng={5.471861} text='Lidl' id={1} handleToggleOpen={() => handleToggleOpen(1)} />
-          <Marker lat={51.451563} lng={5.472298} text='Albert Heijn' id={2} handleToggleOpen={() => handleToggleOpen(50)} />
-          <Marker lat={51.449972} lng={5.472884} text='The Food Corner' id={3} handleToggleOpen={() => handleToggleOpen(55)} />
-          <Marker lat={51.448399} lng={5.474719} text='Athene' id={4} handleToggleOpen={() => handleToggleOpen(57)} />
-          <Marker lat={51.449359} lng={5.473838} text='Kam Po' id={5} handleToggleOpen={() => handleToggleOpen(5)} />
-          <Marker lat={51.447382} lng={5.475611} text='Sri Ganesh Indiaaas' id={6} handleToggleOpen={() => handleToggleOpen(6)} /> */}
         </GoogleMapReact>
         <NovFC id={itemId} />
         <VendorFC id={itemId} />

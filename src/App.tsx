@@ -62,6 +62,9 @@ const App: React.FC = () => {
                 <Route path="/map" exact={true}>
                   <Map />
                 </Route>
+                <Route path="/map&:ingredientId" exact={true}>
+                  <Map />
+                </Route>
                 <Route path="/profile" exact={true}>
                   <Profile />
                 </Route>
