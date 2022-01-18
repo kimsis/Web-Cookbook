@@ -126,11 +126,15 @@ const ModalRecipeInfo: React.FC<{
   const difficulty = (diff: any) => {
     switch (diff) {
       case 0:
-        return "Begginer";
+        return "Easy";
       case 1:
         return "Intermeddiate";
       case 2:
         return "Advanced";
+      case 3:
+        return "Challenging";
+      case 4:
+        return "Expert";
       default:
     }
   };
@@ -300,50 +304,48 @@ const ModalRecipeInfo: React.FC<{
         </IonItem>
         <IonRow>
           <IonCol>
-            <IonItem>
-              {/* <h4>Details</h4> */}
-              <IonItem color="none" lines="none">
-                <IonIcon
-                  icon={earth}
-                  slot="start"
-                  style={{
-                    fontSize: 24,
-                    marginRight: "5px",
-                    color: "#F2AB27",
-                  }}
-                />
-                <p>
-                  <b>Country of origin</b> {recipe?.countryOfOrigin}
-                </p>
-              </IonItem>
-              <IonItem color="none" lines="none">
-                <IonIcon
-                  icon={egg}
-                  slot="start"
-                  style={{
-                    fontSize: 24,
-                    marginRight: "5px",
-                    color: "#F2AB27",
-                  }}
-                />
-                <p>
-                  <b>Serving size</b> {recipe?.numberOfServings} meals
-                </p>
-              </IonItem>
-              <IonItem color="none" lines="none">
-                <IonIcon
-                  icon={timer}
-                  slot="start"
-                  style={{
-                    fontSize: 24,
-                    marginRight: "5px",
-                    color: "#F2AB27",
-                  }}
-                />
-                <p>
-                  <b>Preparation time</b> {recipe?.preparationTimeTicks} minutes
-                </p>
-              </IonItem>
+            {/* <h4>Details</h4> */}
+            <IonItem color="none" lines="none">
+              <IonIcon
+                icon={earth}
+                slot="start"
+                style={{
+                  fontSize: 24,
+                  marginRight: "5px",
+                  color: "#F2AB27",
+                }}
+              />
+              <p>
+                <b>Country of origin</b> {recipe?.countryOfOrigin}
+              </p>
+            </IonItem>
+            <IonItem color="none" lines="none">
+              <IonIcon
+                icon={egg}
+                slot="start"
+                style={{
+                  fontSize: 24,
+                  marginRight: "5px",
+                  color: "#F2AB27",
+                }}
+              />
+              <p>
+                <b>Serving size</b> {recipe?.numberOfServings} meals
+              </p>
+            </IonItem>
+            <IonItem color="none" lines="none">
+              <IonIcon
+                icon={timer}
+                slot="start"
+                style={{
+                  fontSize: 24,
+                  marginRight: "5px",
+                  color: "#F2AB27",
+                }}
+              />
+              <p>
+                <b>Preparation time</b> {recipe?.preparationTimeTicks} minutes
+              </p>
             </IonItem>
           </IonCol>
         </IonRow>
