@@ -176,9 +176,11 @@ const RecipeListItem: React.FC<{
             color="danger"
             style={{ fontSize: 24 }}
             class={"fav hydrated"}
-          ></IonIcon>{" "}
-          {props.favouriteCount && (
-            <b style={{ verticalAlign: "5px" }}>{props.favouriteCount} likes</b>
+          ></IonIcon>
+          {!!props.favouriteCount && (
+            <b style={{ verticalAlign: "5px" }}>
+              {props.favouriteCount && props.favouriteCount + " likes"}
+            </b>
           )}
         </IonCol>
       </IonRow>
