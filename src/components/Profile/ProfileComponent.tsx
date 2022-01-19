@@ -88,7 +88,7 @@ const ProfileComponent: React.FC<{}> = () => {
   function Logout() {
     appContext.user = null;
     localStorage.clear();
-    history.replace("/Login");
+    history.push("/Login");
   }
   const notify = () => {
     toast("Your profile has been updated");

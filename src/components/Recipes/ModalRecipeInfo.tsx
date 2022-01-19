@@ -360,7 +360,7 @@ const ModalRecipeInfo: React.FC<{
             {recipe?.ingredients.map((ingredient) => (
               <IonChip
                 onClick={() => {
-                  history.replace("/map&id=" + ingredient.id);
+                  history.push("/map&id=" + ingredient.id);
                 }}
                 color="primary"
                 key={ingredient.id}

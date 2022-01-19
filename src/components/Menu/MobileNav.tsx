@@ -30,6 +30,7 @@ import Profile from "../../pages/profile/Profile";
 import Login from "../../pages/login/Login";
 import Vendors from "../../pages/vendors/Vendors";
 import ManageContent from "../../pages/manageContent/ManageContent";
+import Register from "../../pages/register/Register";
 import {
   personCircleOutline,
   fastFood,
@@ -56,6 +57,9 @@ const MobileNav: React.FC = () => {
         </Route>
         <Route path="/login" exact={true}>
           <Login />
+        </Route>
+        <Route path="/register" exact={true}>
+          <Register />
         </Route>
         <Route path="/map" exact={true}>
           <Map />

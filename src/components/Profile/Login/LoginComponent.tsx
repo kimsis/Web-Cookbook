@@ -45,7 +45,7 @@ const LoginComponent: React.FC<{}> = () => {
           };
           
           localStorage.setItem("user", JSON.stringify(appContext.user));
-          history.replace("/profile");
+          history.push("/profile");
         }
       })
       .catch(function (error) {
@@ -72,7 +72,7 @@ const LoginComponent: React.FC<{}> = () => {
 
         <div style={{ padding: "0 20px" }}>
           <IonButton expand="block" type="submit">
-            Login
+            Not registered yet?
           </IonButton>
         </div>
       </form>

@@ -40,9 +40,9 @@ const ManageContent: React.FC<{}> = (props) => {
   const [ingredients, setIngredients] = useState<Ingredient[] | null>(null);
 
   if (appContext.user == null) {
-    history.replace("/login");
+    history.push("/login");
   } else if (!appContext.user.isAdmin) {
-    history.replace("/profile");
+    history.push("/profile");
   }
 
   const [showUserModal, setShowUserModal] = useState(0);

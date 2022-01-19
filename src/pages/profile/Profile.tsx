@@ -20,7 +20,7 @@ const Profile: React.FC<{}> = (props) => {
   const history = useHistory();
 
   if (appContext.user == null) {
-    history.replace("/login");
+    history.push("/login");
     return <div></div>;
   }
 

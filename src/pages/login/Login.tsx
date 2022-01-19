@@ -21,7 +21,7 @@ const Login: React.FC<{}> = (props) => {
   const history = useHistory();
 
   if (appContext.user != null || localStorage.getItem("user") != null) {
-    history.replace("/profile");
+    history.push("/profile");
   }
 
   return (
@@ -41,9 +41,9 @@ const Login: React.FC<{}> = (props) => {
           <IonButton
             className="button"
             fill="outline"
-            onClick={() => history.replace("/register")}
+            onClick={() => history.push("/register")}
           >
-            Login
+            Not registered yet?
           </IonButton>
         </IonRow>
       </IonContent>

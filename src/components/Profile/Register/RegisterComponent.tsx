@@ -14,6 +14,7 @@ import { useContext } from "react";
 import axios from "axios";
 import AppContext from "../../../store/AppContext";
 import { toast } from "react-toastify";
+import { useHistory } from "react-router";
 
 const RegisterComponent: React.FC<{}> = () => {
   const {
@@ -23,6 +24,7 @@ const RegisterComponent: React.FC<{}> = () => {
     formState: { errors },
   } = useForm();
   const appContext = useContext(AppContext);
+  const history = useHistory();
 
   const onSubmit = (data: any) => {
     var regex =
@@ -50,6 +52,7 @@ const RegisterComponent: React.FC<{}> = () => {
       .post(appContext.http + "authentication/register", data)
       .then(function (response) {
         toast("Registration successful!");
+        history.push("/login")
       })
       .catch(function (error) {
         toast("Registration unsuccessful!");

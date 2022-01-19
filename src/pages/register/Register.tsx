@@ -20,7 +20,7 @@ const Register: React.FC<{}> = (props) => {
   const history = useHistory();
 
   if (appContext.user != null || localStorage.getItem("user") != null) {
-    history.replace("/profile");
+    history.push("/profile");
   }
 
   return (
@@ -40,9 +40,9 @@ const Register: React.FC<{}> = (props) => {
           <IonButton
             className="button"
             fill="outline"
-            onClick={() => history.replace("/login")}
+            onClick={() => history.push("/login")}
           >
-            Not registered?
+            Login
           </IonButton>
         </IonRow>
       </IonContent>
