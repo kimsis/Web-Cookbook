@@ -107,8 +107,12 @@ const SimpleMap: React.FC<{}> = (props) => {
     let id = params.get("id") ? params.get("id") : "0";
     setIngredientId(Number.parseInt(id!));
     getRecipes();
-    getVendors(ingredientId);
+    getVendors(Number.parseInt(id!));
   }, [location]);
+
+  useEffect(() => {
+
+  }, [ingredientId]);
 
   const NovFC: React.FC<{ id: number }> = (props) => {
     return (
@@ -169,7 +173,7 @@ const SimpleMap: React.FC<{}> = (props) => {
         });
     } else {
       axios
-        .get(appContext.http + "Ingredient/" + ingredientId)
+        .get(appContext.http + "Ingredient/" + id)
         .then((response) => {
           let ingredient: Ingredient = JSON.parse(
             JSON.stringify(response.data)
@@ -213,11 +217,11 @@ const SimpleMap: React.FC<{}> = (props) => {
   let zoom = 17;
 
   const [recipeMarkerList, setRecipeMarkerList] = useState<JSX.Element[]>([
-    <div> No recipes found! </div>,
+    <div> No recipes found! </div>
   ]);
 
   const [vendorMarkerList, setVendorMarkerList] = useState<JSX.Element[]>([
-    <div> No vendors found! </div>,
+    <div> No vendors found! </div>
   ]);
 
   useEffect(() => {
@@ -240,8 +244,8 @@ const SimpleMap: React.FC<{}> = (props) => {
   }, [recipes]);
 
   useEffect(() => {
-    if (vendors != null) {
-      const vendorMarkerList = vendors.map((vendor) => (
+    if (vendors?.length) {
+      const _vendorMarkerList = vendors.map((vendor) => (
         <Marker
           id={vendor.id}
           text={vendor.name}
@@ -251,9 +255,8 @@ const SimpleMap: React.FC<{}> = (props) => {
           handleToggleOpen={() => handleToggleOpenVendor(vendor.id)}
         />
       ));
-      setVendorMarkerList(vendorMarkerList);
-    } else {
-      setVendorMarkerList([<div> No vendors found! </div>]);
+      setVendorMarkerList(_vendorMarkerList);
+      setSelected(false);
     }
   }, [vendors]);
 
@@ -275,7 +278,7 @@ const SimpleMap: React.FC<{}> = (props) => {
         setSelected(true);
       }
     }
-  }, [recipeMarkerList]);
+  }, [recipeMarkerList,vendorMarkerList]);
 
   return (
     <IonPage>
