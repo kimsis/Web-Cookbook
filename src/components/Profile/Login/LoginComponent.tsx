@@ -72,7 +72,7 @@ const LoginComponent: React.FC<{}> = () => {
 
         <div style={{ padding: "0 20px" }}>
           <IonButton expand="block" type="submit">
-            Not registered yet?
+            Login
           </IonButton>
         </div>
       </form>
