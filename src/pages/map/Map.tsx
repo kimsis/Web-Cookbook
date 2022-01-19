@@ -110,9 +110,7 @@ const SimpleMap: React.FC<{}> = (props) => {
     getVendors(Number.parseInt(id!));
   }, [location]);
 
-  useEffect(() => {
-
-  }, [ingredientId]);
+  useEffect(() => {}, [ingredientId]);
 
   const NovFC: React.FC<{ id: number }> = (props) => {
     return (
@@ -217,11 +215,11 @@ const SimpleMap: React.FC<{}> = (props) => {
   let zoom = 17;
 
   const [recipeMarkerList, setRecipeMarkerList] = useState<JSX.Element[]>([
-    <div> No recipes found! </div>
+    <h2 style={{ color: "orange" }}> No recipes found! </h2>,
   ]);
 
   const [vendorMarkerList, setVendorMarkerList] = useState<JSX.Element[]>([
-    <div> No vendors found! </div>
+    <h2 style={{ color: "orange" }}> No vendors found! </h2>,
   ]);
 
   useEffect(() => {
@@ -278,7 +276,7 @@ const SimpleMap: React.FC<{}> = (props) => {
         setSelected(true);
       }
     }
-  }, [recipeMarkerList,vendorMarkerList]);
+  }, [recipeMarkerList, vendorMarkerList]);
 
   return (
     <IonPage>

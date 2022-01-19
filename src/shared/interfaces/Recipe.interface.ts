@@ -20,4 +20,5 @@ export default interface Recipe extends Displayable
     latitude: number;
     longitude: number;
     approved: boolean;
+    favouritedCount:number;
 }

@@ -130,7 +130,8 @@ const ModalRecipeInfo: React.FC<{
         })
         .then((response) => {
           if (response.status === 200) {
-            notify("Recipe has been unfavoured");
+            notify("Recipe has been favoured");
+            setFavourite(true);
           }
         })
         .catch((err) => {

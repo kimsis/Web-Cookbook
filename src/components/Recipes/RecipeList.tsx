@@ -21,6 +21,7 @@ const RecipeList: React.FC<{
           imagePath={recipe.imagePath}
           timeToCook={recipe.preparationTimeTicks}
           onDismissCallback={props.onDismissCallback}
+          favouriteCount={recipe.favouritedCount}
         />
       </div>
     ));

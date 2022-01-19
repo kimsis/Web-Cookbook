@@ -6,6 +6,7 @@ import {
   IonGrid,
   IonText,
   IonModal,
+  IonItem,
 } from "@ionic/react";
 import {
   star,
@@ -14,6 +15,8 @@ import {
   time,
   megaphone,
   earth,
+  heart,
+  heartOutline,
 } from "ionicons/icons";
 import "./RecipeListItem.css";
 import AppContext from "../../store/AppContext";
@@ -31,6 +34,7 @@ const RecipeListItem: React.FC<{
   rating: number;
   imagePath: string;
   timeToCook: number;
+  favouriteCount: number;
   onDismissCallback: () => void;
 }> = (props) => {
   const [showRecipeInfoModal, setShowRecipeInfoModal] = useState(0);
@@ -97,6 +101,7 @@ const RecipeListItem: React.FC<{
         <IonText className="ion-align-self-center">
           <h2>{props.title}</h2>
         </IonText>
+
         <IonCol className="ion-align-self-center ion-text-right">
           <Rating
             onClick={postRating}
@@ -164,6 +169,17 @@ const RecipeListItem: React.FC<{
               </div>
             </IonRow>
           </IonCol>
+        </IonCol>
+        <IonCol style={{ alignSelf: "self-end", textAlign: "end" }}>
+          <IonIcon
+            icon={props.favouriteCount ? heart : heartOutline}
+            color="danger"
+            style={{ fontSize: 24 }}
+            class={"fav hydrated"}
+          ></IonIcon>{" "}
+          {props.favouriteCount && (
+            <b style={{ verticalAlign: "5px" }}>{props.favouriteCount} likes</b>
+          )}
         </IonCol>
       </IonRow>
     </IonGrid>
