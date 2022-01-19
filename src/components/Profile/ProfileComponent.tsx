@@ -180,7 +180,7 @@ const ProfileComponent: React.FC<{}> = () => {
           >
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="profile-image" onClick={handleRef}>
-                {userData?.profilePicUrl == ">:)" && !imagePath ? (
+                {userData?.profilePicUrl == null && !imagePath ? (
                   <IonIcon
                     icon={person}
                     slot="start"

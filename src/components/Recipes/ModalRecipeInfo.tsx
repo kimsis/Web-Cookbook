@@ -46,7 +46,7 @@ import {
 import QRModal from "./QRModal";
 import { Oval } from "react-loader-spinner";
 import { Rating } from "react-simple-star-rating";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import SimpleMap from "../../pages/map/Map";
 
 const ModalRecipeInfo: React.FC<{
@@ -105,7 +105,15 @@ const ModalRecipeInfo: React.FC<{
               : appContext.user.JWTToken,
         },
       })
-      .then((response) => {});
+      .then((response) => {
+        setRating(rate);
+        notify("Your rating have been saved");
+      })
+      .catch((err) => {
+        notify("Please login to to your account");
+        console.log("failed to unfavour");
+        setRating(0);
+      });
   }
 
   function toggleFavourite(fav: boolean) {
@@ -121,7 +129,14 @@ const ModalRecipeInfo: React.FC<{
           },
         })
         .then((response) => {
-          notify("Recipe has been favoured");
+          if (response.status === 200) {
+            notify("Recipe has been unfavoured");
+          }
+        })
+        .catch((err) => {
+          notify("Please login to to your account");
+          console.log("failed to unfavour");
+          setFavourite(false);
         });
     } else {
       axios
@@ -134,7 +149,13 @@ const ModalRecipeInfo: React.FC<{
           },
         })
         .then((response) => {
-          notify("Recipe has been unfavoured");
+          if (response.status === 200) {
+            notify("Recipe has been unfavoured");
+          }
+          if (response.status === 401) {
+            notify("Please login to to your account");
+            console.log("failed to unfavour");
+          }
         });
     }
   }

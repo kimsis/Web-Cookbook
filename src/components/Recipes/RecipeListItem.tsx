@@ -43,6 +43,9 @@ const RecipeListItem: React.FC<{
     console.log(stringifyRating);
     toast("You rated " + props.title + ".");
   };
+  const notifyLogin = () => {
+    toast("Please login to your account");
+  };
   function postRating(rate: number) {
     setRating(rate);
     let data: any = {
@@ -63,6 +66,11 @@ const RecipeListItem: React.FC<{
         if (response.status == 200) {
           notify();
         }
+      })
+      .catch((err) => {
+        notifyLogin();
+        console.log(props.rating);
+        setRating(props.rating);
       });
   }
 
