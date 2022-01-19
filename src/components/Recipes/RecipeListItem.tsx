@@ -41,7 +41,7 @@ const RecipeListItem: React.FC<{
   const notify = () => {
     const stringifyRating = rating.toString();
     console.log(stringifyRating);
-    toast("You have given " + props.title + " " + stringifyRating + " rating ");
+    toast("You rated " + props.title + ".");
   };
   function postRating(rate: number) {
     setRating(rate);

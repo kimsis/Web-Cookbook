@@ -361,6 +361,7 @@ const ModalRecipeInfo: React.FC<{
               <IonChip
                 onClick={() => {
                   history.push("/map&id=" + ingredient.id);
+                  props.setShowRecipeInfoModal(0);
                 }}
                 color="primary"
                 key={ingredient.id}

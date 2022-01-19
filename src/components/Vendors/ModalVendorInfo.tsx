@@ -64,6 +64,7 @@ const ModalVendorInfo: React.FC<{
       <IonChip
         onClick={() => {
           history.push("/map&id=" + ingredient.id);
+          props.setShowVendorInfoModal(0);
         }}
       >
         <IonLabel key={ingredient.id}>{ingredient.name}</IonLabel>
