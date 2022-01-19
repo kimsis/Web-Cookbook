@@ -26,6 +26,7 @@ import { Marker } from "../../pages/map/Map";
 import GoogleMapReact from "google-map-react";
 import "./ModalVendor.css";
 import Vendor from "../../shared/interfaces/Vendor.interface";
+import { toast } from "react-toastify";
 
 const ModalVendor: React.FC<{
   showVendorCreateModal: number;
@@ -60,10 +61,18 @@ const ModalVendor: React.FC<{
         </IonButton>
       );
     }
-  }, [])
+  }, []);
 
   //Select the image from the file input
-
+  const notifyDelete = () => {
+    toast("Vendor " + vendor?.name + " has been deleted.");
+  };
+  const notifyUpdate = () => {
+    toast("Vendor " + vendor?.name + " has been updated.");
+  };
+  const notifyUPost = () => {
+    toast("Your new vendor has been added");
+  };
   const imageSelectedHandler = (file: any) => {
     const imagePath: any = URL.createObjectURL(file);
     setImagePath(imagePath);
@@ -80,7 +89,7 @@ const ModalVendor: React.FC<{
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   async function deleteVendor() {
     axios
@@ -94,11 +103,12 @@ const ModalVendor: React.FC<{
       })
       .then((response) => {
         props.setShowVendorCreateModal(0);
+        notifyDelete();
       })
       .catch((error) => {
         console.log(error + " Error deleting recipe");
       });
-  };
+  }
 
   async function getData() {
     await axios(appContext.http + "Vendor/" + id)
@@ -148,6 +158,7 @@ const ModalVendor: React.FC<{
         })
         .then((response) => {
           props.setShowVendorCreateModal(0);
+          notifyUPost();
         })
         .catch((error) => {
           console.log(error);
@@ -164,6 +175,7 @@ const ModalVendor: React.FC<{
         })
         .then((response) => {
           props.setShowVendorCreateModal(0);
+          notifyUpdate();
         })
         .catch((error) => {
           console.log(error);
@@ -255,12 +267,15 @@ const ModalVendor: React.FC<{
           </IonRow>
         </IonGrid>
         <IonGrid>
-          <h5>Click on the map where the dish can be found</h5>
+          <h5>Click on the map where the vendor can be found</h5>
           <MapFC />
         </IonGrid>
         <IonGrid className="ion-padding">
           <IonRow class="ion-justify-content-around">
-            <IonButton type="submit"> {id === -1 ? "Add " : "Modify "}vendor</IonButton>
+            <IonButton type="submit">
+              {" "}
+              {id === -1 ? "Add " : "Modify "}vendor
+            </IonButton>
             <IonButton
               onClick={() => props.setShowVendorCreateModal(0)}
               fill="outline"

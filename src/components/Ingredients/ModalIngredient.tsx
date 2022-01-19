@@ -61,9 +61,9 @@ const ModalIngredient: React.FC<{
           <IonIcon slot="start" icon={trashBin} />
           Delete
         </IonButton>
-      )
+      );
     }
-  }, [])
+  }, []);
 
   //Select the image from the file input
 
@@ -83,7 +83,7 @@ const ModalIngredient: React.FC<{
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   async function deleteIngredient() {
     axios
@@ -97,11 +97,12 @@ const ModalIngredient: React.FC<{
       })
       .then((response) => {
         props.setShowIngredientModal(0);
+        notifyDelete();
       })
       .catch((error) => {
         console.log(error + " Error deleting recipe");
       });
-  };
+  }
 
   async function getData() {
     await axios(appContext.http + "Ingredient/" + id)
@@ -132,14 +133,16 @@ const ModalIngredient: React.FC<{
   }
 
   function setDataVendors(data: AxiosResponse) {
-    let vendors: Data = JSON.parse(JSON.stringify(data.data))
+    let vendors: Data = JSON.parse(JSON.stringify(data.data));
     setVendors(vendors.items);
   }
 
   let vendorList;
   if (vendors != null && vendors.length > 0) {
     vendorList = vendors.map((vendor, key) => (
-      <IonSelectOption key={key} value={vendor.id}>{vendor.name}</IonSelectOption>
+      <IonSelectOption key={key} value={vendor.id}>
+        {vendor.name}
+      </IonSelectOption>
     ));
   } else {
     vendorList = <IonSelectOption> No vendors found! </IonSelectOption>;
@@ -150,7 +153,12 @@ const ModalIngredient: React.FC<{
   }
 
   //Submit POST request to API
-
+  const notifySubmit = () => {
+    toast("Ingredients has been added.");
+  };
+  const notifyDelete = () => {
+    toast("Ingredients has been deleted.");
+  };
   const onSubmit = (data: any) => {
     data = {
       ...data,
@@ -168,6 +176,7 @@ const ModalIngredient: React.FC<{
         })
         .then((response) => {
           props.setShowIngredientModal(0);
+          notifySubmit();
         })
         .catch((error) => {
           console.log(error);
@@ -248,7 +257,10 @@ const ModalIngredient: React.FC<{
         </IonGrid>
         <IonGrid className="ion-padding">
           <IonRow class="ion-justify-content-around">
-            <IonButton type="submit"> {id === -1 ? "Add " : "Modify "}ingredient</IonButton>
+            <IonButton type="submit">
+              {" "}
+              {id === -1 ? "Add " : "Modify "}ingredient
+            </IonButton>
             <IonButton
               onClick={() => props.setShowIngredientModal(0)}
               fill="outline"

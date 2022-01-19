@@ -25,6 +25,7 @@ import ModalRecipeInfo from "../../components/Recipes/ModalRecipeInfo";
 import ModalRecipeFilter from "../../components/Recipes/ModalRecipeFilter";
 import RecipeList from "../../components/Recipes/RecipeList";
 import QRReader from "../../components/QR/QRReader";
+import { ToastContainer } from "react-toastify";
 
 const Recipes: React.FC<{}> = (props) => {
   useEffect(() => {
@@ -78,6 +79,7 @@ const Recipes: React.FC<{}> = (props) => {
 
   return (
     <IonPage>
+      <ToastContainer />
       <IonHeader>
         <IonToolbar>
           {/* <IonButtons slot="start">

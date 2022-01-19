@@ -21,7 +21,7 @@ import { useContext, useState } from "react";
 import ModalRecipeInfo from "./ModalRecipeInfo";
 import { Rating } from "react-simple-star-rating";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 const RecipeListItem: React.FC<{
   id: number;
   title: string;
@@ -38,7 +38,11 @@ const RecipeListItem: React.FC<{
   const appContext = useContext(AppContext);
 
   const [rating, setRating] = useState(0);
-
+  const notify = () => {
+    const stringifyRating = rating.toString();
+    console.log(stringifyRating);
+    toast("You have given " + props.title + " " + stringifyRating + " rating ");
+  };
   function postRating(rate: number) {
     setRating(rate);
     let data: any = {
@@ -55,7 +59,11 @@ const RecipeListItem: React.FC<{
               : appContext.user.JWTToken,
         },
       })
-      .then((response) => {});
+      .then((response) => {
+        if (response.status == 200) {
+          notify();
+        }
+      });
   }
 
   return (
@@ -144,7 +152,7 @@ const RecipeListItem: React.FC<{
                     color: "#F2AB27",
                   }}
                 />
-                <b>{props.type} cuisine </b>
+                <b>{props.countryOfOrigin} </b>
               </div>
             </IonRow>
           </IonCol>

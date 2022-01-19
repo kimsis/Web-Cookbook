@@ -35,13 +35,14 @@ export const Marker = ({
 }) => (
   <div
     style={{
-      width: "50px",
+      width: "75px",
       transform: "translate(-50%, -100%)",
     }}
   >
     <div
       onClick={(e) => id && handleToggleOpen(id)}
       style={{
+        margin: "auto",
         color: "white",
         background: "orange",
         padding: "4px",
@@ -69,15 +70,17 @@ export const Marker = ({
     <div
       style={{
         width: 0,
+        margin: "auto",
         height: 0,
         borderLeft: "20px solid transparent",
         borderRight: "20px solid transparent",
         borderTop: "20px solid orange",
-        transform: "translate(13%, -25%)",
+        transform: "translate(0%, -25%)",
       }}
     ></div>
     <p
       style={{
+        color: "black",
         textAlign: "center",
         fontSize: "1.2em",
         fontWeight: "bold",

@@ -9,7 +9,13 @@ import {
   IonToolbar,
   useIonViewWillEnter,
 } from "@ionic/react";
-import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import "./ManageContent.css";
 import AppContext from "../../store/AppContext";
 import { useHistory } from "react-router";
@@ -23,6 +29,7 @@ import Ingredient from "../../shared/interfaces/Ingredient.interface";
 import ModalIngredient from "../../components/Ingredients/ModalIngredient";
 import ModalVendor from "../../components/Vendors/ModalVendor";
 import Displayable from "../../shared/interfaces/Displayable.interface";
+import { ToastContainer } from "react-toastify";
 
 const ManageContent: React.FC<{}> = (props) => {
   const appContext = useContext(AppContext);
@@ -51,35 +58,36 @@ const ManageContent: React.FC<{}> = (props) => {
     getData("Ingredient/PagedList", setIngredients);
   }, []);
 
-  async function getData(endpoint : String, setter : Dispatch<any[]>) {
+  async function getData(endpoint: String, setter: Dispatch<any[]>) {
     await axios(appContext.http! + endpoint, {
-    headers: {
-      "x-auth":
-        appContext.user?.JWTToken === undefined
-          ? ""
-          : appContext.user.JWTToken,
-    },
-  })
-    .then((response) => {
-      setData(response, setter);
+      headers: {
+        "x-auth":
+          appContext.user?.JWTToken === undefined
+            ? ""
+            : appContext.user.JWTToken,
+      },
     })
-    .catch((error) => {
-      console.error("Error fetching data: ", error);
-      setError(error);
-    });
+      .then((response) => {
+        setData(response, setter);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+        setError(error);
+      });
   }
 
   function setData(data: AxiosResponse, setter: Dispatch<any[]>) {
     dataArray = JSON.parse(JSON.stringify(data.data));
     setter(dataArray.items);
   }
-  
+
   function setError(error: any) {
     console.log(error);
   }
 
   return (
     <IonPage>
+      <ToastContainer />
       <IonHeader>
         <IonToolbar>
           {/* <IonButtons slot="start">
@@ -90,7 +98,11 @@ const ManageContent: React.FC<{}> = (props) => {
       </IonHeader>
       <IonModal
         isOpen={showRecipeModal === 0 ? false : true}
-        onDidDismiss={() => {setShowRecipeModal(0); getData("Recipe/PagedList", setRecipes); getData("Recipe/PagedListPending", setPendingRecipes)}}
+        onDidDismiss={() => {
+          setShowRecipeModal(0);
+          getData("Recipe/PagedList", setRecipes);
+          getData("Recipe/PagedListPending", setPendingRecipes);
+        }}
       >
         <ModalRecipe
           showRecipeModal={showRecipeModal}
@@ -98,23 +110,29 @@ const ManageContent: React.FC<{}> = (props) => {
         />
       </IonModal>
       <IonModal
-        isOpen={showVendorModal === 0? false : true}
-        onDidDismiss={() => {setShowVendorModal(0); getData("Vendor/PagedList", setVendors)}}
-        >
-          <ModalVendor
-            showVendorCreateModal={showVendorModal}
-            setShowVendorCreateModal={setShowVendorModal}
-          />
-        </IonModal>
+        isOpen={showVendorModal === 0 ? false : true}
+        onDidDismiss={() => {
+          setShowVendorModal(0);
+          getData("Vendor/PagedList", setVendors);
+        }}
+      >
+        <ModalVendor
+          showVendorCreateModal={showVendorModal}
+          setShowVendorCreateModal={setShowVendorModal}
+        />
+      </IonModal>
       <IonModal
-        isOpen={showIngredientModal === 0? false : true}
-        onDidDismiss={() => {setShowIngredientModal(0); getData("Ingredient/PagedList", setIngredients)}}
-        >
-          <ModalIngredient
-            showIngredientModal={showIngredientModal}
-            setShowIngredientModal={setShowIngredientModal}
-          />
-        </IonModal>
+        isOpen={showIngredientModal === 0 ? false : true}
+        onDidDismiss={() => {
+          setShowIngredientModal(0);
+          getData("Ingredient/PagedList", setIngredients);
+        }}
+      >
+        <ModalIngredient
+          showIngredientModal={showIngredientModal}
+          setShowIngredientModal={setShowIngredientModal}
+        />
+      </IonModal>
       <IonContent>
         <ContentList
           addItems={false}
@@ -135,10 +153,10 @@ const ManageContent: React.FC<{}> = (props) => {
           items={vendors}
         />
         <ContentList
-        addItems={true}
-        title="Create/Edit Ingredients"
-        showModal={setShowIngredientModal}
-        items={ingredients}
+          addItems={true}
+          title="Create/Edit Ingredients"
+          showModal={setShowIngredientModal}
+          items={ingredients}
         />
       </IonContent>
     </IonPage>

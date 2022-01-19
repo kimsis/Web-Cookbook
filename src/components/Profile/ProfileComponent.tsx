@@ -46,8 +46,14 @@ const ProfileComponent: React.FC<{}> = () => {
       })
       .then((response) => {
         setUserData(response.data);
-        getData("Recipe/PagedListByUser?UserId=" + appContext.user!.id, setRecipe);
-        getData("Recipe/Favourite?UserId=" + appContext.user!.id, setFavourites);
+        getData(
+          "Recipe/PagedListByUser?UserId=" + appContext.user!.id,
+          setRecipe
+        );
+        getData(
+          "Recipe/Favourite?UserId=" + appContext.user!.id,
+          setFavourites
+        );
       });
   }, []);
 
@@ -70,10 +76,7 @@ const ProfileComponent: React.FC<{}> = () => {
       });
   }
 
-  function setData(
-    data: AxiosResponse,
-    setter: Dispatch<any[]>,
-  ) {
+  function setData(data: AxiosResponse, setter: Dispatch<any[]>) {
     let itemsArray: Data = JSON.parse(JSON.stringify(data.data));
     setter(itemsArray.items);
   }
@@ -106,7 +109,7 @@ const ProfileComponent: React.FC<{}> = () => {
         console.log(error);
       });
   };
-  const editPicture = () => { };
+  const editPicture = () => {};
   const handleRef = () => {
     fileInput.current?.click();
   };
@@ -141,12 +144,18 @@ const ProfileComponent: React.FC<{}> = () => {
   };
 
   return (
-    <IonContent fullscreen className="profile-info">
+    <IonContent fullscreen>
       <IonModal
         isOpen={showRecipeCreateModal === 0 ? false : true}
         onDidDismiss={() => {
-          getData("Recipe/PagedListByUser?UserId=" + appContext.user!.id, setRecipe);
-          getData("Recipe/Favourite?UserId=" + appContext.user!.id, setFavourites);
+          getData(
+            "Recipe/PagedListByUser?UserId=" + appContext.user!.id,
+            setRecipe
+          );
+          getData(
+            "Recipe/Favourite?UserId=" + appContext.user!.id,
+            setFavourites
+          );
         }}
       >
         <ModalRecipe
@@ -212,22 +221,48 @@ const ProfileComponent: React.FC<{}> = () => {
       <IonItem>
         <IonCol>
           <IonRow className="ion-align-items-center">
-            <p>My Recipes</p>
+            <h2>My Recipes</h2>
             <IonRow class="ion-justify-content-center">
               <IonButton onClick={() => setShowRecipeModal(-1)}>
                 + Add Recipe
               </IonButton>
             </IonRow>
           </IonRow>
-          <RecipeList recipes={recipes} message="No recipes created yet" onDismissCallback={() =>{getData("Recipe/PagedListByUser?UserId=" + appContext.user!.id, setRecipe); getData("Recipe/Favourite?UserId=" + appContext.user!.id, setFavourites)}}/>
+          <RecipeList
+            recipes={recipes}
+            message="No recipes created yet"
+            onDismissCallback={() => {
+              getData(
+                "Recipe/PagedListByUser?UserId=" + appContext.user!.id,
+                setRecipe
+              );
+              getData(
+                "Recipe/Favourite?UserId=" + appContext.user!.id,
+                setFavourites
+              );
+            }}
+          />
         </IonCol>
       </IonItem>
       <IonItem>
         <IonCol>
           <IonRow>
-            <p>My Favourites </p>
+            <h2>My Favourites </h2>
           </IonRow>
-          <RecipeList recipes={favourites} message="No favoured recipes yet" onDismissCallback={() =>{getData("Recipe/PagedListByUser?UserId=" + appContext.user!.id, setRecipe); getData("Recipe/Favourite?UserId=" + appContext.user!.id, setFavourites)}}/>
+          <RecipeList
+            recipes={favourites}
+            message="No favoured recipes yet"
+            onDismissCallback={() => {
+              getData(
+                "Recipe/PagedListByUser?UserId=" + appContext.user!.id,
+                setRecipe
+              );
+              getData(
+                "Recipe/Favourite?UserId=" + appContext.user!.id,
+                setFavourites
+              );
+            }}
+          />
         </IonCol>
       </IonItem>
     </IonContent>
